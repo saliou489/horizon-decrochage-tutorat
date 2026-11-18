@@ -25,4 +25,12 @@ _À compléter (commande unique pour tout relancer)._
 
 ## Déclaration d'usage d'assistants IA
 
-Claude (Anthropic) est utilisé comme aide à la compréhension, à la relecture et à l'écriture du code. Tout le code est relu et doit pouvoir être expliqué en soutenance.
+Conformément au cahier des charges (§6.2), l'usage d'assistants IA est déclaré :
+
+| Outil | Usage |
+|---|---|
+| Claude Code (Anthropic) | Écriture du code, des tests et de la documentation technique, à partir de consignes écrites et versionnées dans `docs/consignes/`. Cadre de travail : `CLAUDE.md`. |
+| Claude, en conversation (Anthropic) | Rédaction des consignes, vérification des résultats, explication du code et des méthodes à l'étudiant. |
+
+Les règles de nettoyage et les choix de méthode sont décidés par l'étudiant et tracés dans `docs/decisions.md`.
+Tout le code est relu par l'étudiant et doit pouvoir être expliqué en soutenance.
