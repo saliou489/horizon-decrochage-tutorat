@@ -146,3 +146,12 @@ Gabarit :
 - Constat (pilotage) : 14 inscriptions concernent des identifiants absents de etudiants, sans faute de frappe évidente (un seul rapprochement possible, non convaincant). 10 étudiants n'ont aucune inscription ; or tous les étudiants d'une même cohorte ont la même date de rentrée (hors les 12 lignes inversées).
 - Décision : les 14 inscriptions orphelines sont exclues de l'analyse et conservées dans un fichier de rejets ; les 10 étudiants sans inscription sont gardés avec la rentrée de leur cohorte et « aucune sortie déclarée », cas marqué.
 - Statut : validée (Saliou, 18/11)
+
+## D-18 — Table inscriptions : transfert daté après la fin du suivi
+- Date / tâche : 18/11/2026 — DA-03
+- Question (posée par la session d'exécution dans le compte rendu de C03) : aucune décision ne couvre un transfert dont la date_fin tombe après les 30 semaines de suivi (D-14 ne traite que les abandons).
+- Constat : le cas n'existe pas dans les données (les 117 transferts sont datés pendant le suivi).
+- Options : (A) ne rien changer, le code s'arrête si le cas se présente ; (B) le traiter comme D-14 (« aucune sortie déclarée »).
+- Recommandation : A (cas absent ; s'arrêter devant un cas imprévu est le comportement le plus sûr ; pas de code sans usage).
+- Décision : A. Si le cas apparaît, le nettoyage s'arrête et la règle sera décidée à ce moment-là.
+- Statut : validée (Saliou, 18/11)
