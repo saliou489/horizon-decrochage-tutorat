@@ -1,13 +1,17 @@
 """Nettoyage des tables brutes : data/raw/ -> data/processed/.
 
-Rôle du module : enchaîner le nettoyage des tables déjà prises en charge (pour
-l'instant « etudiants ») et régénérer docs/journal_nettoyage.md.
+Rôle du module : enchaîner le nettoyage des tables déjà prises en charge
+(« etudiants », puis « inscriptions », qui a besoin de la première) et régénérer
+docs/journal_nettoyage.md.
 Lancement depuis la racine du dépôt : python -m src.nettoyage
 
-Tâches couvertes : DA-02 (les tables suivantes seront ajoutées en DA-03 à DA-05).
+Tâches couvertes : DA-02, DA-03 (les tables suivantes seront ajoutées en DA-04, DA-05).
 """
 
-from src.nettoyage import commun, etudiants
+import pandas as pd
+
+from src import config
+from src.nettoyage import commun, etudiants, inscriptions
 
 
 def nettoyer_etudiants():
@@ -25,9 +29,35 @@ def nettoyer_etudiants():
     }
 
 
+def lire_etudiants_propres():
+    """Relit data/processed/etudiants.csv (prérequis du nettoyage des inscriptions)."""
+    chemin = config.DOSSIER_PROCESSED / f"{etudiants.TABLE}.csv"
+    return pd.read_csv(chemin, sep=config.SEPARATEUR_PROCESSED, dtype={"cohorte": "Int64", "age": "Int64"},
+                       encoding=config.ENCODAGE)
+
+
+def nettoyer_inscriptions():
+    """Nettoie inscriptions, écrit la table et ses rejets, renvoie le résultat du journal."""
+    brut = commun.lire_brut(inscriptions.TABLE)
+    propre, rejets, entrees, lignes_touchees = inscriptions.nettoyer(brut, lire_etudiants_propres())
+    commun.ecrire_table(propre, inscriptions.TABLE)
+    config.DOSSIER_REJETS.mkdir(parents=True, exist_ok=True)
+    rejets.to_csv(config.FICHIER_REJETS_INSCRIPTIONS, sep=config.SEPARATEUR_PROCESSED, index=False,
+                  encoding=config.ENCODAGE)
+    return {
+        "table": inscriptions.TABLE,
+        "entrees": entrees,
+        "avant": commun.profil(brut),
+        "apres": commun.profil(propre),
+        "colonnes": list(propre.columns),
+        "lignes_touchees": lignes_touchees,
+        "effectifs": inscriptions.effectifs(propre),
+    }
+
+
 def lancer_nettoyage():
     """Point d'entrée : nettoie toutes les tables prises en charge et écrit le journal."""
-    resultats = [nettoyer_etudiants()]
+    resultats = [nettoyer_etudiants(), nettoyer_inscriptions()]
     chemin = commun.ecrire_journal(resultats)
     for resultat in resultats:
         print(f"{resultat['table']} : {resultat['avant']['lignes']} lignes -> {resultat['apres']['lignes']} lignes")

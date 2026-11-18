@@ -229,11 +229,32 @@ def tableau_avant_apres(table, avant, apres, colonnes_apres):
         f"| Lignes | {avant['lignes']} | {apres['lignes']} |",
         f"| Doublons d'identifiant (majuscules, sans espaces) | {avant['doublons_id']} | {apres['doublons_id']} |",
     ]
+    # Une colonne créée par le nettoyage (ex. drapeau_inscription) n'existait pas avant :
+    # ses cases vides veulent dire « rien à signaler », pas « valeur manquante ».
+    # Elle est montrée à part et exclue du total.
+    colonnes_d_origine = [c for c in colonnes_apres if c in avant["manquants"]]
     for colonne in colonnes_apres:
-        lignes.append(f"| Valeurs manquantes : {colonne} | {avant['manquants'].get(colonne, 0)} | "
-                      f"{apres['manquants'][colonne]} |")
-    lignes.append(f"| Valeurs manquantes : total | {sum(avant['manquants'].values())} | "
-                  f"{sum(apres['manquants'].values())} |")
+        if colonne in avant["manquants"]:
+            lignes.append(f"| Valeurs manquantes : {colonne} | {avant['manquants'][colonne]} | "
+                          f"{apres['manquants'][colonne]} |")
+        else:
+            lignes.append(f"| Cases vides : {colonne} (colonne créée) | — | {apres['manquants'][colonne]} |")
+    total_apres = sum(apres["manquants"][c] for c in colonnes_d_origine)
+    lignes.append(f"| Valeurs manquantes : total (colonnes d'origine) | {sum(avant['manquants'].values())} | "
+                  f"{total_apres} |")
+    return lignes
+
+
+def tableaux_effectifs(effectifs):
+    """Tableaux « valeur | effectif » des colonnes dérivées (ex. sortie_suivi).
+
+    Entrée : liste de (nom de colonne, {valeur: effectif}).
+    """
+    lignes = []
+    for colonne, comptes in effectifs:
+        lignes += [f"Effectifs de `{colonne}` :", "", "| Valeur | Effectif |", "|---|---:|"]
+        lignes += [f"| {valeur} | {effectif} |" for valeur, effectif in comptes.items()]
+        lignes.append("")
     return lignes
 
 
@@ -262,5 +283,6 @@ def ecrire_journal(resultats):
         lignes += tableau_avant_apres(resultat["table"], resultat["avant"], resultat["apres"],
                                       resultat["colonnes"])
         lignes.append("")
+        lignes += tableaux_effectifs(resultat.get("effectifs", []))
     config.FICHIER_JOURNAL.write_text("\n".join(lignes), encoding=config.ENCODAGE, newline="\n")
     return config.FICHIER_JOURNAL

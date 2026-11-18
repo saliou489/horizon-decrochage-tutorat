@@ -280,3 +280,50 @@ SEUILS_MENTION = [
 
 # Exemple d'écriture avec unité observé dans chaque colonne (affiché dans le journal).
 EXEMPLES_UNITE = {"age": "19 ans", "distance_campus_km": "11.8 km"}
+
+# ---------------------------------------------------------------------------
+# Nettoyage de la table inscriptions (DA-03, décisions D-12 à D-17)
+# ---------------------------------------------------------------------------
+# Écritures du statut reconnues en plus des modalités officielles (forme simplifiée).
+ABREVIATIONS[("inscriptions", "statut_final")] = {
+    "abandonne": "abandon",
+    "transfere": "transfert",
+}
+
+# Mois en français, en forme simplifiée (minuscules, sans accents, sans point final),
+# abrégés ou complets. Observés : oct., nov., déc., janv., févr., mars, avr.
+MOIS_FR_SIMPLIFIES = {
+    "janv": 1, "janvier": 1,
+    "fev": 2, "fevr": 2, "fevrier": 2,
+    "mars": 3,
+    "avr": 4, "avril": 4,
+    "mai": 5,
+    "juin": 6,
+    "juil": 7, "juillet": 7,
+    "aout": 8,
+    "sept": 9, "septembre": 9,
+    "oct": 10, "octobre": 10,
+    "nov": 11, "novembre": 11,
+    "dec": 12, "decembre": 12,
+}
+
+# Format d'écriture des dates dans les tables nettoyées.
+FORMAT_DATE_PROCESSED = "%Y-%m-%d"
+
+# Valeurs de la colonne dérivée sortie_suivi.
+SORTIE_ABANDON = "abandon"
+SORTIE_TRANSFERT = "transfert"
+SORTIE_AUCUNE = "aucune_sortie_declaree"
+VALEURS_SORTIE_SUIVI = [SORTIE_ABANDON, SORTIE_TRANSFERT, SORTIE_AUCUNE]
+
+# Drapeaux de la colonne drapeau_inscription (plusieurs séparés par SEPARATEUR_DRAPEAUX).
+DRAPEAU_DATES_INVERSEES = "dates_inversees"
+DRAPEAU_ABANDON_HORS_SUIVI = "abandon_hors_suivi"
+DRAPEAU_STATUT_VIDE = "statut_vide"
+DRAPEAU_ABANDON_SANS_DATE = "abandon_sans_date"
+DRAPEAU_INSCRIPTION_RECONSTITUEE = "inscription_reconstituee"
+SEPARATEUR_DRAPEAUX = ";"
+
+# Inscriptions sans étudiant correspondant, exclues de l'analyse mais conservées (D-17).
+DOSSIER_REJETS = DOSSIER_PROCESSED / "rejets"
+FICHIER_REJETS_INSCRIPTIONS = DOSSIER_REJETS / "inscriptions_sans_etudiant.csv"

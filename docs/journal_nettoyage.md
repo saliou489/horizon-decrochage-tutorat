@@ -29,6 +29,18 @@
 | 19 | etudiants | Même étudiant présent deux fois avec une distance différente (ETU-07) | 24 | Première ligne du fichier gardée, l'autre supprimée | D-07 |
 | 20 | etudiants | mention_bac en contradiction avec note_bac (ETU-27 ; une note de 12, 14 ou 16 tout rond est tranchée par D-10) | 46 | Mention recalculée à partir de la note | D-10 |
 | 21 | etudiants | mention_bac vide alors que note_bac est connue | 150 | Mention calculée à partir de la note | D-10 |
+| 22 | inscriptions | Identifiant en minuscules ou entouré d'espaces | 0 | Mis en majuscules, espaces retirés | D-12 |
+| 23 | inscriptions | statut_final écrit de plusieurs façons (casse, espaces, accents, INS-04) | 400 | Recodage vers inscrit / abandon / transfert | D-12 |
+| 24 | inscriptions | date_debut dans un autre format que AAAA-MM-JJ (JJ/MM/AAAA, AAAA/MM/JJ, « 7 oct. 2024 ») | 1300 | Date convertie en AAAA-MM-JJ | D-12 |
+| 25 | inscriptions | date_fin dans un autre format que AAAA-MM-JJ (JJ/MM/AAAA, AAAA/MM/JJ, « 7 oct. 2024 ») | 289 | Date convertie en AAAA-MM-JJ | D-12 |
+| 26 | inscriptions | Inscription strictement identique à une ligne précédente (INS-01, INS-02) | 20 | Ligne supprimée | D-12 |
+| 27 | inscriptions | date_fin antérieure à date_debut, date_fin égale à la rentrée de la cohorte (INS-07, INS-09, INS-10) | 12 | date_debut et date_fin échangées | D-13 |
+| 28 | inscriptions | Inscription d'un identifiant absent de etudiants (X-01) | 14 | Ligne retirée et conservée dans data/processed/rejets/inscriptions_sans_etudiant.csv | D-17 |
+| 29 | inscriptions | Contrôle : date_debut différente de la rentrée de référence, ou année universitaire différente de la cohorte | 0 | Aucun écart après échange des dates inversées : rien à corriger | D-13, D-17 |
+| 30 | inscriptions | Étudiant sans aucune inscription (X-03) | 10 | Inscription ajoutée : année et rentrée de sa cohorte, statut et date_fin vides | D-17 |
+| 31 | inscriptions | Abandon daté après la fin du suivi (date_fin ≥ date_debut + 30 semaines, INS-11) | 6 | sortie_suivi = aucune_sortie_declaree, ligne gardée, drapeau abandon_hors_suivi | D-14 |
+| 32 | inscriptions | statut_final vide (INS-03) | 40 | sortie_suivi = aucune_sortie_declaree, statut laissé vide, drapeau statut_vide | D-15 |
+| 33 | inscriptions | Abandon sans date_fin (INS-12) | 22 | sortie_suivi = abandon, date_fin laissée vide (semaine à déterminer en DA-07), drapeau abandon_sans_date | D-16 |
 
 ## Tableau avant / après
 
@@ -49,4 +61,37 @@
 | Valeurs manquantes : region_origine | 91 | 90 |
 | Valeurs manquantes : distance_campus_km | 0 | 25 |
 | Valeurs manquantes : emploi_parallele | 205 | 200 |
-| Valeurs manquantes : total | 522 | 417 |
+| Valeurs manquantes : total (colonnes d'origine) | 522 | 417 |
+
+#### `inscriptions`
+
+| Indicateur | Avant | Après |
+|---|---:|---:|
+| Lignes | 5024 | 5000 |
+| Doublons d'identifiant (majuscules, sans espaces) | 20 | 0 |
+| Valeurs manquantes : id_etudiant | 0 | 0 |
+| Valeurs manquantes : annee_universitaire | 0 | 0 |
+| Valeurs manquantes : date_debut | 0 | 0 |
+| Valeurs manquantes : date_fin | 3890 | 3873 |
+| Valeurs manquantes : statut_final | 41 | 50 |
+| Cases vides : sortie_suivi (colonne créée) | — | 0 |
+| Cases vides : drapeau_inscription (colonne créée) | — | 4910 |
+| Valeurs manquantes : total (colonnes d'origine) | 3931 | 3923 |
+
+Effectifs de `sortie_suivi` :
+
+| Valeur | Effectif |
+|---|---:|
+| abandon | 1026 |
+| transfert | 117 |
+| aucune_sortie_declaree | 3857 |
+
+Effectifs de `drapeau_inscription` :
+
+| Valeur | Effectif |
+|---|---:|
+| dates_inversees | 12 |
+| abandon_hors_suivi | 6 |
+| statut_vide | 40 |
+| abandon_sans_date | 22 |
+| inscription_reconstituee | 10 |
