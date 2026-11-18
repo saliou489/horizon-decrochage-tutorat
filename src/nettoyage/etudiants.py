@@ -138,7 +138,8 @@ def regle_nombres(df):
             entrees.append(entree_journal(TABLE, f"{colonne} écrit avec une virgule décimale",
                                           nb_virgules, "Virgule remplacée par un point", "D-06"))
         if nb_unites:
-            entrees.append(entree_journal(TABLE, f"{colonne} écrit avec son unité (ex. « 19 ans », « 9.1 km »)",
+            exemple = config.EXEMPLES_UNITE[colonne]
+            entrees.append(entree_journal(TABLE, f"{colonne} écrit avec son unité (ex. « {exemple} »)",
                                           nb_unites, "Unité retirée", "D-06"))
     return resultat, int(touchees.sum()), entrees
 

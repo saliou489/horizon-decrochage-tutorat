@@ -18,10 +18,10 @@
 | 8 | etudiants | Modalités de mention_bac non harmonisées (casse, espaces, accents, abréviations) | 349 | Recodage vers Passable / Assez bien / Bien / Très bien | D-06 |
 | 9 | etudiants | Modalités de region_origine non harmonisées (casse, espaces, accents, abréviations) | 256 | Recodage vers les 14 régions officielles | D-06 |
 | 10 | etudiants | Modalités de emploi_parallele non harmonisées (casse, espaces, accents, abréviations) | 0 | Recodage vers Oui / Non | D-06 |
-| 11 | etudiants | age écrit avec son unité (ex. « 19 ans », « 9.1 km ») | 46 | Unité retirée | D-06 |
+| 11 | etudiants | age écrit avec son unité (ex. « 19 ans ») | 46 | Unité retirée | D-06 |
 | 12 | etudiants | note_bac écrit avec une virgule décimale | 250 | Virgule remplacée par un point | D-06 |
 | 13 | etudiants | distance_campus_km écrit avec une virgule décimale | 197 | Virgule remplacée par un point | D-06 |
-| 14 | etudiants | distance_campus_km écrit avec son unité (ex. « 19 ans », « 9.1 km ») | 41 | Unité retirée | D-06 |
+| 14 | etudiants | distance_campus_km écrit avec son unité (ex. « 11.8 km ») | 41 | Unité retirée | D-06 |
 | 15 | etudiants | age hors [17 ; 35] (sentinelle 99 comprise) | 14 | age mis à manquant, ligne conservée | D-08 |
 | 16 | etudiants | note_bac hors [10 ; 20] | 18 | note_bac mis à manquant, ligne conservée | D-08 |
 | 17 | etudiants | distance_campus_km négative ou nulle, ou sentinelle 9999 | 25 | distance_campus_km mis à manquant, ligne conservée | D-09 |

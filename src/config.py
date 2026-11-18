@@ -277,3 +277,6 @@ SEUILS_MENTION = [
     (12, "Assez bien"),
     (10, "Passable"),
 ]
+
+# Exemple d'écriture avec unité observé dans chaque colonne (affiché dans le journal).
+EXEMPLES_UNITE = {"age": "19 ans", "distance_campus_km": "11.8 km"}

@@ -21,6 +21,8 @@ Projet individuel — Institut Supérieur Horizon, filière Expert IA & LLM.
 
 ## Installation et exécution
 
+Prérequis : Python 3.12 ou plus (décision D-05).
+
 _À compléter (commande unique pour tout relancer)._
 
 ## Déclaration d'usage d'assistants IA
