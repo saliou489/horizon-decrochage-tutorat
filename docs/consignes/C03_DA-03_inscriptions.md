@@ -42,6 +42,11 @@ Résultats du prototype de la session de pilotage sur les données brutes, à co
 - `sortie_suivi` : abandon 1 026, transfert 117, aucune_sortie_declaree 3 857 ;
 - drapeaux : dates_inversees 12, abandon_hors_suivi 6, statut_vide 40 (un 41e statut vide disparaît avec les orphelins ou les doublons), abandon_sans_date 22, inscription_reconstituee 10.
 
+## Correctifs demandés sur DA-02 (exception explicite au périmètre)
+Relecture de C02 par la session de pilotage : résultats conformes au prototype, deux retouches à faire dans un commit séparé `DA-02 : correctifs après relecture (#5)` :
+1. Journal, lignes « écrit avec son unité » : l'exemple est commun aux deux colonnes (« 19 ans », « 9.1 km » apparaît pour age **et** pour distance). Mettre l'exemple propre à chaque colonne (age → « 19 ans » ; distance_campus_km → « 11.8 km »).
+2. README : ajouter dans la section installation la ligne « Prérequis : Python 3.12 ou plus (décision D-05) ». Le reste de la section reste à compléter en DO-01.
+
 ## Livraison
 - Commit : `DA-03 : nettoyage de la table inscriptions (#6)` ; push sur `main`.
 - Compte rendu au format du §10 de `CLAUDE.md`, avec : lignes avant / après, effectifs de `sortie_suivi` et de chaque drapeau.
