@@ -23,6 +23,7 @@ FICHIER_SHA256 = DOSSIER_DATA / "raw_sha256.txt"
 DOSSIER_DOCS = RACINE / "docs"
 DOSSIER_FIGURES = DOSSIER_DOCS / "figures"
 FICHIER_AUDIT = DOSSIER_DOCS / "audit_qualite.md"
+FICHIER_JOURNAL = DOSSIER_DOCS / "journal_nettoyage.md"
 
 # ---------------------------------------------------------------------------
 # Paramètres généraux (CLAUDE.md §5 et §6)
@@ -220,3 +221,59 @@ MOTIF_MOJIBAKE = r"Ã[\u0080-¿]|Â[\u0080-¿]"
 
 # Nombre d'exemples affichés par anomalie dans l'audit.
 NB_EXEMPLES = 3
+
+# ---------------------------------------------------------------------------
+# Nettoyage (DA-02 et suivantes) — règles validées dans docs/decisions.md
+# ---------------------------------------------------------------------------
+# Séparateur des tables nettoyées écrites dans data/processed/.
+SEPARATEUR_PROCESSED = ","
+
+# En-têtes à renommer (après retrait des espaces) pour retrouver le nom du LISEZMOI.
+RENOMMAGE_COLONNES = {
+    "etudiants": {"Distance campus (km)": "distance_campus_km"},
+}
+
+# Abréviations et synonymes reconnus, écrits en FORME SIMPLIFIÉE (minuscules, sans
+# accents, tirets remplacés par des espaces). Les modalités officielles elles-mêmes
+# (config.MODALITES) sont toujours reconnues sous leur forme simplifiée. (D-06, D-11)
+ABREVIATIONS = {
+    ("etudiants", "genre"): {
+        "femme": "F", "feminin": "F",
+        "h": "M", "homme": "M", "masculin": "M",
+    },
+    ("etudiants", "boursier"): {
+        "o": "Oui", "yes": "Oui", "1": "Oui",
+        "n": "Non", "no": "Non", "0": "Non",
+    },
+    ("etudiants", "filiere"): {
+        "info": "Informatique", "gc": "Génie civil", "com": "Communication",
+    },
+    ("etudiants", "mention_bac"): {
+        "p": "Passable", "ab": "Assez bien", "b": "Bien", "tb": "Très bien",
+    },
+    ("etudiants", "region_origine"): {
+        "st louis": "Saint-Louis", "zig": "Ziguinchor",
+    },
+    ("etudiants", "emploi_parallele"): {},
+}
+
+# Colonnes numériques de la table etudiants : entières (type entier acceptant les
+# manquants) ou décimales.
+COLONNES_ENTIERES_ETUDIANTS = ["cohorte", "age"]
+COLONNES_DECIMALES_ETUDIANTS = ["note_bac", "distance_campus_km"]
+
+# Seule sentinelle de distance présente dans les données (D-09). 99 et 999 ne sont
+# PAS des sentinelles pour la distance : ce seraient des distances plausibles.
+SENTINELLE_DISTANCE = 9999
+
+# Colonne sur laquelle deux lignes d'un même étudiant peuvent différer (D-07).
+COLONNE_DIFFERENCE_TOLEREE = "distance_campus_km"
+
+# Seuils des mentions du bac (D-10) : note >= seuil -> mention, du plus haut au plus
+# bas. Une note de 12 exactement est donc « Assez bien ».
+SEUILS_MENTION = [
+    (16, "Très bien"),
+    (14, "Bien"),
+    (12, "Assez bien"),
+    (10, "Passable"),
+]
