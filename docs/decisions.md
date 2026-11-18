@@ -44,7 +44,8 @@ Gabarit :
 ## D-04 — Emplacement de la copie locale du dépôt
 - Date / tâche : 18/11/2026 — GP-01
 - Question : où cloner le dépôt sur le PC de Saliou ?
-- Options : dans le dossier OneDrive `…\Semestre 5\Projet-3` ; dans `C:\Projets\horizon-decrochage-tutorat`.
-- Recommandation : `C:\Projets\…`. OneDrive synchroniserait le `.venv` (environ 1 Go de bibliothèques) et le dossier `.git`, avec des risques de fichiers verrouillés pendant la synchronisation ; le chemin OneDrive contient aussi des espaces et un accent. GitHub sert déjà de sauvegarde.
-- Décision :
-- Statut : proposée
+- Options : dans le dossier OneDrive `…\Semestre 5\Projet-3` ; hors OneDrive.
+- Recommandation : hors OneDrive. OneDrive synchroniserait le `.venv` (environ 1 Go de bibliothèques) et le dossier `.git`, avec des risques de fichiers verrouillés pendant la synchronisation ; le chemin OneDrive contient aussi un accent. GitHub sert déjà de sauvegarde.
+- Contrainte constatée : la racine `C:\` n'est pas accessible en écriture sur le PC de Saliou (`C:\Projets` impossible à créer).
+- Décision : copie locale dans `C:\Users\SERIGNE SALIOU SEYE\Projets\horizon-decrochage-tutorat` (hors OneDrive ; espaces du nom d'utilisateur à gérer par des guillemets).
+- Statut : validée (Saliou, 18/11)

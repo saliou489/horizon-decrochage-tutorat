@@ -41,7 +41,7 @@ Si la consigne ne couvre pas un cas : décris-le dans `docs/decisions.md` (statu
 ## 3. Emplacements
 
 - Dépôt GitHub : https://github.com/saliou489/horizon-decrochage-tutorat (public, branche `main`).
-- Copie de travail sur le PC de Saliou (Windows) : `C:\Projets\horizon-decrochage-tutorat` — hors OneDrive, sans espace ni accent dans le chemin.
+- Copie de travail sur le PC de Saliou (Windows) : `C:\Users\SERIGNE SALIOU SEYE\Projets\horizon-decrochage-tutorat` — hors OneDrive (la racine `C:\` n'est pas accessible en écriture sur ce PC). Le chemin contient des espaces (nom d'utilisateur) : dans toute commande shell, mettre les chemins entre guillemets.
 - Dossier de cours d'origine (cahier des charges et archive de l'enseignant) : `C:\Users\SERIGNE SALIOU SEYE\OneDrive\Documents\cours école BEM TECH\TROISIEME ANNEE\Semestre 5\Projet-3`. **Ne rien y écrire** : les fichiers utiles sont déjà copiés dans le dépôt.
 - Ne travaille **que** dans le dossier du dépôt.
 - Dans le code : **uniquement des chemins relatifs à la racine du dépôt**, centralisés dans `src/config.py` (pathlib). Aucun chemin absolu.
