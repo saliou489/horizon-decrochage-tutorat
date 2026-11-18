@@ -108,3 +108,41 @@ Gabarit :
 - Recommandation : oui (codage standard).
 - Décision : 0 → Non, 1 → Oui.
 - Statut : validée (Saliou, 18/11)
+
+## D-12 — Table inscriptions : corrections de forme
+- Date / tâche : 18/11/2026 — DA-03
+- Question : comment traiter les statuts écrits de plusieurs façons (INS-04), les 4 formats de date (INS-05, INS-06) et les doublons exacts (INS-01, INS-02) ?
+- Constat (pilotage) : les 4 formats (AAAA-MM-JJ, JJ/MM/AAAA, AAAA/MM/JJ, « 7 oct. 2024 ») se lisent tous sans ambiguïté.
+- Décision : statuts ramenés à `inscrit`, `abandon`, `transfert` ; dates converties en AAAA-MM-JJ ; doublons exacts supprimés.
+- Statut : validée (Saliou, 18/11)
+
+## D-13 — Table inscriptions : dates de début et de fin inversées (I1)
+- Date / tâche : 18/11/2026 — DA-03
+- Constat (pilotage) : les 12 lignes signalées par INS-07, INS-09 et INS-10 sont les mêmes étudiants ; pour chacun, date_fin est exactement la date de rentrée de sa cohorte (2024-10-07 ou 2025-10-06) et date_debut est postérieure. Les deux dates ont été saisies à l'envers.
+- Options : échanger les dates ; mettre à manquant ; exclure.
+- Décision : échanger date_debut et date_fin pour ces lignes (règle : date_fin < date_debut et date_fin = rentrée de la cohorte).
+- Statut : validée (Saliou, 18/11)
+
+## D-14 — Table inscriptions : abandons datés après la fin du suivi (I2)
+- Date / tâche : 18/11/2026 — DA-03
+- Constat : 6 abandons ont une date_fin en 2027, au-delà des 30 semaines de suivi.
+- Décision : considérés comme « aucune sortie déclarée pendant le suivi » ; la ligne est gardée ; le décrochage éventuel sera repéré par la règle d'inactivité, sinon censure à la semaine 30.
+- Statut : validée (Saliou, 18/11)
+
+## D-15 — Table inscriptions : statut vide (I3)
+- Date / tâche : 18/11/2026 — DA-03
+- Constat : 41 statuts vides, tous sans date_fin.
+- Décision : traités comme « aucune sortie déclarée » ; statut d'origine laissé vide et cas marqué ; la règle d'inactivité repère les décrochages non déclarés.
+- Statut : validée (Saliou, 18/11)
+
+## D-16 — Table inscriptions : abandons sans date (I4)
+- Date / tâche : 18/11/2026 — DA-03
+- Constat : 22 abandons sans date_fin.
+- Décision : statut `abandon` gardé, date_fin laissée vide ; la semaine de l'événement sera déterminée à partir de l'activité en DA-07 (règle à valider à ce moment-là).
+- Statut : validée (Saliou, 18/11)
+
+## D-17 — Identifiants sans correspondance entre etudiants et inscriptions (I5)
+- Date / tâche : 18/11/2026 — DA-03
+- Constat (pilotage) : 14 inscriptions concernent des identifiants absents de etudiants, sans faute de frappe évidente (un seul rapprochement possible, non convaincant). 10 étudiants n'ont aucune inscription ; or tous les étudiants d'une même cohorte ont la même date de rentrée (hors les 12 lignes inversées).
+- Décision : les 14 inscriptions orphelines sont exclues de l'analyse et conservées dans un fichier de rejets ; les 10 étudiants sans inscription sont gardés avec la rentrée de leur cohorte et « aucune sortie déclarée », cas marqué.
+- Statut : validée (Saliou, 18/11)
