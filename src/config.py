@@ -22,6 +22,7 @@ DOSSIER_PROCESSED = DOSSIER_DATA / "processed"
 FICHIER_SHA256 = DOSSIER_DATA / "raw_sha256.txt"
 DOSSIER_DOCS = RACINE / "docs"
 DOSSIER_FIGURES = DOSSIER_DOCS / "figures"
+FICHIER_AUDIT = DOSSIER_DOCS / "audit_qualite.md"
 
 # ---------------------------------------------------------------------------
 # Paramètres généraux (CLAUDE.md §5 et §6)
@@ -83,6 +84,9 @@ FICHIERS_BRUTS = {
     },
 }
 
+# Séparateurs candidats testés par l'audit pour détecter le séparateur réel.
+SEPARATEURS_CANDIDATS = [",", ";", "\t", "|"]
+
 # ---------------------------------------------------------------------------
 # Identifiants
 # ---------------------------------------------------------------------------
@@ -103,8 +107,39 @@ BORNES = {
     ("activite_hebdo", "devoirs_rendus"): {"min": 0, "max": 2, "strict": False},
     ("activite_hebdo", "note_moyenne"): {"min": 0, "max": 20, "strict": False},
     ("activite_hebdo", "absences"): {"min": 0, "max": 20, "strict": False},
+    # Pas de borne haute donnée pour les connexions : seulement « pas de négatif ».
+    ("activite_hebdo", "nb_connexions_lms"): {"min": 0, "max": None, "strict": False},
+    ("tutorat", "semaine_debut"): {"min": 1, "max": N_SEMAINES, "strict": False},
+    # Un étudiant présent dans la table tutorat a suivi au moins une séance.
+    ("tutorat", "nb_seances"): {"min": 1, "max": None, "strict": False},
     ("messages", "semaine"): {"min": 1, "max": N_SEMAINES, "strict": False},
 }
+
+# Colonnes censées être des nombres entiers (un « 5.0 » ou « 19 ans » est un format à signaler).
+COLONNES_ENTIERES = {
+    ("etudiants", "cohorte"), ("etudiants", "age"),
+    ("activite_hebdo", "semaine"), ("activite_hebdo", "nb_connexions_lms"),
+    ("activite_hebdo", "devoirs_rendus"), ("activite_hebdo", "absences"),
+    ("tutorat", "semaine_debut"), ("tutorat", "nb_seances"),
+    ("messages", "semaine"),
+}
+
+# Colonnes qui peuvent être vides sans anomalie (LISEZMOI) : date_fin vide = toujours
+# inscrit ; note_moyenne vide = semaine sans évaluation.
+VIDES_AUTORISES = {("inscriptions", "date_fin"), ("activite_hebdo", "note_moyenne")}
+
+# Colonnes de dates de la table inscriptions.
+COLONNES_DATE = {("inscriptions", "date_debut"), ("inscriptions", "date_fin")}
+
+# Unités parfois écrites dans les champs numériques (ex. « 19 ans », « 9.1 km »).
+UNITES_TEXTE = ["ans", "km"]
+
+# Codes souvent utilisés à la place d'une valeur manquante dans les systèmes sources.
+VALEURS_SENTINELLES = [-1, 99, 999, 9999]
+
+# Valeurs extrêmes : au-delà de Q3 + COEF_IQR_EXTREMES × IQR (règle de Tukey « très
+# éloignée »), une valeur est signalée « à examiner » quand aucune borne haute n'existe.
+COEF_IQR_EXTREMES = 3
 
 # ---------------------------------------------------------------------------
 # Modalités attendues des variables catégorielles (LISEZMOI).
@@ -142,3 +177,46 @@ INTERVALLES_MENTION = {
     "Bien": (14, 16),
     "Très bien": (16, 20),
 }
+
+# ---------------------------------------------------------------------------
+# Dates (table inscriptions)
+# ---------------------------------------------------------------------------
+# Formats numériques reconnus par l'audit (constat de l'hétérogénéité, pas de correction).
+FORMATS_DATE = {
+    "AAAA-MM-JJ": "%Y-%m-%d",
+    "JJ/MM/AAAA": "%d/%m/%Y",
+    "AAAA/MM/JJ": "%Y/%m/%d",
+}
+# Mois abrégés en français (format du type « 6 oct. 2025 »).
+MOIS_FR = {
+    "janv.": 1, "févr.": 2, "mars": 3, "avr.": 4, "mai": 5, "juin": 6,
+    "juil.": 7, "août": 8, "sept.": 9, "oct.": 10, "nov.": 11, "déc.": 12,
+}
+MOIS_RENTREE = 10  # les rentrées ont lieu en octobre (cahier des charges §4.1)
+# Correspondance année universitaire -> cohorte (année de rentrée).
+ANNEE_VERS_COHORTE = {"2024-2025": "2024", "2025-2026": "2025"}
+JOURS_PAR_SEMAINE = 7
+
+# ---------------------------------------------------------------------------
+# Données personnelles dans messages.texte (détection pour l'audit uniquement)
+# ---------------------------------------------------------------------------
+# Téléphone sénégalais : indicatif +221 / 00221 facultatif, puis 9 chiffres
+# commençant par 70, 75, 76, 77 ou 78, avec ou sans séparateurs.
+MOTIF_TELEPHONE = r"(?:(?:\+|00)221[\s.-]?)?7[05678](?:[\s.-]?\d){7}"
+MOTIF_EMAIL = r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+"
+# Nom propre introduit par une formule de présentation (« Je suis Awa Fall »,
+# « c'est Moussa Ndiaye », « je m'appelle … », « mon nom est … »).
+MOTIF_NOM = (
+    r"(?:[Jj]e suis|[Cc]'est|[Jj]e m'appelle|[Mm]on nom est|[Mm]oi c'est)\s+"
+    r"(?P<nom>[A-ZÀ-Þ][^\s,.;:!?]*(?:\s+[A-ZÀ-Þ][^\s,.;:!?]*)+)"
+)
+# Mots qui signalent une adresse postale (le groupe « lieu » est la partie à masquer).
+MOTIF_ADRESSE = (
+    r"\b(?i:rue|avenue|boulevard|bd|quartier|cité|villa|lot|parcelles|"
+    r"résidence|immeuble|appartement)\b\s+(?P<lieu>\S+)"
+)
+# Mojibake : UTF-8 relu comme Latin-1 (ex. « Ã© » à la place de « é »).
+MOTIF_MOJIBAKE = r"Ã[\u0080-¿]|Â[\u0080-¿]"
+
+# Nombre d'exemples affichés par anomalie dans l'audit.
+NB_EXEMPLES = 3
