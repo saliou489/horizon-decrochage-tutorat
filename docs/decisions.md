@@ -58,3 +58,53 @@ Gabarit :
 - Vérification (session de pilotage, 18/11) : l'option (b) est impossible, car numpy 2.2.x n'existe pas pour Python 3.14 (Python du PC de Saliou). Avec les versions actuelles, numpy 2.5.5 exige Python 3.12 au minimum ; scikit-survival, lifelines, scikit-learn et statsmodels existent tous pour Python 3.14 sous Windows.
 - Décision : option (a) adaptée : garder les versions installées et exiger **Python 3.12 ou plus** (README et CLAUDE.md).
 - Statut : validée (Saliou, 18/11)
+
+## D-06 — Table etudiants : corrections de forme
+- Date / tâche : 18/11/2026 — DA-02
+- Question : comment traiter les écarts de forme relevés par l'audit (ETU-01 à ETU-04, ETU-12 à ETU-17, ETU-20, ETU-22, ETU-23) ?
+- Options : corriger ; laisser tel quel ; mettre à manquant.
+- Recommandation : corriger. Ce sont des écritures différentes d'une même information (casse, espaces, abréviations, virgule décimale, unité), sans perte ni invention.
+- Décision : en-têtes renommés comme le LISEZMOI ; identifiants en majuscules sans espaces ; virgule → point, unités « ans » / « km » retirées ; genre → F / M ; filière, région, mention, emploi, boursier ramenés aux modalités du LISEZMOI ; doublons exacts supprimés ; cases vides laissées vides.
+- Statut : validée (Saliou, 18/11)
+
+## D-07 — Table etudiants : quasi-doublons (D1)
+- Date / tâche : 18/11/2026 — DA-02
+- Question : 24 étudiants apparaissent deux fois avec des valeurs différentes. Laquelle garder ?
+- Constat (pilotage) : les deux lignes ne diffèrent que par la distance, de quelques dixièmes de km.
+- Options : garder la première ligne ; moyenne des distances ; distance à manquant.
+- Recommandation : garder la première ligne du fichier (écart sans effet, règle la plus simple).
+- Décision : garder la première ligne.
+- Statut : validée (Saliou, 18/11)
+
+## D-08 — Table etudiants : notes du bac et âges impossibles (D2)
+- Date / tâche : 18/11/2026 — DA-02
+- Question : que faire des notes du bac hors [10 ; 20] (25,5, 112, 135) et des âges hors [17 ; 35] (0, 3, 99, 150, 210) ?
+- Constat (pilotage) : l'hypothèse « virgule oubliée » est fausse : 135 apparaît avec « Passable », incompatible avec 13,5. Ce sont des valeurs sans sens. Aucune autre note antérieure au bac n'existe dans les données ; les notes universitaires (activite_hebdo) sont postérieures à la rentrée et ne doivent pas servir à corriger une variable de départ.
+- Options : mettre à manquant ; tenter une correction (÷ 10) ; supprimer la ligne.
+- Recommandation : mettre la valeur à manquant, garder la ligne et la mention.
+- Décision : note_bac et age hors bornes (sentinelles comprises) → manquant ; mention_bac conservée.
+- Statut : validée (Saliou, 18/11)
+
+## D-09 — Table etudiants : distances (D3)
+- Date / tâche : 18/11/2026 — DA-02
+- Question : que faire des distances négatives, des sentinelles (9999) et des 514 distances supérieures à 51,7 km ?
+- Constat (pilotage) : aucune distance > 51,7 km ne concerne un étudiant de Dakar ; elles viennent de régions éloignées du campus. Elles sont plausibles.
+- Options : négatives → valeur absolue ou manquant ; grandes distances → garder ou plafonner.
+- Recommandation : négatives et sentinelles → manquant (signe non vérifiable) ; grandes distances gardées.
+- Décision : comme recommandé.
+- Statut : validée (Saliou, 18/11)
+
+## D-10 — Table etudiants : cohérence mention / note (D4)
+- Date / tâche : 18/11/2026 — DA-02
+- Question : 37 lignes ont une mention incompatible avec la note ; 154 mentions sont vides.
+- Options : la note fait foi ; la mention fait foi ; les deux à manquant.
+- Recommandation : la note fait foi (plus précise) ; la mention est recalculée à partir de la note quand elles se contredisent ou quand la mention est vide. Seuils du bac : Passable [10 ; 12[, Assez bien [12 ; 14[, Bien [14 ; 16[, Très bien ≥ 16 (une note de 12 exactement est Assez bien). La mention découle de la note par définition : ce n'est pas une imputation.
+- Décision : comme recommandé ; si la note est manquante, la mention d'origine est conservée.
+- Statut : validée (Saliou, 18/11)
+
+## D-11 — Table etudiants : codage 0 / 1 de boursier (D5)
+- Date / tâche : 18/11/2026 — DA-02
+- Question : « 0 » et « 1 » valent-ils Non et Oui ?
+- Recommandation : oui (codage standard).
+- Décision : 0 → Non, 1 → Oui.
+- Statut : validée (Saliou, 18/11)
