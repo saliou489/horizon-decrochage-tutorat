@@ -1,0 +1,10 @@
+# Journal de bord quotidien
+
+Gabarit de l'annexe B du cahier des charges : une entrée par jour ouvré (fait / prévu / blocages / heures).
+
+| Date | Fait | Prévu | Blocages | Heures |
+|---|---|---|---|---|
+| Ven. 13/11 | _à compléter par Saliou_ | — | Projet pas encore démarré : dépôt, Kanban et backlog non créés à J1 (écart noté dans `docs/planning.md`). | _à compléter_ |
+| Lun. 16/11 | Lecture du cahier des charges et des données. Création du dépôt GitHub public `horizon-decrochage-tutorat`, structure des dossiers, données brutes dans `data/raw/` (GP-01). Compréhension du sujet : question prédictive et question causale, notions de durée T, d'événement E et de censure. | Créer le Kanban et saisir le backlog ; auditer les 5 fichiers. | Démarrage à J2 au lieu de J1. | _à compléter_ |
+| Mar. 17/11 | Révision de la règle de décrochage (4 semaines sans connexion ni devoir) et de la censure. | Replanifier le projet ; Kanban ; audit qualité. | Peu de temps consacré au projet ce jour-là. _Cause à préciser par Saliou._ | _à compléter_ |
+| Mer. 18/11 | Replanification du projet jusqu'au 27/11 (`docs/planning.md`). Cadre de travail avec les assistants IA (`CLAUDE.md`, consignes, registre des décisions). Kanban GitHub Projects : 6 colonnes du §11.1, limite WIP de 2, projet public, 31 issues, planification du sprint 1 (GP-02, GP-03). Audit qualité des 5 fichiers : 79 types d'anomalies + 10 contrôles entre tables (DA-01). Décisions de nettoyage D-05 à D-17. Nettoyage de `etudiants` : 5 085 → 5 000 lignes (DA-02). Nettoyage de `inscriptions` : 5 024 → 5 000 lignes, 12 dates inversées corrigées (DA-03). 47 tests réussis. | Décisions et nettoyage de `activite_hebdo` et `tutorat` (DA-04) et de `messages` (DA-05) ; journal de nettoyage et tests (DA-06) ; registre des risques ; capture du Kanban du 19/11. | Racine `C:\` non accessible en écriture : dépôt placé dans le dossier utilisateur (D-04). Recommandation erronée sur la version de Python, repérée par vérification et corrigée (D-05). | ≈ 5 h _(estimation à corriger)_ |
