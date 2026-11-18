@@ -55,5 +55,6 @@ Gabarit :
 - Question : le `.venv` a été créé avec le Python du PC (3.14.3) ; `requirements.txt` fixe donc pandas 3.1.1 et numpy 2.5.5. Or pandas 3.x n'existe pas pour Python 3.10 (vérifié : `pip download pandas==3.1.1 --python-version 3.10` ne trouve aucune version), alors que CLAUDE.md §4 annonce « Python 3.10 ou plus ». Sur une machine en 3.10, `pip install -r requirements.txt` échouerait.
 - Options : (a) garder pandas 3.1.1 et écrire « Python 3.11 ou plus » dans le README et CLAUDE.md ; (b) revenir à pandas 2.3.x et numpy 2.2.x, installables de Python 3.10 à 3.14 ; (c) ne rien changer.
 - Recommandation : (b) si la version de Python de l'enseignant est inconnue, car c'est la seule option qui respecte « 3.10 ou plus » ; sinon (a). Demander la version de l'enseignant au point d'étape serait le plus sûr.
-- Décision :
-- Statut : proposée
+- Vérification (session de pilotage, 18/11) : l'option (b) est impossible, car numpy 2.2.x n'existe pas pour Python 3.14 (Python du PC de Saliou). Avec les versions actuelles, numpy 2.5.5 exige Python 3.12 au minimum ; scikit-survival, lifelines, scikit-learn et statsmodels existent tous pour Python 3.14 sous Windows.
+- Décision : option (a) adaptée : garder les versions installées et exiger **Python 3.12 ou plus** (README et CLAUDE.md).
+- Statut : validée (Saliou, 18/11)

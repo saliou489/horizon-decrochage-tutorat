@@ -69,7 +69,7 @@ Si la consigne ne couvre pas un cas : décris-le dans `docs/decisions.md` (statu
 
 ## 4. Environnement
 
-- Python 3.10 ou plus, environnement virtuel `.venv/` à la racine (ignoré par git). Rien n'est installé hors du `.venv`.
+- **Python 3.12 ou plus** (décision D-05 : numpy 2.5 l'exige ; PC de Saliou en Python 3.14), environnement virtuel `.venv/` à la racine (ignoré par git). Rien n'est installé hors du `.venv`.
   - Windows : `py -m venv .venv` puis `.venv\Scripts\activate`
   - Linux / macOS : `python3 -m venv .venv` puis `source .venv/bin/activate`
 - `pip install -r requirements.txt`. Toute nouvelle bibliothèque est ajoutée à `requirements.txt` (version exacte) dans le même commit et justifiée dans le compte rendu.
