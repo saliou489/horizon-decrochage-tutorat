@@ -1,5 +1,11 @@
 # Consigne C01 — Mise en place + DA-01 : audit qualité des 5 fichiers bruts
 
+## Emplacement du projet
+- Dossier du dépôt sur le PC : `C:\Users\SERIGNE SALIOU SEYE\Projets\horizon-decrochage-tutorat`
+- Avant toute chose : vérifier que le dossier courant est bien celui-ci (sinon s'y placer, avec le chemin **entre guillemets** à cause des espaces), puis `git pull --rebase origin main`.
+- Si ce dossier n'existe pas (dépôt resté dans `C:\Users\SERIGNE SALIOU SEYE\horizon-decrochage-tutorat`) : s'arrêter et le signaler, ne rien déplacer soi-même.
+- Tout le travail se fait dans ce dossier ; dans le code, uniquement des chemins relatifs (CLAUDE.md §3).
+
 ## Contexte
 Lis d'abord `CLAUDE.md` (cadre du projet, à respecter en tout point), puis `docs/cahier_des_charges.pdf` (§4 et §6) et `data/raw/LISEZMOI.md`.
 Périmètre : **mise en place de l'environnement + DA-01 (audit) uniquement.** Ne nettoie rien, ne modifie aucun fichier de `data/raw/`.
