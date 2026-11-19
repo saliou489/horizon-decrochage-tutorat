@@ -432,3 +432,56 @@ ANOMALIES_SANS_TRAITEMENT = {
              "0 restant"),
     "MSG-07": "synthèse de MSG-04 à MSG-06 (un message peut contenir plusieurs données personnelles)",
 }
+
+# ---------------------------------------------------------------------------
+# Construction de T et E, base_survie et format période-personne (DA-07, D-30 à D-39)
+# ---------------------------------------------------------------------------
+# Seuils d'inactivité étudiés en sensibilité (la référence est SEUIL_INACTIVITE = 4).
+SEUILS_SENSIBILITE = (3, 5)
+
+# État d'une semaine d'activité (D-31).
+ETAT_ACTIF = "actif"
+ETAT_INACTIF = "inactif"
+ETAT_INCONNU = "inconnu"
+
+# Lecture d'une semaine « inconnue » : « active » = référence (elle coupe une série
+# d'inactivité, D-31) ; « inactive » = sensibilité (elle compte comme inactive).
+LECTURE_INCONNU_REFERENCE = "active"
+LECTURE_INCONNU_SENSIBILITE = "inactive"
+
+# Types d'événement de base_survie (D-30, D-32 à D-35) ; les 4 premiers ont E = 1.
+EVENEMENT_ABANDON_DECLARE = "abandon_declare"
+EVENEMENT_ABANDON_SANS_DATE = "abandon_sans_date"
+EVENEMENT_ABANDON_DATE_INVALIDE = "abandon_date_invalide"
+EVENEMENT_DECROCHAGE_SILENCIEUX = "decrochage_silencieux"
+EVENEMENT_TRANSFERT = "transfert"
+EVENEMENT_PERDU_DE_VUE = "perdu_de_vue"
+EVENEMENT_FIN_DE_SUIVI = "fin_de_suivi"
+TYPES_AVEC_EVENEMENT = [EVENEMENT_ABANDON_DECLARE, EVENEMENT_ABANDON_SANS_DATE,
+                        EVENEMENT_ABANDON_DATE_INVALIDE, EVENEMENT_DECROCHAGE_SILENCIEUX]
+TYPES_CENSURES = [EVENEMENT_TRANSFERT, EVENEMENT_PERDU_DE_VUE, EVENEMENT_FIN_DE_SUIVI]
+
+# Statut de tutorat par rapport au T de référence (D-37).
+STATUT_NON_TUTORE = "non_tutore"
+STATUT_TUTORE = "tutore"
+STATUT_TUTORAT_MEME_SEMAINE = "tutorat_meme_semaine_que_T"
+STATUT_TUTORAT_APRES_T = "tutorat_apres_T"
+STATUT_TUTORAT_SEMAINE_INCONNUE = "tutorat_semaine_inconnue"
+# Statuts comptés comme « tutoré » (tutore = 1) ; la semaine inconnue sera traitée en CA-01.
+STATUTS_TUTORE = [STATUT_TUTORE, STATUT_TUTORAT_SEMAINE_INCONNUE]
+
+FICHIER_BASE_SURVIE = DOSSIER_PROCESSED / "base_survie.csv"
+FICHIER_PERIODE_PERSONNE = DOSSIER_PROCESSED / "base_periode_personne.csv"
+
+# Colonnes de base_survie, dans l'ordre imposé (D-36 : seules les covariables de
+# etudiants, connues à la rentrée ; aucune variable calculée sur tout le suivi).
+COLONNES_BASE_SURVIE = [
+    "id_etudiant", "cohorte", "genre", "age", "boursier", "filiere", "mention_bac", "note_bac",
+    "region_origine", "distance_campus_km", "emploi_parallele",
+    "T", "E", "type_evenement", "T_seuil3", "E_seuil3", "T_seuil5", "E_seuil5",
+    "tutore", "statut_tutorat", "semaine_debut_tutorat", "type_tuteur", "motif_orientation", "nb_seances",
+]
+COLONNES_PERIODE_PERSONNE = [
+    "id_etudiant", "semaine", "evenement", "nb_connexions_lms", "devoirs_rendus", "note_moyenne",
+    "absences", "etat_activite", "tutorat_commence",
+]
