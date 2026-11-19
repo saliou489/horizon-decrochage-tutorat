@@ -259,3 +259,26 @@ Gabarit :
 - Constat : 8 étudiants redeviennent actifs après une série de 4 semaines inactives (séries débutant entre les semaines 2 et 12, retour entre les semaines 8 et 25).
 - Décision : la définition imposée (§4.3) s'applique telle quelle : E = 1 au début de la série ; noté comme limite ; la sensibilité 3 / 5 semaines en mesure l'effet.
 - Statut : validée (Saliou, 19/11)
+
+## D-36 — Variables de base_survie : seulement celles connues à la rentrée (B1)
+- Date / tâche : 19/11/2026 — DA-07
+- Constat : un résumé de l'activité sur tout le suivi (ex. moyenne des connexions) dépend de la durée de présence de l'étudiant, donc du décrochage lui-même : l'utiliser comme variable explicative serait une fuite d'information.
+- Décision : base_survie ne contient comme covariables que les variables de etudiants (connues à la rentrée) ; l'activité hebdomadaire va dans le format période-personne (D-39). Les variables de tutorat (type de tuteur, motif, nombre de séances) sont descriptives et ne servent pas de facteurs de confusion.
+- Statut : validée (Saliou, 19/11)
+
+## D-37 — Définition de « tutoré » dans base_survie (B2)
+- Date / tâche : 19/11/2026 — DA-07 (complète D-25, D-26, D-27)
+- Constat (pilotage) : sur 1 255 étudiants ayant un tutorat, 1 199 l'ont commencé avant la semaine T, 31 la semaine même de T, 20 après T, 5 à une semaine inconnue.
+- Décision : tutoré = tutorat commencé strictement avant la semaine T (un tutorat qui démarre la semaine de l'événement n'a pas pu l'empêcher et a pu être déclenché par les difficultés) ; semaine inconnue (D-26) → tutoré, semaine inconnue, traitement décidé en CA-01. Résultat : 1 204 tutorés. Une colonne statut_tutorat indique le cas de chaque étudiant.
+- Statut : validée (Saliou, 19/11)
+
+## D-38 — Sensibilité du seuil d'inactivité (B3)
+- Date / tâche : 19/11/2026 — DA-07
+- Constat (pilotage) : 1 445 décrochages à 3 semaines, 1 440 à 4, 1 435 à 5 (écart < 0,5 %).
+- Décision : base_survie contient T et E au seuil de référence (4 semaines) et à 3 et 5 semaines ; la lecture alternative de D-31 (semaines inconnues comptées inactives) est une option de la fonction de construction.
+- Statut : validée (Saliou, 19/11)
+
+## D-39 — Format période-personne (B4)
+- Date / tâche : 19/11/2026 — DA-07
+- Décision : une ligne par étudiant et par semaine, de 1 à T (121 938 lignes) : activité de la semaine, état (actif / inactif / inconnu, D-31), indicateur d'événement (1 seulement la semaine T si E = 1) et indicateur « tutorat commencé », qui vaut 1 à partir de la semaine qui suit le début du tutorat (cohérent avec D-37), et reste vide pour les 5 tutorats à semaine inconnue.
+- Statut : validée (Saliou, 19/11)
