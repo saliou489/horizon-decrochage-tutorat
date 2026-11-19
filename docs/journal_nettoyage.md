@@ -53,6 +53,17 @@
 | 43 | activite_hebdo | Même (étudiant, semaine) avec des valeurs différentes (ACT-04) : 340 lignes pour 170 couples | 170 | Fusion en une ligne : connexions et devoirs = maximum, note et absences = première ligne | D-20 |
 | 44 | activite_hebdo | dont couples où une copie indique 0 connexion et l'autre une activité | 11 | Activité gardée (maximum) : évite un faux jour d'inactivité | D-20 |
 | 45 | activite_hebdo | Activité après la semaine de sortie déclarée (34 étudiants ; X-06, X-07) | 54 | Ligne retirée, conservée dans rejets/activite_apres_sortie.csv | D-22, D-23 |
+| 46 | tutorat | En-tête « ID Etudiant » au lieu de id_etudiant (TUT-01) | 1 | Renommé en id_etudiant | D-24 |
+| 47 | tutorat | Identifiant en minuscules ou entouré d'espaces | 0 | Mis en majuscules, espaces retirés | D-24 |
+| 48 | tutorat | type_tuteur écrit de plusieurs façons (« pair (étudiant avancé) », « PAIR », « Prof »…, TUT-05) | 880 | Recodage vers pair / enseignant | D-24 |
+| 49 | tutorat | motif_orientation hors des 4 valeurs du LISEZMOI | 0 | Recodage vers notes faibles / absences répétées / signalement enseignant / demande personnelle | D-24 |
+| 50 | tutorat | nb_seances entier écrit « -2.0 » ou « 0.0 » (TUT-07) | 17 | Converti en entier | D-24 |
+| 51 | tutorat | nb_seances nul ou négatif (0, −2 ; TUT-08) | 17 | nb_seances mis à manquant, drapeau nb_seances_invalide, étudiant gardé tutoré | D-24 |
+| 52 | tutorat | Ligne de tutorat strictement identique à une ligne précédente (TUT-02, TUT-03, X-10) | 30 | Ligne supprimée | D-24 |
+| 53 | tutorat | Tutorat d'un identifiant absent de etudiants (X-02) | 6 | Ligne retirée, conservée dans rejets/tutorat_sans_etudiant.csv | D-24 |
+| 54 | tutorat | Tutorat commencé après la semaine 30 (45, 52 ; TUT-09) | 5 | Valeur gardée, drapeau debut_hors_suivi (non tutoré pendant le suivi) | D-25 |
+| 55 | tutorat | Tutorat commencé en « semaine 0 » (TUT-06) | 5 | semaine_debut mise à manquant, drapeau debut_semaine_invalide, étudiant gardé tutoré | D-26 |
+| 56 | tutorat | Tutorat commencé après la semaine de sortie déclarée (X-08) | 9 | Valeur gardée, drapeau debut_apres_sortie (non tutoré pendant son suivi) | D-22, D-27 |
 
 ## Tableau avant / après
 
@@ -124,3 +135,44 @@ Effectifs de `drapeau_inscription` :
 | Valeurs manquantes : note_moyenne | 73574 | 72911 |
 | Valeurs manquantes : absences | 0 | 0 |
 | Valeurs manquantes : total (colonnes d'origine) | 74872 | 74288 |
+
+#### `tutorat`
+
+| Indicateur | Avant | Après |
+|---|---:|---:|
+| Lignes | 1291 | 1255 |
+| Étudiants distincts | 1261 | 1255 |
+| Doublons de la clé (id_etudiant ; identifiant en majuscules, sans espaces) | 30 | 0 |
+| Valeurs manquantes : id_etudiant | 0 | 0 |
+| Valeurs manquantes : semaine_debut | 0 | 5 |
+| Valeurs manquantes : nb_seances | 8 | 25 |
+| Valeurs manquantes : type_tuteur | 0 | 0 |
+| Valeurs manquantes : motif_orientation | 0 | 0 |
+| Cases vides : drapeau_tutorat (colonne créée) | — | 1220 |
+| Valeurs manquantes : total (colonnes d'origine) | 8 | 30 |
+
+Effectifs de `type_tuteur` :
+
+| Valeur | Effectif |
+|---|---:|
+| pair | 831 |
+| enseignant | 424 |
+
+Effectifs de `drapeau_tutorat (par drapeau)` :
+
+| Valeur | Effectif |
+|---|---:|
+| nb_seances_invalide | 17 |
+| debut_hors_suivi | 5 |
+| debut_semaine_invalide | 5 |
+| debut_apres_sortie | 9 |
+
+Effectifs de `drapeau_tutorat (par valeur de la colonne)` :
+
+| Valeur | Effectif |
+|---|---:|
+| nb_seances_invalide | 17 |
+| debut_apres_sortie | 8 |
+| debut_semaine_invalide | 5 |
+| debut_hors_suivi | 4 |
+| debut_hors_suivi;debut_apres_sortie | 1 |

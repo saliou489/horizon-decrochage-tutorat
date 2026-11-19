@@ -11,7 +11,7 @@ Tâches couvertes : DA-02, DA-03, DA-04 (messages sera ajoutée en DA-05).
 import pandas as pd
 
 from src import config
-from src.nettoyage import activite, commun, etudiants, inscriptions
+from src.nettoyage import activite, commun, etudiants, inscriptions, tutorat
 
 
 def nettoyer_etudiants():
@@ -79,9 +79,27 @@ def nettoyer_activite():
     }
 
 
+def nettoyer_tutorat():
+    """Nettoie tutorat, écrit la table et ses rejets."""
+    brut = commun.lire_brut(tutorat.TABLE)
+    sorties = commun.semaines_de_sortie(lire_inscriptions_propres())
+    propre, rejets, entrees, lignes_touchees = tutorat.nettoyer(brut, lire_etudiants_propres(), sorties)
+    commun.ecrire_table(propre, tutorat.TABLE)
+    commun.ecrire_rejets(rejets, config.FICHIER_REJETS_TUTORAT)
+    return {
+        "table": tutorat.TABLE,
+        "entrees": entrees,
+        "avant": commun.profil(commun.renommer_par_position(brut, tutorat.TABLE)),
+        "apres": commun.profil(propre),
+        "colonnes": list(propre.columns),
+        "lignes_touchees": lignes_touchees,
+        "effectifs": tutorat.effectifs(propre),
+    }
+
+
 def lancer_nettoyage():
     """Point d'entrée : nettoie toutes les tables prises en charge et écrit le journal."""
-    resultats = [nettoyer_etudiants(), nettoyer_inscriptions(), nettoyer_activite()]
+    resultats = [nettoyer_etudiants(), nettoyer_inscriptions(), nettoyer_activite(), nettoyer_tutorat()]
     chemin = commun.ecrire_journal(resultats)
     for resultat in resultats:
         print(f"{resultat['table']} : {resultat['avant']['lignes']} lignes -> {resultat['apres']['lignes']} lignes")
