@@ -251,7 +251,9 @@ def profil(df, colonne_id=config.COLONNE_ID, autres_colonnes_cle=()):
         "manquants": manquants,
         "doublons_id": int(cle.duplicated().sum()),
         "cle": ", ".join([colonne_id, *autres_colonnes_cle]),
-        "etudiants": int(cle[colonne_id].nunique()),
+        # Étudiants distincts : toujours comptés sur id_etudiant, même quand la clé de
+        # la table est une autre colonne (ex. id_message pour messages).
+        "etudiants": int(df[config.COLONNE_ID].astype(str).str.strip().str.upper().nunique()),
     }
 
 

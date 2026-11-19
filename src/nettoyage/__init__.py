@@ -5,13 +5,13 @@ Rôle du module : enchaîner le nettoyage des tables déjà prises en charge
 docs/journal_nettoyage.md.
 Lancement depuis la racine du dépôt : python -m src.nettoyage
 
-Tâches couvertes : DA-02, DA-03, DA-04 (messages sera ajoutée en DA-05).
+Tâches couvertes : DA-02, DA-03, DA-04, DA-05.
 """
 
 import pandas as pd
 
 from src import config
-from src.nettoyage import activite, commun, etudiants, inscriptions, tutorat
+from src.nettoyage import activite, commun, etudiants, inscriptions, messages, tutorat
 
 
 def nettoyer_etudiants():
@@ -97,9 +97,27 @@ def nettoyer_tutorat():
     }
 
 
+def nettoyer_messages():
+    """Nettoie et pseudonymise messages, écrit la table et ses rejets (messages vides)."""
+    brut = commun.lire_brut(messages.TABLE)
+    propre, rejets, entrees, lignes_touchees = messages.nettoyer(brut, lire_etudiants_propres())
+    commun.ecrire_table(propre, messages.TABLE)
+    commun.ecrire_rejets(rejets, config.FICHIER_REJETS_MESSAGES)
+    return {
+        "table": messages.TABLE,
+        "entrees": entrees,
+        "avant": commun.profil(brut, colonne_id="id_message"),
+        "apres": commun.profil(propre, colonne_id="id_message"),
+        "colonnes": list(propre.columns),
+        "lignes_touchees": lignes_touchees,
+        "effectifs": messages.effectifs(propre),
+    }
+
+
 def lancer_nettoyage():
     """Point d'entrée : nettoie toutes les tables prises en charge et écrit le journal."""
-    resultats = [nettoyer_etudiants(), nettoyer_inscriptions(), nettoyer_activite(), nettoyer_tutorat()]
+    resultats = [nettoyer_etudiants(), nettoyer_inscriptions(), nettoyer_activite(), nettoyer_tutorat(),
+                 nettoyer_messages()]
     chemin = commun.ecrire_journal(resultats)
     for resultat in resultats:
         print(f"{resultat['table']} : {resultat['avant']['lignes']} lignes -> {resultat['apres']['lignes']} lignes")

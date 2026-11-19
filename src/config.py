@@ -362,3 +362,45 @@ DRAPEAU_DEBUT_APRES_SORTIE = "debut_apres_sortie"
 FICHIER_REJETS_ACTIVITE_SEMAINE = DOSSIER_REJETS / "activite_semaine_invalide.csv"
 FICHIER_REJETS_ACTIVITE_SORTIE = DOSSIER_REJETS / "activite_apres_sortie.csv"
 FICHIER_REJETS_TUTORAT = DOSSIER_REJETS / "tutorat_sans_etudiant.csv"
+
+# ---------------------------------------------------------------------------
+# Nettoyage et pseudonymisation de la table messages (DA-05, décisions D-28, D-29)
+# ---------------------------------------------------------------------------
+CANAUX_MESSAGES = ["forum", "formulaire de suivi"]
+
+# Signes d'un texte UTF-8 relu comme cp1252 (« trouvÃ© » pour « trouvé », « â€™ »
+# pour une apostrophe typographique). Réparation : texte.encode("cp1252").decode("utf-8").
+MOTIF_ENCODAGE_CASSE = r"Ã|Â|â€"
+ENCODAGE_DE_LA_CASSE = "cp1252"
+
+# Un message « vide » ne contient aucun caractère alphanumérique (lettre ou chiffre) (D-29).
+MOTIF_ALPHANUMERIQUE = r"[^\W_]"
+
+# Pseudonymisation (D-28) : chaque motif reconnu est remplacé par sa balise.
+# E-mail : une ou plusieurs lettres, chiffres, points, « + » ou « - », puis « @ »,
+# puis un domaine d'au moins deux parties séparées par des points (ex. « exemple.sn »).
+MOTIF_PSEUDO_EMAIL = r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+"
+BALISE_EMAIL = "[EMAIL]"
+
+# Téléphone sénégalais : indicatif « +221 » facultatif, puis 9 chiffres commençant par
+# 70, 75, 76, 77 ou 78, groupés ou non par des espaces ou des points
+# (ex. « 77 123 45 67 », « +221 77.123.45.67 »). Les \b évitent de couper un nombre plus long.
+MOTIF_PSEUDO_TELEPHONE = r"(?:\+221[\s.]?)?\b7[05678](?:[\s.]?\d){7}\b"
+BALISE_TELEPHONE = "[TEL]"
+
+# Nom : « c'est » ou « je suis » (majuscule ou non, apostrophe droite ou typographique),
+# puis au moins deux mots qui commencent par une majuscule (lettres et tirets autorisés,
+# ex. « Awa Ndiaye », « Marie-Anne Diop »). Le groupe « intro » est gardé, seul le nom
+# est remplacé : « c'est Awa Ndiaye » -> « c'est [NOM] ». « je suis découragé » ne change
+# pas (minuscule).
+MOTIF_PSEUDO_NOM = (
+    r"(?P<intro>\b[Cc][’']est|\b[Jj]e suis)\s+"
+    r"[A-ZÀ-Þ][A-Za-zÀ-ÖØ-öø-ÿ-]*(?:\s+[A-ZÀ-Þ][A-Za-zÀ-ÖØ-öø-ÿ-]*)+"
+)
+BALISE_NOM = "[NOM]"
+
+# Contrôle résiduel après remplacement : une suite de 8 chiffres ou plus, en ignorant
+# les espaces et les points qui les séparent, signale un numéro oublié.
+MOTIF_RESIDU_CHIFFRES = r"\d(?:[\s.]?\d){7,}"
+
+FICHIER_REJETS_MESSAGES = DOSSIER_REJETS / "messages_vides.csv"

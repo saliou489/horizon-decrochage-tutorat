@@ -64,6 +64,13 @@
 | 54 | tutorat | Tutorat commencé après la semaine 30 (45, 52 ; TUT-09) | 5 | Valeur gardée, drapeau debut_hors_suivi (non tutoré pendant le suivi) | D-25 |
 | 55 | tutorat | Tutorat commencé en « semaine 0 » (TUT-06) | 5 | semaine_debut mise à manquant, drapeau debut_semaine_invalide, étudiant gardé tutoré | D-26 |
 | 56 | tutorat | Tutorat commencé après la semaine de sortie déclarée (X-08) | 9 | Valeur gardée, drapeau debut_apres_sortie (non tutoré pendant son suivi) | D-22, D-27 |
+| 57 | messages | Contrôle de structure : id_message unique, id_etudiant connu, semaine dans [1 ; 30], canal autorisé | 0 | Aucun écart : rien à corriger | D-18 |
+| 58 | messages | Accents cassés (« Ã© » pour « é », MSG-01) | 40 | Texte réparé (conversion cp1252 -> UTF-8 refaite) | D-28 |
+| 59 | messages | Message vide ou sans aucun mot (« », « . », espaces ; MSG-02, MSG-03) | 25 | Message retiré, conservé dans rejets/messages_vides.csv | D-29 |
+| 60 | messages | Adresse e-mail dans le texte (MSG-06) | 33 | Remplacée par [EMAIL] | D-28 |
+| 61 | messages | Numéro de téléphone sénégalais dans le texte (MSG-05) | 45 | Remplacé par [TEL] | D-28 |
+| 62 | messages | Prénom et nom introduits par « c'est » ou « je suis » (MSG-04) | 96 | Nom remplacé par [NOM] (ex. « Bonjour, c'est [NOM]. ») | D-28 |
+| 63 | messages | Messages contenant au moins une donnée personnelle (synthèse) | 129 | Pseudonymisés ; aucune table de correspondance conservée ; contrôle résiduel : 0 reste | D-28 |
 
 ## Tableau avant / après
 
@@ -176,3 +183,25 @@ Effectifs de `drapeau_tutorat (par valeur de la colonne)` :
 | debut_semaine_invalide | 5 |
 | debut_hors_suivi | 4 |
 | debut_hors_suivi;debut_apres_sortie | 1 |
+
+#### `messages`
+
+| Indicateur | Avant | Après |
+|---|---:|---:|
+| Lignes | 3200 | 3175 |
+| Étudiants distincts | 2273 | 2258 |
+| Doublons de la clé (id_message ; identifiant en majuscules, sans espaces) | 0 | 0 |
+| Valeurs manquantes : id_message | 0 | 0 |
+| Valeurs manquantes : id_etudiant | 0 | 0 |
+| Valeurs manquantes : semaine | 0 | 0 |
+| Valeurs manquantes : canal | 0 | 0 |
+| Valeurs manquantes : texte | 18 | 0 |
+| Valeurs manquantes : total (colonnes d'origine) | 18 | 0 |
+
+Effectifs de `balises dans texte` :
+
+| Valeur | Effectif |
+|---|---:|
+| [EMAIL] | 33 |
+| [TEL] | 45 |
+| [NOM] | 96 |
