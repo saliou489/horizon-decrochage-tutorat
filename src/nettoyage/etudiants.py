@@ -26,6 +26,13 @@ TABLE = "etudiants"
 COLONNES_CATEGORIELLES = ["genre", "boursier", "filiere", "mention_bac",
                           "region_origine", "emploi_parallele"]
 
+# Codes d'anomalie de docs/audit_qualite.md traités par chaque ligne du journal (DA-06).
+CODES_MODALITES = {"genre": "ETU-12", "boursier": "ETU-13", "filiere": "ETU-14",
+                   "mention_bac": "ETU-15", "region_origine": "ETU-16",
+                   "emploi_parallele": "aucune anomalie à l'audit"}
+CODES_VIRGULE = {"note_bac": "ETU-20", "distance_campus_km": "ETU-22"}
+CODES_UNITE = {"age": "ETU-17", "distance_campus_km": "ETU-23"}
+
 
 # ---------------------------------------------------------------------------
 # Règle 1 : en-têtes
@@ -108,7 +115,8 @@ def regle_modalites(df):
         resultat[colonne] = harmonisee
         justification = "D-06, D-11" if colonne == "boursier" else "D-06"
         entrees.append(entree_journal(
-            TABLE, f"Modalités de {colonne} non harmonisées (casse, espaces, accents, abréviations)", nb,
+            TABLE, f"Modalités de {colonne} non harmonisées (casse, espaces, accents, abréviations ; "
+            f"{CODES_MODALITES[colonne]})", nb,
             f"Recodage vers {' / '.join(officielles) if len(officielles) <= 5 else 'les 14 régions officielles'}",
             justification))
     return resultat, int(touchees.sum()), entrees
@@ -135,11 +143,11 @@ def regle_nombres(df):
         entier = colonne in config.COLONNES_ENTIERES_ETUDIANTS
         resultat[colonne] = convertir_nombres(texte, colonne, entier)
         if nb_virgules:
-            entrees.append(entree_journal(TABLE, f"{colonne} écrit avec une virgule décimale",
+            entrees.append(entree_journal(TABLE, f"{colonne} écrit avec une virgule décimale ({CODES_VIRGULE[colonne]})",
                                           nb_virgules, "Virgule remplacée par un point", "D-06"))
         if nb_unites:
             exemple = config.EXEMPLES_UNITE[colonne]
-            entrees.append(entree_journal(TABLE, f"{colonne} écrit avec son unité (ex. « {exemple} »)",
+            entrees.append(entree_journal(TABLE, f"{colonne} écrit avec son unité (ex. « {exemple} », {CODES_UNITE[colonne]})",
                                           nb_unites, "Unité retirée", "D-06"))
     return resultat, int(touchees.sum()), entrees
 
@@ -175,9 +183,9 @@ def regle_valeurs_impossibles(df):
     resultat = df.copy()
     masques = masque_impossibles(df)
     descriptions = {
-        "age": ("age hors [17 ; 35] (sentinelle 99 comprise)", "D-08"),
-        "note_bac": ("note_bac hors [10 ; 20]", "D-08"),
-        "distance_campus_km": ("distance_campus_km négative ou nulle, ou sentinelle 9999", "D-09"),
+        "age": ("age hors [17 ; 35] (sentinelle 99 comprise ; ETU-18, ETU-19)", "D-08"),
+        "note_bac": ("note_bac hors [10 ; 20] (ETU-21)", "D-08"),
+        "distance_campus_km": ("distance_campus_km négative ou nulle, ou sentinelle 9999 (ETU-24, ETU-25)", "D-09"),
     }
     entrees = []
     touchees = pd.Series(False, index=df.index)
@@ -257,7 +265,7 @@ def regle_mention_note(df):
         entree_journal(TABLE, "mention_bac en contradiction avec note_bac (ETU-27 ; une note de 12, 14 ou 16 "
                        "tout rond est tranchée par D-10)", int(corrigees.sum()),
                        "Mention recalculée à partir de la note", "D-10"),
-        entree_journal(TABLE, "mention_bac vide alors que note_bac est connue", int(completees.sum()),
+        entree_journal(TABLE, "mention_bac vide alors que note_bac est connue (ETU-09)", int(completees.sum()),
                        "Mention calculée à partir de la note", "D-10"),
     ]
     return resultat, int((corrigees | completees).sum()), entrees

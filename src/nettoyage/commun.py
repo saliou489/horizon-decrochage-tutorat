@@ -4,9 +4,10 @@ Rôle du module : lecture des fichiers bruts, forme simplifiée d'un texte,
 harmonisation des modalités, conversion des nombres, écriture des tables nettoyées,
 profil « avant / après » et génération du journal de nettoyage.
 
-Tâches couvertes : DA-02 (et suivantes, qui réutiliseront ces outils).
+Tâches couvertes : DA-02 à DA-05 (outils), DA-06 (journal complet).
 """
 
+import re
 import unicodedata
 
 import pandas as pd
@@ -326,23 +327,82 @@ def tableaux_effectifs(effectifs):
     return lignes
 
 
+def codes_de_l_audit():
+    """Codes d'anomalie présents dans docs/audit_qualite.md (lignes des tableaux d'anomalies)."""
+    texte = config.FICHIER_AUDIT.read_text(encoding=config.ENCODAGE)
+    # Une anomalie de l'audit est une ligne de tableau qui commence par « | <code> | ».
+    motif = r"^\| (" + config.CODE_AUDIT + r") \|"
+    return sorted(set(re.findall(motif, texte, flags=re.MULTILINE)))
+
+
+def verifier_codes(entrees):
+    """Chaque code de l'audit doit être traité (cité dans le journal) ou listé sans traitement.
+
+    Un code qui n'est ni l'un ni l'autre arrête le nettoyage : on n'invente pas de raison.
+    Sortie : liste triée des codes cités par les traitements.
+    """
+    cites = set()
+    for entree in entrees:
+        cites |= set(re.findall(config.MOTIF_CODE_AUDIT, entree["anomalie"]))
+    oublies = [c for c in codes_de_l_audit() if c not in cites and c not in config.ANOMALIES_SANS_TRAITEMENT]
+    if oublies:
+        raise ErreurNettoyage(f"Code(s) de l'audit ni traité(s) ni justifié(s) : {oublies}")
+    return sorted(cites)
+
+
+def section_sans_traitement():
+    """Tableau « Anomalies constatées sans traitement » : un code par ligne, avec sa raison."""
+    lignes = ["| Code | Raison |", "|---|---|"]
+    lignes += [f"| {code} | {texte_cellule(raison)} |" for code, raison in config.ANOMALIES_SANS_TRAITEMENT.items()]
+    return lignes
+
+
+def section_bilan(resultats, nb_codes_traites):
+    """Bilan global : lignes par table, règles appliquées, lignes envoyées en rejets."""
+    lignes = ["| Table | Lignes avant | Lignes après | Règles appliquées |", "|---|---:|---:|---:|"]
+    for resultat in resultats:
+        lignes.append(f"| {resultat['table']} | {resultat['avant']['lignes']} | {resultat['apres']['lignes']} | "
+                      f"{len(resultat['lignes_touchees'])} |")
+    total_regles = sum(len(r["lignes_touchees"]) for r in resultats)
+    lignes.append(f"| **Total** | {sum(r['avant']['lignes'] for r in resultats)} | "
+                  f"{sum(r['apres']['lignes'] for r in resultats)} | {total_regles} |")
+    lignes += ["", "| Fichier de rejets | Lignes |", "|---|---:|"]
+    for resultat in resultats:
+        for fichier, nb in resultat.get("rejets", {}).items():
+            lignes.append(f"| `data/processed/rejets/{fichier}` | {nb} |")
+    lignes += ["", f"Codes d'anomalie de l'audit : {len(codes_de_l_audit())} ; cités par un traitement : "
+               f"{nb_codes_traites} ; laissés sans traitement (raison donnée) : "
+               f"{len(config.ANOMALIES_SANS_TRAITEMENT)}."]
+    return lignes
+
+
 def ecrire_journal(resultats):
     """Régénère docs/journal_nettoyage.md à partir des résultats de chaque table.
 
-    Entrée : liste de dictionnaires {"table", "entrees", "avant", "apres", "colonnes"}.
+    Entrée : liste de dictionnaires {"table", "entrees", "avant", "apres", "colonnes",
+    "lignes_touchees", et en option "effectifs", "rejets"}.
     Tous les nombres viennent du code : ce fichier ne se modifie jamais à la main.
     """
     entrees = [e for resultat in resultats for e in resultat["entrees"]]
+    codes_traites = verifier_codes(entrees)
     lignes = [
         "# Journal de nettoyage",
         "",
         "> Fichier généré par `python -m src.nettoyage` — ne pas modifier à la main.",
         "> Chaque traitement applique une décision validée par Saliou (`docs/decisions.md`).",
-        "> Les numéros d'anomalie « ETU-xx » renvoient à `docs/audit_qualite.md`.",
+        "> Les codes d'anomalie (ETU-xx, INS-xx, ACT-xx, TUT-xx, MSG-xx, X-xx) renvoient à `docs/audit_qualite.md`.",
+        "",
+        "## Bilan global",
+        "",
+        *section_bilan(resultats, len(codes_traites)),
         "",
         "## Traitements appliqués",
         "",
         *tableau_journal(entrees),
+        "",
+        "## Anomalies constatées sans traitement",
+        "",
+        *section_sans_traitement(),
         "",
         "## Tableau avant / après",
         "",

@@ -404,3 +404,31 @@ BALISE_NOM = "[NOM]"
 MOTIF_RESIDU_CHIFFRES = r"\d(?:[\s.]?\d){7,}"
 
 FICHIER_REJETS_MESSAGES = DOSSIER_REJETS / "messages_vides.csv"
+
+# ---------------------------------------------------------------------------
+# Journal de nettoyage complet (DA-06)
+# ---------------------------------------------------------------------------
+# Code d'anomalie de docs/audit_qualite.md (ex. « ETU-12 », « X-04 »).
+CODE_AUDIT = r"(?:ETU|INS|ACT|TUT|MSG|X)-\d{2}"
+# Le même code, comme mot entier, pour le retrouver au milieu d'un texte.
+MOTIF_CODE_AUDIT = r"\b" + CODE_AUDIT + r"\b"
+
+# Anomalies constatées par l'audit et volontairement laissées sans traitement, avec la
+# raison (textes imposés par la consigne C05). ETU-09 (mentions vides) n'y figure pas :
+# ces mentions sont complétées à partir de la note par D-10.
+RAISON_MANQUANTS = ("valeurs manquantes laissées manquantes (règle du projet, CLAUDE.md §6 : "
+                    "pas d'imputation dans les tables nettoyées)")
+ANOMALIES_SANS_TRAITEMENT = {
+    "ETU-08": RAISON_MANQUANTS,
+    "ETU-10": RAISON_MANQUANTS,
+    "ETU-11": RAISON_MANQUANTS,
+    "ACT-05": RAISON_MANQUANTS,
+    "TUT-04": RAISON_MANQUANTS,
+    "ETU-26": "distances > 51,7 km conservées, toutes hors Dakar et plausibles (D-09)",
+    "X-04": ("étudiants sans sortie déclarée dont l'activité s'arrête avant la semaine 30 — "
+             "lecture renvoyée à DA-07"),
+    "X-05": "arrêt de l'activité après une sortie déclarée — situation normale, pas une anomalie",
+    "X-09": ("messages après la sortie — disparus après la correction des dates inversées (D-13), "
+             "0 restant"),
+    "MSG-07": "synthèse de MSG-04 à MSG-06 (un message peut contenir plusieurs données personnelles)",
+}

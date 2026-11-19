@@ -5,7 +5,7 @@ Rôle du module : enchaîner le nettoyage des tables déjà prises en charge
 docs/journal_nettoyage.md.
 Lancement depuis la racine du dépôt : python -m src.nettoyage
 
-Tâches couvertes : DA-02, DA-03, DA-04, DA-05.
+Tâches couvertes : DA-02 à DA-05 (tables), DA-06 (journal complet).
 """
 
 import pandas as pd
@@ -41,11 +41,10 @@ def nettoyer_inscriptions():
     brut = commun.lire_brut(inscriptions.TABLE)
     propre, rejets, entrees, lignes_touchees = inscriptions.nettoyer(brut, lire_etudiants_propres())
     commun.ecrire_table(propre, inscriptions.TABLE)
-    config.DOSSIER_REJETS.mkdir(parents=True, exist_ok=True)
-    rejets.to_csv(config.FICHIER_REJETS_INSCRIPTIONS, sep=config.SEPARATEUR_PROCESSED, index=False,
-                  encoding=config.ENCODAGE)
+    commun.ecrire_rejets(rejets, config.FICHIER_REJETS_INSCRIPTIONS)
     return {
         "table": inscriptions.TABLE,
+        "rejets": {config.FICHIER_REJETS_INSCRIPTIONS.name: len(rejets)},
         "entrees": entrees,
         "avant": commun.profil(brut),
         "apres": commun.profil(propre),
@@ -71,6 +70,8 @@ def nettoyer_activite():
     commun.ecrire_rejets(rejets["apres_sortie"], config.FICHIER_REJETS_ACTIVITE_SORTIE)
     return {
         "table": activite.TABLE,
+        "rejets": {config.FICHIER_REJETS_ACTIVITE_SEMAINE.name: len(rejets["semaine_invalide"]),
+                   config.FICHIER_REJETS_ACTIVITE_SORTIE.name: len(rejets["apres_sortie"])},
         "entrees": entrees,
         "avant": commun.profil(brut, autres_colonnes_cle=activite.CLE[1:]),
         "apres": commun.profil(propre, autres_colonnes_cle=activite.CLE[1:]),
@@ -88,6 +89,7 @@ def nettoyer_tutorat():
     commun.ecrire_rejets(rejets, config.FICHIER_REJETS_TUTORAT)
     return {
         "table": tutorat.TABLE,
+        "rejets": {config.FICHIER_REJETS_TUTORAT.name: len(rejets)},
         "entrees": entrees,
         "avant": commun.profil(commun.renommer_par_position(brut, tutorat.TABLE)),
         "apres": commun.profil(propre),
@@ -105,6 +107,7 @@ def nettoyer_messages():
     commun.ecrire_rejets(rejets, config.FICHIER_REJETS_MESSAGES)
     return {
         "table": messages.TABLE,
+        "rejets": {config.FICHIER_REJETS_MESSAGES.name: len(rejets)},
         "entrees": entrees,
         "avant": commun.profil(brut, colonne_id="id_message"),
         "apres": commun.profil(propre, colonne_id="id_message"),

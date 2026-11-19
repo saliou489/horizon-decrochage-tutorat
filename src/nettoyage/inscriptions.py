@@ -129,8 +129,9 @@ def regle_dates(df):
         changees = ecrites.notna() & (ecrites != df[colonne].str.strip())
         touchees = touchees | changees
         resultat[colonne] = ecrites
+        code = "INS-05" if colonne == "date_debut" else "INS-06"
         entrees.append(entree_journal(TABLE, f"{colonne} dans un autre format que AAAA-MM-JJ "
-                                      "(JJ/MM/AAAA, AAAA/MM/JJ, « 7 oct. 2024 »)", int(changees.sum()),
+                                      f"(JJ/MM/AAAA, AAAA/MM/JJ, « 7 oct. 2024 » ; {code})", int(changees.sum()),
                                       "Date convertie en AAAA-MM-JJ", "D-12"))
     return resultat, int(touchees.sum()), entrees
 
@@ -191,7 +192,7 @@ def regle_dates_inversees(df):
     resultat.loc[echangeables, "date_fin"] = df.loc[echangeables, "date_debut"]
     nb = int(echangeables.sum())
     entrees = [entree_journal(TABLE, "date_fin antérieure à date_debut, date_fin égale à la rentrée de la "
-                              "cohorte (INS-07, INS-09, INS-10)", nb, "date_debut et date_fin échangées",
+                              "cohorte (INS-07, INS-08, INS-09, INS-10)", nb, "date_debut et date_fin échangées",
                               "D-13")]
     return resultat, nb, entrees, echangeables
 
