@@ -211,3 +211,15 @@ Gabarit :
 - Constat (avec D-13 et D-22) : 9 étudiants, 2 à 4 semaines après leur sortie (dont un aussi concerné par D-25).
 - Décision : ligne gardée, cas marqué ; un tutorat postérieur à la sortie n'a pas pu influencer le décrochage : ces étudiants compteront comme non tutorés pendant leur suivi (construction du traitement en DA-07).
 - Statut : validée (Saliou, 19/11)
+
+## D-28 — Table messages : encodage et pseudonymisation
+- Date / tâche : 19/11/2026 — DA-05
+- Constat (pilotage) : les 40 textes à accents cassés se réparent tous en refaisant la conversion (cp1252 → UTF-8), sans erreur ni « Ã » restant. Données personnelles : 45 téléphones (toujours au format « 77 123 45 67 »), 33 e-mails (toujours « prénom.nom@exemple.sn »), 96 noms (toujours prénom + nom, introduits par « c'est » ou « je suis ») ; 129 messages concernés. Aucun autre mot en majuscule en milieu de phrase dans le reste des messages : pas de nom non introduit. Les 3 messages « après la sortie » de l'audit (X-09) étaient dus aux dates inversées : il n'en reste aucun après D-13.
+- Décision : encodage réparé ; données personnelles remplacées par des balises `[NOM]`, `[TEL]`, `[EMAIL]` ; aucune table de correspondance conservée (elle serait elle-même une donnée personnelle) ; obligation légale : loi sénégalaise n° 2008-12 (RGPD pour comparaison).
+- Statut : validée (Saliou, 19/11)
+
+## D-29 — Table messages : messages vides (M1)
+- Date / tâche : 19/11/2026 — DA-05
+- Constat : 25 messages sans aucun mot (« », « . », espaces).
+- Décision : retirés de la table et conservés dans un fichier de rejets (aucun texte à analyser ; traçabilité).
+- Statut : validée (Saliou, 19/11)
