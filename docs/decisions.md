@@ -128,6 +128,7 @@ Gabarit :
 - Constat : 6 abandons ont une date_fin en 2027, au-delà des 30 semaines de suivi.
 - Décision : considérés comme « aucune sortie déclarée pendant le suivi » ; la ligne est gardée ; le décrochage éventuel sera repéré par la règle d'inactivité, sinon censure à la semaine 30.
 - Statut : validée (Saliou, 18/11)
+- **Révision (19/11) : conséquence corrigée par D-33.** L'hypothèse « la règle d'inactivité repérera leur décrochage » était fausse : leurs lignes d'activité s'arrêtent sans semaine inactive enregistrée.
 
 ## D-15 — Table inscriptions : statut vide (I3)
 - Date / tâche : 18/11/2026 — DA-03
@@ -222,4 +223,39 @@ Gabarit :
 - Date / tâche : 19/11/2026 — DA-05
 - Constat : 25 messages sans aucun mot (« », « . », espaces).
 - Décision : retirés de la table et conservés dans un fichier de rejets (aucun texte à analyser ; traçabilité).
+- Statut : validée (Saliou, 19/11)
+
+## D-30 — Construction de T et E : règles de base
+- Date / tâche : 19/11/2026 — DA-07
+- Constat (pilotage) : le système d'activité enregistre une ligne par semaine pour chaque inscrit, même inactif (8 476 semaines à zéro activité) ; pour 100 % des sorties datées (1 004 abandons et 117 transferts), la dernière ligne d'activité est exactement la semaine de sortie. Aucune série de 4 semaines inactives ne précède un abandon ou un transfert déclaré.
+- Décision : abandon daté → E = 1, T = semaine de sortie (D-22) ; série de 4 semaines consécutives sans connexion ni devoir → E = 1, T = première semaine de la série ; transfert → E = 0, T = semaine du transfert ; ni sortie ni série → E = 0, T = 30 (une série coupée par la fin du suivi ne compte pas) ; série précédant un abandon ou un transfert déclaré → arrêt du code (cas absent, D-18).
+- Statut : validée (Saliou, 19/11)
+
+## D-31 — Semaines d'activité « inconnues » (E1)
+- Date / tâche : 19/11/2026 — DA-07
+- Constat : 216 semaines avec connexions manquantes et aucun devoir rendu (ou l'inverse) : l'inactivité ne peut pas être affirmée. L'autre lecture (les compter inactives) change T ou E pour 20 étudiants.
+- Décision : une semaine inconnue ne compte pas comme inactive et coupe une série (même logique que D-20 : ne pas fabriquer de faux décrochages) ; l'autre lecture est gardée en sensibilité.
+- Statut : validée (Saliou, 19/11)
+
+## D-32 — Abandons sans date (E2)
+- Date / tâche : 19/11/2026 — DA-07 (complète D-16)
+- Décision : E = 1, T = dernière semaine d'activité enregistrée (règle constatée sur 1 121 sorties datées sur 1 121).
+- Statut : validée (Saliou, 19/11)
+
+## D-33 — Abandons datés après la fin du suivi (E3, révise D-14)
+- Date / tâche : 19/11/2026 — DA-07
+- Constat (pilotage) : les 6 étudiants concernés ont le statut « abandon » et leurs lignes d'activité s'arrêtent entre les semaines 3 et 26, sans aucune semaine inactive : avec D-14 seul, ils seraient comptés comme n'ayant jamais décroché. Les dates de 2027 ne correspondent à aucune faute de frappe sur l'année (année − 1 ou − 2 : aucune concordance avec la dernière semaine d'activité).
+- Décision : traités comme les abandons sans date (D-32) : E = 1, T = dernière semaine d'activité ; la date de 2027 est jugée inutilisable, le statut « abandon » est retenu.
+- Statut : validée (Saliou, 19/11)
+
+## D-34 — Étudiants perdus de vue (E4)
+- Date / tâche : 19/11/2026 — DA-07
+- Constat : 2 étudiants sans inscription (lignes reconstituées, D-17) dont l'activité s'arrête avant la semaine 30 ; nature de la sortie inconnue.
+- Décision : censurés (E = 0) à leur dernière semaine d'activité (« perdus de vue ») ; noté comme limite.
+- Statut : validée (Saliou, 19/11)
+
+## D-35 — Retour d'activité après une série de 4 semaines (E5)
+- Date / tâche : 19/11/2026 — DA-07
+- Constat : 8 étudiants redeviennent actifs après une série de 4 semaines inactives (séries débutant entre les semaines 2 et 12, retour entre les semaines 8 et 25).
+- Décision : la définition imposée (§4.3) s'applique telle quelle : E = 1 au début de la série ; noté comme limite ; la sensibilité 3 / 5 semaines en mesure l'effet.
 - Statut : validée (Saliou, 19/11)
