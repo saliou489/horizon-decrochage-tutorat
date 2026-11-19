@@ -50,6 +50,65 @@ def ecrire_table(df, table):
     return chemin
 
 
+def ecrire_rejets(df, chemin):
+    """Écrit des lignes retirées dans data/processed/rejets/ (traçabilité, D-17, D-23)."""
+    chemin.parent.mkdir(parents=True, exist_ok=True)
+    df.to_csv(chemin, sep=config.SEPARATEUR_PROCESSED, index=False, encoding=config.ENCODAGE)
+    return chemin
+
+
+def renommer_par_position(df, table):
+    """Copie de la table brute avec les en-têtes du LISEZMOI (par position).
+
+    Sert seulement au tableau avant / après, pour comparer les mêmes colonnes.
+    """
+    comparable = df.copy()
+    comparable.columns = config.FICHIERS_BRUTS[table]["colonnes"]
+    return comparable
+
+
+# ===========================================================================
+# Semaines et drapeaux (réutilisés en DA-07)
+# ===========================================================================
+
+def semaine_depuis_date(date, date_debut):
+    """Numéro de semaine d'une date depuis la rentrée de l'étudiant (D-22).
+
+    semaine = (date − date_debut en jours) // 7 + 1 : le jour de la rentrée et les
+    6 jours suivants forment la semaine 1. Entrées : dates (texte AAAA-MM-JJ ou date).
+    """
+    ecart = pd.Timestamp(date) - pd.Timestamp(date_debut)
+    return ecart.days // config.JOURS_PAR_SEMAINE + 1
+
+
+def semaines_de_sortie(inscriptions):
+    """Semaine de sortie de chaque étudiant sorti pendant le suivi.
+
+    Entrée : data/processed/inscriptions.csv (déjà nettoyée).
+    Sortie : Series {id_etudiant: semaine}, seulement quand sortie_suivi vaut abandon
+    ou transfert et que date_fin est renseignée ; les autres étudiants n'ont pas de
+    semaine de sortie.
+    """
+    sortis = inscriptions[inscriptions["sortie_suivi"].isin([config.SORTIE_ABANDON, config.SORTIE_TRANSFERT])
+                          & inscriptions["date_fin"].notna()]
+    semaines = [semaine_depuis_date(fin, debut) for fin, debut in zip(sortis["date_fin"], sortis["date_debut"])]
+    return pd.Series(semaines, index=sortis[config.COLONNE_ID].values, dtype="int64")
+
+
+def ajouter_drapeau(drapeaux, masque, drapeau):
+    """Ajoute un drapeau aux lignes repérées par le masque.
+
+    Entrée : série de listes de drapeaux (une liste par ligne). Sortie : nouvelle série.
+    """
+    return pd.Series([liste + [drapeau] if marque else liste for liste, marque in zip(drapeaux, masque)],
+                     index=drapeaux.index)
+
+
+def drapeaux_en_texte(drapeaux):
+    """Liste de drapeaux -> texte séparé par « ; » ; manquant si la liste est vide."""
+    return drapeaux.map(lambda liste: config.SEPARATEUR_DRAPEAUX.join(liste) if liste else pd.NA)
+
+
 # ===========================================================================
 # Journal
 # ===========================================================================
@@ -168,13 +227,14 @@ def convertir_nombres(serie, nom_colonne, entier):
 # Profil avant / après
 # ===========================================================================
 
-def profil(df, colonne_id=config.COLONNE_ID):
-    """Lignes, valeurs manquantes par colonne et doublons d'identifiant d'une table.
+def profil(df, colonne_id=config.COLONNE_ID, autres_colonnes_cle=()):
+    """Lignes, valeurs manquantes par colonne, doublons de clé et étudiants distincts.
 
     Une valeur manquante = case vide (table brute, en texte) ou NA (table nettoyée).
-    Les doublons d'identifiant sont comptés après mise en majuscules et retrait des
-    espaces, pour que l'avant et l'après soient comparables.
-    Sortie : dictionnaire {"lignes", "manquants" (dict par colonne), "doublons_id"}.
+    La clé est l'identifiant, plus d'autres colonnes si la table en a besoin (ex.
+    semaine pour activite_hebdo). L'identifiant est mis en majuscules sans espaces,
+    pour que l'avant et l'après soient comparables.
+    Sortie : dictionnaire {"lignes", "manquants", "doublons_id", "cle", "etudiants"}.
     """
     manquants = {}
     for colonne in df.columns:
@@ -183,11 +243,15 @@ def profil(df, colonne_id=config.COLONNE_ID):
         if valeurs.dtype == object or pd.api.types.is_string_dtype(valeurs):
             manque = manque | (valeurs.fillna("").astype(str).str.strip() == "")
         manquants[colonne] = int(manque.sum())
-    identifiants = df[colonne_id].astype(str).str.strip().str.upper()
+    cle = pd.DataFrame({colonne_id: df[colonne_id].astype(str).str.strip().str.upper()})
+    for colonne in autres_colonnes_cle:
+        cle[colonne] = df[colonne].astype(str).str.strip()
     return {
         "lignes": len(df),
         "manquants": manquants,
-        "doublons_id": int(identifiants.duplicated().sum()),
+        "doublons_id": int(cle.duplicated().sum()),
+        "cle": ", ".join([colonne_id, *autres_colonnes_cle]),
+        "etudiants": int(cle[colonne_id].nunique()),
     }
 
 
@@ -227,7 +291,9 @@ def tableau_avant_apres(table, avant, apres, colonnes_apres):
         "| Indicateur | Avant | Après |",
         "|---|---:|---:|",
         f"| Lignes | {avant['lignes']} | {apres['lignes']} |",
-        f"| Doublons d'identifiant (majuscules, sans espaces) | {avant['doublons_id']} | {apres['doublons_id']} |",
+        f"| Étudiants distincts | {avant['etudiants']} | {apres['etudiants']} |",
+        f"| Doublons de la clé ({apres['cle']} ; identifiant en majuscules, sans espaces) | "
+        f"{avant['doublons_id']} | {apres['doublons_id']} |",
     ]
     # Une colonne créée par le nettoyage (ex. drapeau_inscription) n'existait pas avant :
     # ses cases vides veulent dire « rien à signaler », pas « valeur manquante ».

@@ -41,6 +41,18 @@
 | 31 | inscriptions | Abandon daté après la fin du suivi (date_fin ≥ date_debut + 30 semaines, INS-11) | 6 | sortie_suivi = aucune_sortie_declaree, ligne gardée, drapeau abandon_hors_suivi | D-14 |
 | 32 | inscriptions | statut_final vide (INS-03) | 40 | sortie_suivi = aucune_sortie_declaree, statut laissé vide, drapeau statut_vide | D-15 |
 | 33 | inscriptions | Abandon sans date_fin (INS-12) | 22 | sortie_suivi = abandon, date_fin laissée vide (semaine à déterminer en DA-07), drapeau abandon_sans_date | D-16 |
+| 34 | activite_hebdo | Identifiant en minuscules (ACT-01) | 1310 | Mis en majuscules | D-19 |
+| 35 | activite_hebdo | nb_connexions_lms entier écrit « 10.0 » (ACT-12) | 129669 | Converti en entier | D-19 |
+| 36 | activite_hebdo | note_moyenne écrit avec une virgule décimale (ACT-09) | 1703 | Virgule remplacée par un point | D-19 |
+| 37 | activite_hebdo | semaine hors [1 ; 30] (valeurs −1, 0, 31, 32, 99 ; ACT-06, ACT-07) | 70 | Ligne retirée, conservée dans rejets/activite_semaine_invalide.csv (aucune semaine à combler chez ces étudiants) | D-19 |
+| 38 | activite_hebdo | nb_connexions_lms négatif ou > 100 (ACT-13, ACT-14) | 57 | nb_connexions_lms mis à manquant, ligne conservée | D-19 |
+| 39 | activite_hebdo | devoirs_rendus hors [0 ; 2] (ACT-08) | 30 | devoirs_rendus mis à manquant, ligne conservée | D-19 |
+| 40 | activite_hebdo | note_moyenne = −1, valeur sentinelle (ACT-10) | 25 | note_moyenne mis à manquant, ligne conservée | D-19 |
+| 41 | activite_hebdo | note_moyenne > 20 (entre 34,4 et 163,6 ; virgule décalée, ACT-11) | 110 | Note divisée par 10 | D-21 : après division, moyenne 10.42 et écart-type 2.50, comme les notes valides (10.40 et 2.43) |
+| 42 | activite_hebdo | Ligne strictement identique à une ligne précédente (ACT-02, ACT-03 ; plus nombreuses qu'à l'audit car certaines copies deviennent identiques après les règles 3 à 5) | 890 | Ligne supprimée | D-19 |
+| 43 | activite_hebdo | Même (étudiant, semaine) avec des valeurs différentes (ACT-04) : 340 lignes pour 170 couples | 170 | Fusion en une ligne : connexions et devoirs = maximum, note et absences = première ligne | D-20 |
+| 44 | activite_hebdo | dont couples où une copie indique 0 connexion et l'autre une activité | 11 | Activité gardée (maximum) : évite un faux jour d'inactivité | D-20 |
+| 45 | activite_hebdo | Activité après la semaine de sortie déclarée (34 étudiants ; X-06, X-07) | 54 | Ligne retirée, conservée dans rejets/activite_apres_sortie.csv | D-22, D-23 |
 
 ## Tableau avant / après
 
@@ -49,7 +61,8 @@
 | Indicateur | Avant | Après |
 |---|---:|---:|
 | Lignes | 5085 | 5000 |
-| Doublons d'identifiant (majuscules, sans espaces) | 85 | 0 |
+| Étudiants distincts | 5000 | 5000 |
+| Doublons de la clé (id_etudiant ; identifiant en majuscules, sans espaces) | 85 | 0 |
 | Valeurs manquantes : id_etudiant | 0 | 0 |
 | Valeurs manquantes : cohorte | 0 | 0 |
 | Valeurs manquantes : genre | 0 | 0 |
@@ -68,7 +81,8 @@
 | Indicateur | Avant | Après |
 |---|---:|---:|
 | Lignes | 5024 | 5000 |
-| Doublons d'identifiant (majuscules, sans espaces) | 20 | 0 |
+| Étudiants distincts | 5004 | 5000 |
+| Doublons de la clé (id_etudiant ; identifiant en majuscules, sans espaces) | 20 | 0 |
 | Valeurs manquantes : id_etudiant | 0 | 0 |
 | Valeurs manquantes : annee_universitaire | 0 | 0 |
 | Valeurs manquantes : date_debut | 0 | 0 |
@@ -95,3 +109,18 @@ Effectifs de `drapeau_inscription` :
 | statut_vide | 40 |
 | abandon_sans_date | 22 |
 | inscription_reconstituee | 10 |
+
+#### `activite_hebdo`
+
+| Indicateur | Avant | Après |
+|---|---:|---:|
+| Lignes | 130967 | 129783 |
+| Étudiants distincts | 5000 | 5000 |
+| Doublons de la clé (id_etudiant, semaine ; identifiant en majuscules, sans espaces) | 1060 | 0 |
+| Valeurs manquantes : id_etudiant | 0 | 0 |
+| Valeurs manquantes : semaine | 0 | 0 |
+| Valeurs manquantes : nb_connexions_lms | 1298 | 1348 |
+| Valeurs manquantes : devoirs_rendus | 0 | 29 |
+| Valeurs manquantes : note_moyenne | 73574 | 72911 |
+| Valeurs manquantes : absences | 0 | 0 |
+| Valeurs manquantes : total (colonnes d'origine) | 74872 | 74288 |

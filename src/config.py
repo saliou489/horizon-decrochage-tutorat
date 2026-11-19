@@ -231,6 +231,7 @@ SEPARATEUR_PROCESSED = ","
 # En-têtes à renommer (après retrait des espaces) pour retrouver le nom du LISEZMOI.
 RENOMMAGE_COLONNES = {
     "etudiants": {"Distance campus (km)": "distance_campus_km"},
+    "tutorat": {"ID Etudiant": "id_etudiant"},
 }
 
 # Abréviations et synonymes reconnus, écrits en FORME SIMPLIFIÉE (minuscules, sans
@@ -327,3 +328,37 @@ SEPARATEUR_DRAPEAUX = ";"
 # Inscriptions sans étudiant correspondant, exclues de l'analyse mais conservées (D-17).
 DOSSIER_REJETS = DOSSIER_PROCESSED / "rejets"
 FICHIER_REJETS_INSCRIPTIONS = DOSSIER_REJETS / "inscriptions_sans_etudiant.csv"
+
+# ---------------------------------------------------------------------------
+# Nettoyage des tables activite_hebdo et tutorat (DA-04, décisions D-19 à D-27)
+# ---------------------------------------------------------------------------
+# activite_hebdo : colonnes entières (type Int64) et décimale.
+COLONNES_ENTIERES_ACTIVITE = ["semaine", "nb_connexions_lms", "devoirs_rendus", "absences"]
+COLONNES_DECIMALES_ACTIVITE = ["note_moyenne"]
+
+# Connexions plausibles par semaine : jusqu'à 26 observées, puis rien avant 3 604 (D-19).
+CONNEXIONS_MAX_PLAUSIBLE = 100
+# Note hebdomadaire codée -1 = sentinelle, mise à manquant (D-19).
+SENTINELLE_NOTE = -1
+# Note > 20 = virgule décalée (12,2 saisi 122) : divisée par ce facteur (D-21).
+FACTEUR_NOTE_DECALEE = 10
+
+# tutorat : écritures de type_tuteur reconnues, en forme simplifiée (D-24).
+ABREVIATIONS[("tutorat", "type_tuteur")] = {
+    "pair (etudiant avance)": "pair",
+    "etudiant": "pair",
+    "prof": "enseignant",
+}
+ABREVIATIONS[("tutorat", "motif_orientation")] = {}
+COLONNES_ENTIERES_TUTORAT = ["semaine_debut", "nb_seances"]
+
+# Drapeaux de la colonne drapeau_tutorat (séparés par SEPARATEUR_DRAPEAUX).
+DRAPEAU_NB_SEANCES_INVALIDE = "nb_seances_invalide"
+DRAPEAU_DEBUT_HORS_SUIVI = "debut_hors_suivi"
+DRAPEAU_DEBUT_SEMAINE_INVALIDE = "debut_semaine_invalide"
+DRAPEAU_DEBUT_APRES_SORTIE = "debut_apres_sortie"
+
+# Fichiers de rejets (lignes retirées mais conservées pour la traçabilité).
+FICHIER_REJETS_ACTIVITE_SEMAINE = DOSSIER_REJETS / "activite_semaine_invalide.csv"
+FICHIER_REJETS_ACTIVITE_SORTIE = DOSSIER_REJETS / "activite_apres_sortie.csv"
+FICHIER_REJETS_TUTORAT = DOSSIER_REJETS / "tutorat_sans_etudiant.csv"
