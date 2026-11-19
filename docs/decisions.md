@@ -188,3 +188,26 @@ Gabarit :
 - Options : retirer ces lignes ; les garder.
 - Décision : retirées de la table nettoyée et conservées dans un fichier de rejets (traçabilité, comme D-17).
 - Statut : validée (Saliou, 19/11)
+
+## D-24 — Table tutorat : corrections de forme
+- Date / tâche : 19/11/2026 — DA-04
+- Décision : en-tête « ID Etudiant » → id_etudiant ; doublons exacts supprimés (il reste une ligne par étudiant tutoré) ; type_tuteur ramené à `pair` (« pair (étudiant avancé) », « PAIR », « étudiant »…) ou `enseignant` (« ENSEIGNANT », « Prof »…) ; nb_seances ≤ 0 → manquant (semaine_debut est la semaine de la première séance : au moins une séance a eu lieu), l'étudiant reste tutoré ; tutorats d'identifiants absents de etudiants → fichier de rejets (comme D-17).
+- Statut : validée (Saliou, 19/11)
+
+## D-25 — Table tutorat : tutorat commencé après la fin du suivi (T1)
+- Date / tâche : 19/11/2026 — DA-04
+- Constat : semaine_debut = 45 ou 52 pour 5 étudiants.
+- Décision : considérés comme non tutorés pendant le suivi (même logique que D-14) ; ligne et valeur gardées, cas marqué.
+- Statut : validée (Saliou, 19/11)
+
+## D-26 — Table tutorat : tutorat commencé en « semaine 0 » (T2)
+- Date / tâche : 19/11/2026 — DA-04
+- Constat : 5 étudiants ; la semaine 0 n'existe pas dans le suivi et la vraie semaine ne peut pas être devinée.
+- Décision : semaine_debut mise à manquant, cas marqué ; l'étudiant reste tutoré ; le traitement de ces cas dans l'analyse causale sera décidé en CA-01 ; ils restent dans l'analyse de survie.
+- Statut : validée (Saliou, 19/11)
+
+## D-27 — Table tutorat : tutorat commencé après la sortie déclarée (T3)
+- Date / tâche : 19/11/2026 — DA-04
+- Constat (avec D-13 et D-22) : 9 étudiants, 2 à 4 semaines après leur sortie (dont un aussi concerné par D-25).
+- Décision : ligne gardée, cas marqué ; un tutorat postérieur à la sortie n'a pas pu influencer le décrochage : ces étudiants compteront comme non tutorés pendant leur suivi (construction du traitement en DA-07).
+- Statut : validée (Saliou, 19/11)
