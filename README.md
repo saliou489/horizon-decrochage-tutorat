@@ -32,7 +32,8 @@ Conformément au cahier des charges (§6.2), l'usage d'assistants IA est déclar
 | Outil | Usage |
 |---|---|
 | Claude Code (Anthropic) | Écriture du code, des tests et de la documentation technique, à partir de consignes écrites et versionnées dans `docs/consignes/`. Cadre de travail : `CLAUDE.md`. |
-| Claude, en conversation (Anthropic) | Rédaction des consignes, vérification des résultats, explication du code et des méthodes à l'étudiant. |
+| Claude, en conversation (Anthropic) | Rédaction et test des consignes, vérification des résultats, explication du code et des méthodes à l'étudiant, brouillons de documents (journal de bord, registre des risques, rapport) relus et corrigés par l'étudiant. |
+| Claude Code, session de relecture (Anthropic) | Relecture indépendante des consignes, du code, des tests et de la sécurité ; rapports dans `docs/revues/`. |
 
 Les règles de nettoyage et les choix de méthode sont décidés par l'étudiant et tracés dans `docs/decisions.md`.
 Tout le code est relu par l'étudiant et doit pouvoir être expliqué en soutenance.

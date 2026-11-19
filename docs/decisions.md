@@ -282,3 +282,16 @@ Gabarit :
 - Date / tâche : 19/11/2026 — DA-07
 - Décision : une ligne par étudiant et par semaine, de 1 à T (121 938 lignes) : activité de la semaine, état (actif / inactif / inconnu, D-31), indicateur d'événement (1 seulement la semaine T si E = 1) et indicateur « tutorat commencé », qui vaut 1 à partir de la semaine qui suit le début du tutorat (cohérent avec D-37), et reste vide pour les 5 tutorats à semaine inconnue.
 - Statut : validée (Saliou, 19/11)
+
+## D-40 — Planning version 2
+- Date / tâche : 19/11/2026 — GP-03
+- Question : faut-il continuer à suivre le planning du cahier des charges ?
+- Décision : le planning du cahier sert d'inspiration ; la référence est `docs/planning.md` (version 2 : CA-01 avancé au 20/11, même rythme de travail qu'au 18/11 pour garder une avance face aux imprévus). Les exigences notées du cahier (captures datées, revues et rétrospectives, livrables, date de rendu) restent obligatoires.
+- Statut : validée (Saliou, 19/11)
+
+## D-41 — Session de relecture indépendante
+- Date / tâche : 19/11/2026 — GP-03
+- Question (proposée par Saliou) : ajouter une session chargée uniquement de relire consignes, code et sécurité ?
+- Constat : la session de pilotage rédige les consignes et vérifie leurs résultats ; elle relit donc en partie son propre travail (deux erreurs de consigne ont été trouvées par la session d'exécution : ETU-09 et la conséquence de D-14).
+- Décision : une session Claude Code de relecture, dans un clone séparé, qui ne modifie rien et écrit seulement ses rapports dans `docs/revues/` ; mission dans `docs/consignes/R00_mission_relecteur.md` ; constats classés par gravité avec preuve ; pas de remise en cause d'une décision validée sans fait nouveau ; 4 points de contrôle (R01 nettoyage et base_survie, R02 spécification causale, R03 sécurité LLM, R04 contrôle final).
+- Statut : validée (Saliou, 19/11)

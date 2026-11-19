@@ -21,7 +21,10 @@
 |---|---|
 | **Saliou** | Product owner et seul décideur. Valide chaque règle de nettoyage et chaque choix de méthode. Tient le Kanban (GitHub Projects) et le journal de bord. Doit pouvoir expliquer chaque ligne en soutenance. |
 | **Session de pilotage** (chat Claude) | Rédige les consignes dans `docs/consignes/`, vérifie les résultats sur le dépôt, explique le code à Saliou. |
-| **Session d'exécution** (toi, Claude Code) | Exécute **une consigne à la fois** : code, tests et documentation demandés ; commit, push, compte rendu. |
+| **Session d'exécution** (Claude Code, rôle par défaut) | Exécute **une consigne à la fois** : code, tests et documentation demandés ; commit, push, compte rendu. |
+| **Session de relecture** (Claude Code, clone séparé) | Relit consignes, code, tests et sécurité aux points de contrôle ; **ne modifie rien** ; écrit seulement ses rapports dans `docs/revues/`. Sa mission : `docs/consignes/R00_mission_relecteur.md`. |
+
+Dans ce fichier, « tu » désigne la session d'exécution. Une session lancée avec la mission de relecture suit `R00_mission_relecteur.md`, qui prime pour son rôle ; le reste de ce fichier (contexte, définitions, règles de méthode) s'applique aussi à elle.
 
 ### Déroulé d'une consigne
 
@@ -60,7 +63,8 @@ Si la consigne ne couvre pas un cas : décris-le dans `docs/decisions.md` (statu
 | `notebooks/` | `01_nettoyage`, `02_eda`, `03_survie`, `04_ml_survie`, `05_causal`, `06_llm` | exécution |
 | `tests/` | tests pytest | exécution |
 | `app/` | tableau de bord Streamlit (`app/app.py`) | exécution |
-| `docs/consignes/` | consignes | **pilotage uniquement — ne pas modifier** |
+| `docs/consignes/` | consignes (Cxx) et demandes de relecture (Rxx) | **pilotage uniquement — ne pas modifier** |
+| `docs/revues/` | rapports de relecture (RVxx) | session de relecture uniquement |
 | `docs/decisions.md` | registre des décisions D-xx | exécution propose, Saliou valide |
 | `docs/journal_nettoyage.md` | journal de nettoyage (livrable L2) | exécution (chiffres produits par le code) |
 | `docs/figures/` | figures PNG | exécution |
@@ -155,7 +159,7 @@ Si la consigne ne couvre pas un cas : décris-le dans `docs/decisions.md` (statu
 
 ## 9. Git et traçabilité (l'historique est noté)
 
-- `git pull --rebase origin main` avant de commencer et avant chaque push. La session de pilotage n'écrit que dans `docs/consignes/`, `docs/planning.md` et, à la demande de Saliou, ce fichier : pas de conflit attendu ailleurs.
+- `git pull --rebase origin main` avant de commencer et avant chaque push. La session de pilotage n'écrit que dans `docs/consignes/`, `docs/planning.md`, `docs/decisions.md` (décisions validées par Saliou), `docs/gestion_projet/` (brouillons demandés par Saliou) et, à sa demande, ce fichier ; la session de relecture n'écrit que dans `docs/revues/` : pas de conflit attendu ailleurs.
 - Message de commit : `<ID> : <description>` (ex. `DA-02 : nettoyage de la table etudiants`). Ajouter ` (#n)` si l'issue GitHub de la tâche existe. Pas de `closes #n` : c'est Saliou qui passe la carte à Terminé après vérification.
 - Petits commits fréquents, au moins un par tâche. Jamais de `push --force` ni de réécriture de l'historique.
 - Jamais commités : `.venv/`, `.env`, caches, fichiers de plus de 50 Mo.
