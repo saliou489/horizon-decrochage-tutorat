@@ -155,3 +155,36 @@ Gabarit :
 - Recommandation : A (cas absent ; s'arrêter devant un cas imprévu est le comportement le plus sûr ; pas de code sans usage).
 - Décision : A. Si le cas apparaît, le nettoyage s'arrête et la règle sera décidée à ce moment-là.
 - Statut : validée (Saliou, 18/11)
+
+## D-19 — Table activite_hebdo : corrections de forme et valeurs impossibles
+- Date / tâche : 19/11/2026 — DA-04
+- Constat (pilotage) : les 70 lignes à semaine invalide (−1, 0, 31, 32, 99) appartiennent toutes à des étudiants qui ont déjà toutes leurs semaines de suivi : aucune semaine manquante qu'elles pourraient combler. Les connexions plausibles vont jusqu'à 26 par semaine, puis aucune valeur avant 3 604.
+- Décision : identifiants en majuscules ; virgule décimale → point ; entiers écrits « 10.0 » → 10 ; lignes identiques (même étudiant, même semaine, même contenu) supprimées ; lignes à semaine hors [1 ; 30] supprimées ; connexions négatives ou > 100, devoirs_rendus hors [0 ; 2], note_moyenne = −1 → manquant ; connexions de 21 à 26 conservées.
+- Statut : validée (Saliou, 19/11)
+
+## D-20 — Table activite_hebdo : semaines en double avec des valeurs différentes (A1)
+- Date / tâche : 19/11/2026 — DA-04
+- Constat (pilotage) : 176 couples (étudiant, semaine) ; l'écart porte presque toujours sur nb_connexions_lms (5 au plus) ; dans 11 cas, une copie indique 0 connexion et l'autre une activité, ce qui peut changer la règle des 4 semaines.
+- Options : garder la première ligne ; garder la valeur la plus haute pour l'activité ; moyenne.
+- Recommandation : valeur la plus haute pour nb_connexions_lms et devoirs_rendus (si une source a vu de l'activité, l'étudiant n'était pas inactif : on évite de fabriquer de faux décrochages) ; première valeur pour note_moyenne et absences.
+- Décision : comme recommandé.
+- Statut : validée (Saliou, 19/11)
+
+## D-21 — Table activite_hebdo : notes hebdomadaires supérieures à 20 (A2)
+- Date / tâche : 19/11/2026 — DA-04
+- Constat (pilotage) : 110 notes entre 34,4 et 163,6. Divisées par 10, elles ont une moyenne de 10,42 et un écart-type de 2,50, la même distribution que les notes valides (10,40 et 2,43) ; des valeurs au hasard entre 0 et 20 s'écarteraient nettement plus des notes habituelles de l'étudiant (écart médian 4,97 contre 1,67 observé). C'est un décalage de la virgule (12,2 saisi 122). Contrairement à D-08 (note du bac), les données confirment ici l'hypothèse.
+- Options : diviser par 10 ; mettre à manquant.
+- Décision : diviser par 10, avec cette justification dans le journal.
+- Statut : validée (Saliou, 19/11)
+
+## D-22 — Conversion d'une date en numéro de semaine (A3)
+- Date / tâche : 19/11/2026 — DA-04 (point ouvert de DA-07, tranché ici car nécessaire à D-23)
+- Décision : semaine = (date − date_debut en jours) // 7 + 1. Le jour de la rentrée et les 6 jours suivants forment la semaine 1, conformément au LISEZMOI (« la semaine 1 commence ce jour »).
+- Statut : validée (Saliou, 19/11)
+
+## D-23 — Table activite_hebdo : activité après la sortie déclarée (A4)
+- Date / tâche : 19/11/2026 — DA-04
+- Constat (pilotage, avec les dates corrigées par D-13 et la règle D-22) : 54 lignes, pour 34 étudiants ayant tous abandonné, montrent une activité 1 ou 2 semaines après la semaine de sortie. Elles ne changent pas l'événement (l'abandon déclaré fixe la semaine).
+- Options : retirer ces lignes ; les garder.
+- Décision : retirées de la table nettoyée et conservées dans un fichier de rejets (traçabilité, comme D-17).
+- Statut : validée (Saliou, 19/11)
