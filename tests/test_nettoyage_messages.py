@@ -42,23 +42,23 @@ def test_message_point_retire():
 
 
 def test_nom_et_telephone_remplaces():
-    texte, comptes = messages.pseudonymiser("Je suis Awa Ndiaye, appelez-moi au 77 123 45 67.")
+    texte, comptes = messages.pseudonymiser("Je suis Prénom Testnom, appelez-moi au 77 000 00 00.")
     assert texte == "Je suis [NOM], appelez-moi au [TEL]."
     assert comptes[config.BALISE_NOM] == 1 and comptes[config.BALISE_TELEPHONE] == 1
 
 
 def test_email_remplace():
-    texte, _ = messages.pseudonymiser("Mon mail : awa.ndiaye@exemple.sn")
+    texte, _ = messages.pseudonymiser("Mon mail : prenom.testnom@exemple.sn")
     assert texte == "Mon mail : [EMAIL]"
 
 
 def test_nom_compose_apres_c_est():
-    texte, _ = messages.pseudonymiser("Bonjour, c'est Marie-Anne Diop. Merci.")
+    texte, _ = messages.pseudonymiser("Bonjour, c'est Marie-Claire Exemple. Merci.")
     assert texte == "Bonjour, c'est [NOM]. Merci."
 
 
 def test_telephone_avec_indicatif_et_points():
-    texte, _ = messages.pseudonymiser("Joignable au +221 78.765.43.21 le soir.")
+    texte, _ = messages.pseudonymiser("Joignable au +221 78.000.00.00 le soir.")
     assert texte == "Joignable au [TEL] le soir."
 
 
@@ -71,7 +71,7 @@ def test_je_suis_decourage_inchange():
 def test_controle_residuel_arrete_sur_un_numero_restant():
     # Un numéro fixe (33…) n'est pas reconnu comme téléphone mobile : le contrôle doit l'attraper.
     with pytest.raises(ErreurNettoyage):
-        messages.regle_pseudonymisation(table("Appelez le 33 821 00 00 svp."))
+        messages.regle_pseudonymisation(table("Appelez le 33 000 00 00 svp."))
 
 
 def test_controles_de_structure_arretent():

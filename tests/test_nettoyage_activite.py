@@ -117,8 +117,10 @@ def test_note_toujours_hors_bornes_arrete():
 
 
 def test_quasi_doublon_garde_le_maximum_d_activite():
-    brut = table(ligne(connexions="0.0", devoirs="0", note="11"),
-                 ligne(connexions="5.0", devoirs="1", note="14"),
+    # La plus grande valeur est dans la PREMIÈRE copie : « garder la dernière ligne » donnerait
+    # 0 connexion, alors que D-20 demande le maximum (RV01-06).
+    brut = table(ligne(connexions="5.0", devoirs="1", note="11"),
+                 ligne(connexions="0.0", devoirs="0", note="14"),
                  ligne(semaine="2"), ligne(semaine="2"))
     df = jusqua(brut, activite.regle_notes_decalees)
     propre, _, entrees = activite.regle_doublons(df)
@@ -127,6 +129,18 @@ def test_quasi_doublon_garde_le_maximum_d_activite():
     assert semaine_1["nb_connexions_lms"] == 5 and semaine_1["devoirs_rendus"] == 1
     assert semaine_1["note_moyenne"] == pytest.approx(11)  # note de la première ligne
     assert [e["lignes"] for e in entrees] == [1, 1, 1]  # 1 identique, 1 couple fusionné, 1 « 0 contre 5 »
+
+
+def test_quasi_doublon_avec_une_connexion_manquante():
+    # Une copie sans valeur de connexions : on garde la plus grande valeur RENSEIGNÉE (D-20).
+    brut = table(ligne(connexions="3.0", devoirs="1", note="11"),
+                 ligne(connexions="", devoirs="0", note="14"))
+    df = jusqua(brut, activite.regle_notes_decalees)
+    propre, _, entrees = activite.regle_doublons(df)
+    assert len(propre) == 1
+    assert propre.loc[0, "nb_connexions_lms"] == 3 and propre.loc[0, "devoirs_rendus"] == 1
+    assert propre.loc[0, "note_moyenne"] == pytest.approx(11)
+    assert [e["lignes"] for e in entrees] == [0, 1, 0]
 
 
 def test_quasi_doublon_absences_differentes_arrete():

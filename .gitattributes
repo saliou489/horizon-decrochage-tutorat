@@ -1,3 +1,10 @@
 # Les fichiers bruts doivent rester identiques, octet pour octet, à ceux fournis par l'enseignant :
 # aucune conversion des fins de ligne par git (notamment sous Windows avec core.autocrlf).
 data/raw/** -text
+
+# Fichiers produits par le pipeline et documents générés : toujours extraits avec des fins
+# de ligne LF (comme le code les écrit), pour qu'une relance de run_all.py sous Windows
+# ne crée pas de fausse modification (question de RV01).
+data/processed/** text eol=lf
+docs/*.md text eol=lf
+notebooks/*.ipynb text eol=lf

@@ -205,8 +205,8 @@ JOURS_PAR_SEMAINE = 7
 # commençant par 70, 75, 76, 77 ou 78, avec ou sans séparateurs.
 MOTIF_TELEPHONE = r"(?:(?:\+|00)221[\s.-]?)?7[05678](?:[\s.-]?\d){7}"
 MOTIF_EMAIL = r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+"
-# Nom propre introduit par une formule de présentation (« Je suis Awa Fall »,
-# « c'est Moussa Ndiaye », « je m'appelle … », « mon nom est … »).
+# Nom propre introduit par une formule de présentation (« Je suis Prénom Testnom »,
+# « c'est Fatou Exemple », « je m'appelle … », « mon nom est … »).
 MOTIF_NOM = (
     r"(?:[Jj]e suis|[Cc]'est|[Jj]e m'appelle|[Mm]on nom est|[Mm]oi c'est)\s+"
     r"(?P<nom>[A-ZÀ-Þ][^\s,.;:!?]*(?:\s+[A-ZÀ-Þ][^\s,.;:!?]*)+)"
@@ -384,14 +384,14 @@ BALISE_EMAIL = "[EMAIL]"
 
 # Téléphone sénégalais : indicatif « +221 » facultatif, puis 9 chiffres commençant par
 # 70, 75, 76, 77 ou 78, groupés ou non par des espaces ou des points
-# (ex. « 77 123 45 67 », « +221 77.123.45.67 »). Les \b évitent de couper un nombre plus long.
+# (ex. « 77 000 00 00 », « +221 77.000.00.00 »). Les \b évitent de couper un nombre plus long.
 MOTIF_PSEUDO_TELEPHONE = r"(?:\+221[\s.]?)?\b7[05678](?:[\s.]?\d){7}\b"
 BALISE_TELEPHONE = "[TEL]"
 
 # Nom : « c'est » ou « je suis » (majuscule ou non, apostrophe droite ou typographique),
 # puis au moins deux mots qui commencent par une majuscule (lettres et tirets autorisés,
-# ex. « Awa Ndiaye », « Marie-Anne Diop »). Le groupe « intro » est gardé, seul le nom
-# est remplacé : « c'est Awa Ndiaye » -> « c'est [NOM] ». « je suis découragé » ne change
+# ex. « Prénom Testnom », « Marie-Claire Exemple »). Le groupe « intro » est gardé, seul le nom
+# est remplacé : « c'est Prénom Testnom » -> « c'est [NOM] ». « je suis découragé » ne change
 # pas (minuscule).
 MOTIF_PSEUDO_NOM = (
     r"(?P<intro>\b[Cc][’']est|\b[Jj]e suis)\s+"
