@@ -34,7 +34,7 @@ Règles, dans cet ordre :
 3. **Tableau avant / après** pour les 5 tables, et un **bilan global** : lignes avant / après par table, nombre total de règles appliquées, nombre de lignes envoyées dans chaque fichier de rejets.
 
 ## Tests
-- `tests/test_nettoyage_messages.py` — unitaires : réparation de « trouvÃ© » → « trouvé » ; message « . » retiré ; « Je suis Awa Ndiaye, appelez-moi au 77 123 45 67. » → « Je suis [NOM], appelez-moi au [TEL]. » ; « Mon mail : awa.ndiaye@exemple.sn » → « Mon mail : [EMAIL] » ; « je suis découragé » **inchangé** (pas un nom) ; contrôle résiduel qui s'arrête sur un numéro restant. Les exemples des tests sont **inventés**, jamais tirés des vraies données.
+- `tests/test_nettoyage_messages.py` — unitaires : réparation de « trouvÃ© » → « trouvé » ; message « . » retiré ; « Je suis Prénom Testnom, appelez-moi au 77 000 00 00. » → « Je suis [NOM], appelez-moi au [TEL]. » ; « Mon mail : prenom.testnom@exemple.sn » → « Mon mail : [EMAIL] » ; « je suis découragé » **inchangé** (pas un nom) ; contrôle résiduel qui s'arrête sur un numéro restant. Les exemples des tests sont **inventés**, jamais tirés des vraies données. _(Note du 20/11 : l'exemple de nom de cette consigne a été remplacé, car l'ancien figurait par hasard dans les données brutes — RV01-08.)_
 - Invariants sur `data/processed/messages.csv` : aucun `@`, aucune suite de 8 chiffres ou plus, aucun texte vide, aucun « Ã », `id_message` unique, identifiants dans `etudiants.csv`.
 - `tests/test_journal.py` : **chaque** code d'anomalie présent dans `docs/audit_qualite.md` apparaît dans `docs/journal_nettoyage.md` (DA-06).
 

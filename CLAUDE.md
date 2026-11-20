@@ -112,6 +112,8 @@ Si la consigne ne couvre pas un cas : décris-le dans `docs/decisions.md` (statu
 ### Survie et ML (F2 à F4)
 
 - Graine unique `SEED = 42` dans `config.py`, passée explicitement à toute fonction aléatoire.
+- **Covariables fixes** : uniquement celles de `config.COVARIABLES_RENTREE` (D-43), sélectionnées par cette liste, jamais par exclusion. `nb_seances`, `tutore`, `statut_tutorat` et les autres colonnes de tutorat ne sont jamais des covariables d'un modèle prédictif.
+- **Modèles semaine par semaine** : activité de la semaine précédente ou d'avant uniquement (colonnes `*_prec`, D-42), jamais celle de la semaine en cours.
 - Hypothèse des risques proportionnels vérifiée (résidus de Schoenfeld) ; si elle est violée, correction documentée (stratification, interaction avec le temps…).
 - Validation temporelle imposée : entraînement sur la cohorte 2024, test sur la cohorte 2025. Rien de la cohorte 2025 ne sert à l'entraînement (ni imputation, ni normalisation, ni réglage).
 - Métriques : C-index, Brier score intégré, calibration à 20 semaines, pour le Cox **et** le modèle non linéaire, sur le même jeu de test.

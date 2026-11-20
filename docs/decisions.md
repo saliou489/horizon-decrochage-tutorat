@@ -295,3 +295,21 @@ Gabarit :
 - Constat : la session de pilotage rédige les consignes et vérifie leurs résultats ; elle relit donc en partie son propre travail (deux erreurs de consigne ont été trouvées par la session d'exécution : ETU-09 et la conséquence de D-14).
 - Décision : une session Claude Code de relecture, dans un clone séparé, qui ne modifie rien et écrit seulement ses rapports dans `docs/revues/` ; mission dans `docs/consignes/R00_mission_relecteur.md` ; constats classés par gravité avec preuve ; pas de remise en cause d'une décision validée sans fait nouveau ; 4 points de contrôle (R01 nettoyage et base_survie, R02 spécification causale, R03 sécurité LLM, R04 contrôle final).
 - Statut : validée (Saliou, 19/11)
+
+## D-42 — Modèles semaine par semaine : seulement l'activité des semaines précédentes (suite de RV01-01)
+- Date / tâche : 20/11/2026 — DA-07 (pour SV, ML et le score hebdomadaire)
+- Constat (relecture RV01-01, vérifié par le pilotage) : dans `base_periode_personne.csv`, l'activité de la semaine T fait partie de la définition de l'événement (un décrochage silencieux commence par une semaine inactive) ; une semaine inactive contient un événement dans 59,1 % des cas contre 0,85 % pour une semaine active. Un modèle qui utiliserait l'activité de la semaine en cours lirait l'événement au lieu de le prédire ; en semaine T, les semaines T+1 à T+3 ne sont d'ailleurs pas encore connues.
+- Décision : dans tout modèle semaine par semaine, les covariables d'activité sont celles de la **semaine précédente ou d'avant**, jamais celles de la semaine en cours ; le pipeline produit des colonnes décalées d'une semaine (`*_prec`) et les modèles n'utilisent que celles-là.
+- Statut : validée (Saliou, 20/11)
+
+## D-43 — Liste officielle des variables de la rentrée (suite de RV01-04)
+- Date / tâche : 20/11/2026 — DA-07 (pour SV, ML, CA)
+- Constat (RV01-04) : `base_survie.csv` contient aussi des colonnes connues après la rentrée (`nb_seances`, `tutore`, `statut_tutorat`, `type_tuteur`, `motif_orientation`, `semaine_debut_tutorat`) ; chez les tutorés, `nb_seances` suit surtout la durée de présence (corrélation de 0,73 avec T).
+- Décision : `config.COVARIABLES_RENTREE` liste les 10 variables connues le jour de la rentrée (cohorte, genre, âge, boursier, filière, mention et note du bac, région, distance, emploi) ; les modèles sélectionnent leurs covariables fixes dans cette liste, jamais par exclusion (« tout sauf T et E ») ; un test vérifie qu'elle ne contient que des colonnes de la table `etudiants`.
+- Statut : validée (Saliou, 20/11)
+
+## D-44 — Pas de verrouillage de toutes les dépendances (suite de RV01-08)
+- Date / tâche : 20/11/2026 — DO-01
+- Constat (RV01-08) : `requirements.txt` fige les 5 paquets installés directement ; l'installation en compte 53. Un `pip freeze` fait sous Windows contient des paquets propres à Windows (ex. `pywin32`, utilisé par Jupyter) qui ne s'installent pas sous Linux : un fichier verrouillé empêcherait l'installation chez l'enseignant.
+- Décision : garder les 5 paquets directs figés ; signaler dans le README que les dépendances indirectes ne sont pas figées et que le projet a été testé sous Windows avec Python 3.14.3.
+- Statut : validée (Saliou, 20/11)
