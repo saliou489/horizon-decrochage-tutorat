@@ -21,9 +21,25 @@ Projet individuel — Institut Supérieur Horizon, filière Expert IA & LLM.
 
 ## Installation et exécution
 
-Prérequis : Python 3.12 ou plus (décision D-05).
+Prérequis : Python 3.12 ou plus (décision D-05). Toutes les commandes se lancent depuis la racine du dépôt.
 
-_À compléter (commande unique pour tout relancer)._
+1. Créer et activer l'environnement virtuel :
+   - Windows : `py -m venv .venv` puis `.venv\Scripts\activate`
+   - Linux / macOS : `python3 -m venv .venv` puis `source .venv/bin/activate`
+2. Installer les dépendances : `pip install -r requirements.txt`
+3. Tout relancer (nettoyage des 5 tables, puis `base_survie.csv` et `base_periode_personne.csv`) : `python run_all.py` (environ 15 s sur le PC de développement)
+4. Lancer les tests : `pytest`
+5. Exécuter un notebook de haut en bas et l'enregistrer avec ses sorties :
+   `jupyter nbconvert --to notebook --execute --inplace notebooks/01_nettoyage.ipynb`
+
+## Données
+
+Les fichiers de `data/raw/` sont un jeu **synthétique** fourni par l'enseignant : aucun étudiant réel. Les messages bruts (`data/raw/messages.csv`) contiennent des noms, e-mails et numéros de téléphone **inventés** (tous les numéros sont de la forme « 7X 000 XX XX »), laissés pour l'exercice de pseudonymisation. Ils sont conservés tels quels, car les fichiers bruts ne doivent pas être modifiés (`data/raw_sha256.txt`). Toutes les tables produites (`data/processed/`) sont pseudonymisées (`[NOM]`, `[TEL]`, `[EMAIL]`, décision D-28) et aucun texte de message n'est envoyé à un service externe.
+
+## Limites connues
+
+- Seules les dépendances directes sont figées dans `requirements.txt` ; leurs dépendances indirectes ne le sont pas (décision D-44 : un verrouillage complet fait sous Windows ne s'installerait pas sous Linux).
+- Le projet a été testé sous Windows avec Python 3.14.3.
 
 ## Déclaration d'usage d'assistants IA
 
