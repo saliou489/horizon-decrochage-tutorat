@@ -481,7 +481,23 @@ COLONNES_BASE_SURVIE = [
     "T", "E", "type_evenement", "T_seuil3", "E_seuil3", "T_seuil5", "E_seuil5",
     "tutore", "statut_tutorat", "semaine_debut_tutorat", "type_tuteur", "motif_orientation", "nb_seances",
 ]
+# Variables connues le jour de la rentrée (D-43) : les modèles prennent leurs covariables
+# fixes dans cette liste, jamais « toutes les colonnes sauf T et E ». Les colonnes de
+# tutorat (nb_seances, tutore, statut_tutorat…) sont connues plus tard : elles n'y sont pas.
+COVARIABLES_RENTREE = [
+    "cohorte", "genre", "age", "boursier", "filiere", "mention_bac", "note_bac",
+    "region_origine", "distance_campus_km", "emploi_parallele",
+]
+
+# Activité d'une semaine, telle qu'elle figure dans activite_hebdo (avec etat_activite).
+COLONNES_ACTIVITE_SEMAINE = ["nb_connexions_lms", "devoirs_rendus", "note_moyenne", "absences", "etat_activite"]
+# Mêmes colonnes pour la semaine précédente du même étudiant (vides en semaine 1).
+# D-42 : ce sont les SEULES colonnes d'activité utilisables dans un modèle semaine par
+# semaine ; l'activité de la semaine en cours fait partie de la définition de l'événement.
+SUFFIXE_PREC = "_prec"
+COLONNES_ACTIVITE_PREC = [colonne + SUFFIXE_PREC for colonne in COLONNES_ACTIVITE_SEMAINE]
+
 COLONNES_PERIODE_PERSONNE = [
     "id_etudiant", "semaine", "evenement", "nb_connexions_lms", "devoirs_rendus", "note_moyenne",
     "absences", "etat_activite", "tutorat_commence",
-]
+] + COLONNES_ACTIVITE_PREC

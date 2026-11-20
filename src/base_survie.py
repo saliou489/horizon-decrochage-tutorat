@@ -118,10 +118,14 @@ def t_et_e(identifiant, semaines, etats, situation, seuil, lecture_inconnu):
     (situation_de_sortie) ; seuil d'inactivité ; lecture des semaines inconnues.
     Arrête le calcul sur les cas absents des données (D-18) : série d'inactivité avant
     une sortie déclarée (D-30), abandon à date invalide avec série ou activité jusqu'à 30
-    (D-33), semaine manquante entre 1 et T.
+    (D-33), semaine manquante entre 1 et la dernière semaine (RV01-07).
     """
     type_sortie, semaine_sortie = situation
     derniere = semaines[-1]
+    # premiere_serie compte des positions dans la liste : elle n'a de sens que si la liste
+    # est exactement 1, 2, …, dernière. Un trou (même après le début d'une série) arrête tout.
+    if semaines != list(range(1, derniere + 1)):
+        raise ErreurNettoyage(f"Semaine d'activité manquante entre 1 et {derniere} : {identifiant}")
     serie = premiere_serie(etats, seuil, lecture_inconnu)
 
     if type_sortie == config.EVENEMENT_ABANDON_DATE_INVALIDE:
@@ -145,9 +149,8 @@ def t_et_e(identifiant, semaines, etats, situation, seuil, lecture_inconnu):
                                       config.EVENEMENT_TRANSFERT)
     if sortie_declaree and serie is not None and serie <= resultat[0]:
         raise ErreurNettoyage(f"Série d'inactivité avant une sortie déclarée : {identifiant}")
-    T = resultat[0]
-    if semaines[:T] != list(range(1, T + 1)):
-        raise ErreurNettoyage(f"Semaine d'activité manquante entre 1 et T = {T} : {identifiant}")
+    if resultat[0] is None or resultat[0] > derniere:
+        raise ErreurNettoyage(f"Semaine d'activité manquante entre 1 et T = {resultat[0]} : {identifiant}")
     return resultat
 
 
@@ -226,14 +229,35 @@ def construire_base_survie(tables):
     return base[config.COLONNES_BASE_SURVIE], activite
 
 
+def ajouter_activite_prec(activite):
+    """Ajoute les colonnes *_prec : activité de la semaine précédente du même étudiant (D-42).
+
+    Entrée : activité avec etat_activite (semaines 1, 2, … sans trou, vérifié dans t_et_e).
+    Sortie : copie triée par étudiant et semaine, avec 5 colonnes de plus, vides en semaine 1.
+    """
+    resultat = activite.sort_values([config.COLONNE_ID, "semaine"]).copy()
+    # shift(1) par étudiant : la ligne de la semaine s reçoit les valeurs de la semaine s − 1 ;
+    # la première semaine de chaque étudiant n'a pas de semaine précédente (vide).
+    precedent = resultat.groupby(config.COLONNE_ID, sort=False)[config.COLONNES_ACTIVITE_SEMAINE].shift(1)
+    for colonne in config.COLONNES_ACTIVITE_SEMAINE:
+        resultat[colonne + config.SUFFIXE_PREC] = precedent[colonne]
+    return resultat
+
+
 def construire_periode_personne(base, activite):
     """Format période-personne : une ligne par étudiant et par semaine 1 … T (D-39).
 
     evenement = 1 seulement à la semaine T si E = 1 ;
     tutorat_commence = 1 si semaine > semaine_debut_tutorat pour les « tutore »,
     0 pour les autres, vide pour les tutorats à semaine inconnue.
+    Colonnes *_prec (D-42) : activité de la semaine précédente du même étudiant
+    (nb_connexions_lms_prec, devoirs_rendus_prec, note_moyenne_prec, absences_prec,
+    etat_activite_prec), vides en semaine 1. Ce sont les seules colonnes d'activité qu'un
+    modèle semaine par semaine peut utiliser : l'activité de la semaine en cours sert à
+    définir l'événement (une série d'inactivité commence à la semaine T).
     """
     colonnes_base = [config.COLONNE_ID, "T", "E", "statut_tutorat", "semaine_debut_tutorat"]
+    activite = ajouter_activite_prec(activite)
     periode = activite.merge(base[colonnes_base], on=config.COLONNE_ID, how="inner")
     periode = periode[periode["semaine"] <= periode["T"]].sort_values([config.COLONNE_ID, "semaine"])
     periode["evenement"] = ((periode["semaine"] == periode["T"]) & (periode["E"] == 1)).astype(int)
