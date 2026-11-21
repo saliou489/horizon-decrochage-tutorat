@@ -501,3 +501,15 @@ COLONNES_PERIODE_PERSONNE = [
     "id_etudiant", "semaine", "evenement", "nb_connexions_lms", "devoirs_rendus", "note_moyenne",
     "absences", "etat_activite", "tutorat_commence",
 ] + COLONNES_ACTIVITE_PREC
+
+# ---------------------------------------------------------------------------
+# Analyse exploratoire (DA-08)
+# ---------------------------------------------------------------------------
+
+# Semaine repère pour décrire l'entrée en tutorat (part des tutorats commencés au plus
+# tard cette semaine-là, consigne C08). Simple description : la semaine landmark de
+# l'analyse causale sera choisie et validée en CA-01.
+SEMAINE_REPERE_TUTORAT = 8
+
+# Libellé de la ligne des valeurs manquantes dans le profil d'une variable qualitative.
+MODALITE_MANQUANTE = "(manquant)"
