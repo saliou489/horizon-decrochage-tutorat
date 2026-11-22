@@ -195,3 +195,79 @@ def test_invariants_photo_semaine_8(photo_reelle):
     assert not causal.semaine_debut_inconnue(photo_reelle).any()
     tutores = photo_reelle[photo_reelle["tutore_photo"] == 1]
     assert (tutores["semaine_debut_tutorat"] <= config.SEMAINE_LANDMARK).all()
+
+
+# ---------------------------------------------------------------------------
+# Corrections de la relecture RV02 (RV02-03 à RV02-05, D-61)
+# ---------------------------------------------------------------------------
+
+def test_chaine_sur_tirage_avec_doublons_et_permutation():
+    base, periode = base_et_periode_inventees(n=200)
+    population = causal.population_photo(base, 8)
+    # Tirage bootstrap brut : index en double (la chaîne doit le remettre à zéro).
+    tirage = population.sample(n=len(population), replace=True, random_state=config.SEED)
+    assert tirage.index.duplicated().any()
+    resultat = causal.chaine_de_conception(tirage, periode, (1, 8), 8)
+    assert len(resultat["X"]) == len(tirage) == len(resultat["poids"])
+    # Simple permutation : chaque étudiant garde le même score.
+    reference = causal.chaine_de_conception(population, periode, (1, 8), 8)
+    melangee = population.sample(frac=1, random_state=config.SEED)
+    permutee = causal.chaine_de_conception(melangee, periode, (1, 8), 8)
+    score_reference = pd.Series(reference["score"], index=population["id_etudiant"])
+    score_permute = pd.Series(permutee["score"], index=melangee["id_etudiant"].to_numpy())
+    pd.testing.assert_series_equal(score_reference.sort_index(), score_permute.sort_index(), check_names=False)
+
+
+def test_retouche_declenchee_et_equilibre_initial_garde(monkeypatch):
+    base, periode = base_et_periode_inventees(n=200)
+    population = causal.population_photo(base, 8)
+    # Seuil minuscule : le critère ne peut pas être atteint, la retouche doit être faite une fois.
+    monkeypatch.setattr(config, "SEUIL_SMD", 1e-12)
+    resultat = causal.chaine_de_conception(population, periode, (1, 8), 8)
+    assert resultat["retouche"] and not resultat["critere_atteint"]
+    assert any(c.startswith(causal.PREFIXE_CARRE) for c in resultat["X"].columns)
+    initial = resultat["equilibre_initial"]
+    assert list(initial["variable"]) == list(resultat["equilibre"]["variable"])
+    assert not np.allclose(initial["smd_apres"], resultat["equilibre"]["smd_apres"])
+    # Seuil énorme : jamais de retouche.
+    monkeypatch.setattr(config, "SEUIL_SMD", 1e12)
+    sans = causal.chaine_de_conception(population, periode, (1, 8), 8)
+    assert not sans["retouche"]
+    assert not any(c.startswith(causal.PREFIXE_CARRE) for c in sans["X"].columns)
+
+
+def test_matrice_equilibre_avec_references_et_manquant():
+    base, periode = base_et_periode_inventees(n=200)
+    base.loc[3, "region_origine"] = np.nan
+    population = causal.population_photo(base, 8)
+    X, _ = causal.covariables_du_score(population, periode, (1, 8))
+    colonnes = causal.matrice_equilibre(population, X).columns
+    for reference in ["genre=F", "boursier=Non", "filiere=Informatique", "region_dakar=Dakar",
+                      "emploi_parallele=Non", "cohorte=2024"]:
+        assert reference in colonnes
+    assert f"region_dakar={config.MODALITE_MANQUANTE}" in colonnes
+    assert "note_moyenne_moy" in colonnes
+
+
+def test_fenetre_posterieure_a_la_photo_refusee():
+    base, periode = base_et_periode_inventees(n=200)
+    population = causal.population_photo(base, 8)
+    with pytest.raises(causal.ErreurCausal):
+        causal.chaine_de_conception(population, periode, (1, 12), 8)
+
+
+def test_auc_effectifs_differents_et_ex_aequo():
+    # n1 = 2, n0 = 3. Tutoré à 0,4 : bat 0,1 et fait égalité avec deux 0,4 -> 2 ;
+    # tutoré à 0,8 : bat les trois -> 3. AUC = 5 / 6.
+    assert causal.auc_par_les_rangs([0.1, 0.4, 0.4, 0.8, 0.4], [0, 1, 0, 1, 0]) == pytest.approx(5 / 6)
+
+
+def test_colonne_hors_liste_positive_refusee():
+    for colonne in ["type_evenement", "duree_apres_photo", "id_etudiant", "etat_activite_prec",
+                    "note_moyenne_prec", "mention_bac=Bien"]:
+        with pytest.raises(causal.ErreurCausal):
+            causal.verifier_liste_positive(["age", colonne])
+    causal.verifier_liste_positive(["age", "filiere=Droit", "absences_moy"])
+    # Variable exclue (bonus F8) : ses indicatrices sont refusées.
+    with pytest.raises(causal.ErreurCausal):
+        causal.verifier_liste_positive(["age", "boursier=Oui"], variables_exclues=("boursier",))

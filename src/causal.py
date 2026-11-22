@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
+from matplotlib.path import Path
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Patch
 from scipy.stats import rankdata
 
@@ -231,16 +232,32 @@ def verifier_colonnes_autorisees(colonnes):
             raise ErreurCausal(f"Colonne interdite dans le score de propension : {colonne}")
 
 
-def covariables_du_score(population, periode, fenetre, duree="T", evenement="E"):
+def verifier_liste_positive(colonnes, variables_exclues=()):
+    """Liste positive (D-61, principe de D-43) : ErreurCausal pour toute colonne qui
+    n'est ni une variable numérique du score, ni une indicatrice d'une variable
+    qualitative du Cox (moins les variables exclues)."""
+    numeriques = colonnes_numeriques_du_score(variables_exclues)
+    qualitatives = [v for v in config.VARIABLES_COX_QUALITATIVES if v not in variables_exclues]
+    for colonne in colonnes:
+        indicatrice = (config.SEPARATEUR_INDICATRICE in colonne
+                       and survie.variable_d_origine(colonne) in qualitatives)
+        if colonne not in numeriques and not indicatrice:
+            raise ErreurCausal(f"Colonne hors de la liste positive du score : {colonne}")
+
+
+def covariables_du_score(population, periode, fenetre, duree="T", evenement="E", variables_exclues=()):
     """Covariables du score : profil codé comme le Cox + activité moyenne (D-55).
 
     Profil : survie.preparer_donnees_cox (mêmes références, même règle des manquants,
-    médianes calculées sur la population reçue), sans T ni E. Activité : moyenne des 4
-    variables sur la fenêtre (première, dernière) ; manquante -> médiane de la
-    population reçue.
+    médianes calculées sur la population reçue), sans T ni E, ni les variables exclues
+    (bonus F8). Activité : moyenne des 4 variables sur la fenêtre (première, dernière) ;
+    manquante -> médiane de la population reçue. L'index est remis à zéro d'abord : un
+    tirage bootstrap contient des étudiants en double (RV02-03).
     Sortie : (X, médianes utilisées pour toutes les variables numériques).
     """
-    donnees, medianes = survie.preparer_donnees_cox(population, duree=duree, evenement=evenement)
+    population = population.reset_index(drop=True)
+    donnees, medianes = survie.preparer_donnees_cox(population, duree=duree, evenement=evenement,
+                                                    variables_exclues=variables_exclues)
     X = donnees.drop(columns=["T", "E"]).astype(float)
     activite = activite_moyenne(periode, population[config.COLONNE_ID], fenetre[0], fenetre[1])
     medianes = dict(medianes)
@@ -248,21 +265,23 @@ def covariables_du_score(population, periode, fenetre, duree="T", evenement="E")
         colonne = f"{variable}{SUFFIXE_MOYENNE}"
         medianes[colonne] = float(activite[colonne].median())
         X[colonne] = activite[colonne].fillna(medianes[colonne]).to_numpy()
+    verifier_liste_positive(X.columns, variables_exclues)
     verifier_colonnes_autorisees(X.columns)
     return X, medianes
 
 
-def colonnes_numeriques_du_score():
+def colonnes_numeriques_du_score(variables_exclues=()):
     """Variables numériques du score : âge, note du bac, log2 distance, 4 moyennes d'activité."""
-    return list(config.VARIABLES_COX_NUMERIQUES) + [
-        f"{v}{SUFFIXE_MOYENNE}" for v in config.VARIABLES_ACTIVITE_PROPENSION]
+    numeriques = [v for v in config.VARIABLES_COX_NUMERIQUES if v not in variables_exclues]
+    return numeriques + [f"{v}{SUFFIXE_MOYENNE}" for v in config.VARIABLES_ACTIVITE_PROPENSION]
 
 
 def ajouter_carres(X):
     """Retouche fixée d'avance (D-56) : ajoute le carré de chaque variable numérique."""
     avec_carres = X.copy()
     for colonne in colonnes_numeriques_du_score():
-        avec_carres[f"{PREFIXE_CARRE}{colonne}"] = X[colonne] ** 2
+        if colonne in X.columns:
+            avec_carres[f"{PREFIXE_CARRE}{colonne}"] = X[colonne] ** 2
     return avec_carres
 
 
@@ -277,6 +296,9 @@ def ajuster_score(X, traite):
     """
     exogenes = sm.add_constant(X, has_constant="add")
     modele = sm.GLM(np.asarray(traite, dtype=float), exogenes, family=sm.families.Binomial()).fit()
+    if not modele.converged:
+        # Un score mal estimé donnerait des poids faux sans le dire (RV02-03).
+        raise ErreurCausal("La régression logistique du score de propension n'a pas convergé")
     return modele, np.asarray(modele.predict(exogenes), dtype=float)
 
 
@@ -365,16 +387,17 @@ def taille_effective(poids):
 # 8. Équilibre des deux équipes (CA-03, D-56)
 # ===========================================================================
 
-def matrice_equilibre(population, X):
+def matrice_equilibre(population, X, variables_exclues=()):
     """Variables dont on vérifie l'équilibre.
 
     Numériques : âge, note du bac, log2 distance, 4 moyennes d'activité (valeurs du
     score, manquants remplacés). Qualitatives : une colonne 0/1 par modalité, références
     et « (manquant) » comprises (une référence peut être déséquilibrée elle aussi).
+    Les variables exclues du score (bonus F8) n'y figurent pas.
     """
-    matrice = X[colonnes_numeriques_du_score()].copy()
+    matrice = X[colonnes_numeriques_du_score(variables_exclues)].copy()
     variables = survie.variables_du_cox(population.reset_index(drop=True))
-    for variable in config.VARIABLES_COX_QUALITATIVES:
+    for variable in [v for v in config.VARIABLES_COX_QUALITATIVES if v not in variables_exclues]:
         valeurs = variables[variable].fillna(config.MODALITE_MANQUANTE).astype(str)
         presentes = list(valeurs.unique())
         ordre = survie.modalites_ordonnees(variable, [m for m in presentes if m != config.MODALITE_MANQUANTE])
@@ -423,20 +446,27 @@ def score_poids_equilibre(X, traite, matrice):
     }
 
 
-def chaine_de_conception(population, periode, fenetre, duree="T", evenement="E"):
+def chaine_de_conception(population, periode, fenetre, semaine, duree="T", evenement="E", variables_exclues=()):
     """Enchaîne covariables, score, support, poids et équilibre pour une population.
 
     Entrées : population d'une photo (population_photo, ou un tirage bootstrap de
     celle-ci) ; base_periode_personne ; fenêtre d'activité (première, dernière) ;
-    colonnes de durée et d'événement (variantes de seuil). Si une ligne reste à
-    |SMD| >= SEUIL_SMD après pondération, une seule retouche fixée d'avance (D-56) :
-    carrés des variables numériques ajoutés au score ; le résultat final est rapporté
-    tel quel. Sortie : dictionnaire (voir score_poids_equilibre) + X, médianes,
-    tableau d'équilibre de la première tentative, retouche (booléen).
+    semaine de la photo (la fenêtre ne doit pas la dépasser, D-55) ; colonnes de durée
+    et d'événement (variantes de seuil) ; variables exclues du score (bonus F8).
+    Si une ligne reste à |SMD| >= SEUIL_SMD après pondération, une seule retouche fixée
+    d'avance (D-56) : carrés des variables numériques ajoutés au score ; le résultat
+    final est rapporté tel quel. Sortie : dictionnaire (voir score_poids_equilibre)
+    + X, matrice d'équilibre, médianes, tableau d'équilibre de la première tentative,
+    retouche (booléen).
     """
+    if fenetre[1] > semaine:
+        # L'activité après la photo est postérieure au traitement (avenir, médiateur).
+        raise ErreurCausal(f"Fenêtre d'activité {fenetre} postérieure à la photo de la semaine {semaine}")
+    population = population.reset_index(drop=True)
     traite = population["tutore_photo"].to_numpy()
-    X, medianes = covariables_du_score(population, periode, fenetre, duree=duree, evenement=evenement)
-    matrice = matrice_equilibre(population, X)
+    X, medianes = covariables_du_score(population, periode, fenetre, duree=duree, evenement=evenement,
+                                       variables_exclues=variables_exclues)
+    matrice = matrice_equilibre(population, X, variables_exclues)
     resultat = score_poids_equilibre(X, traite, matrice)
     equilibre_initial = resultat["equilibre"]
     retouche = not equilibre_initial["equilibre"].all()
@@ -445,6 +475,7 @@ def chaine_de_conception(population, periode, fenetre, duree="T", evenement="E")
         resultat = score_poids_equilibre(X, traite, matrice)
     resultat.update({
         "X": X,
+        "matrice": matrice,
         "medianes": medianes,
         "traite": traite,
         "equilibre_initial": equilibre_initial,
@@ -455,7 +486,90 @@ def chaine_de_conception(population, periode, fenetre, duree="T", evenement="E")
 
 
 # ===========================================================================
-# 10. Figure du DAG (CA-01, D-55)
+# 10. Diagnostic hors critère et ce qu'on estime exactement (RV02-06, RV02-07, D-61)
+# ===========================================================================
+
+def ligne_diagnostic(nom, valeurs, traite, poids):
+    """SMD avant et après pondération d'une variable hors score (valeurs vides ignorées)."""
+    valeurs = np.asarray(valeurs, dtype=float)
+    renseignes = ~np.isnan(valeurs)
+    traite = np.asarray(traite)[renseignes]
+    poids = np.asarray(poids)[renseignes]
+    return {"variable": nom,
+            "smd_avant": difference_standardisee(valeurs[renseignes], traite),
+            "smd_apres": difference_standardisee(valeurs[renseignes], traite, poids)}
+
+
+def diagnostic_hors_critere(population, periode, traite, poids, semaine=config.SEMAINE_LANDMARK):
+    """Équilibre de variables mesurées avant la photo mais absentes du score (RV02-06).
+
+    Notes et connexions des 2 dernières semaines avant la photo, chaque mention du bac,
+    chaque région d'origine détaillée, nombre de semaines inactives sur les semaines 1 à
+    `semaine`. Simple diagnostic : le score n'est pas modifié (l'activité récente est en
+    partie un médiateur ; la mention découle de la note du bac).
+    Sortie : variable, smd_avant, smd_apres.
+    """
+    population = population.reset_index(drop=True)
+    identifiants = population[config.COLONNE_ID]
+    debut_recent = semaine - config.SEMAINES_RECENTES_DIAGNOSTIC + 1
+    recente = activite_moyenne(periode, identifiants, debut_recent, semaine)
+    lignes = [
+        ligne_diagnostic(f"note_moyenne semaines {debut_recent}-{semaine}", recente[f"note_moyenne{SUFFIXE_MOYENNE}"],
+                         traite, poids),
+        ligne_diagnostic(f"nb_connexions_lms semaines {debut_recent}-{semaine}",
+                         recente[f"nb_connexions_lms{SUFFIXE_MOYENNE}"], traite, poids),
+    ]
+    for variable in ["mention_bac", "region_origine"]:
+        valeurs = population[variable].fillna(config.MODALITE_MANQUANTE).astype(str)
+        presentes = [m for m in valeurs.unique() if m != config.MODALITE_MANQUANTE]
+        ordre = survie.modalites_ordonnees(variable, presentes)
+        if (valeurs == config.MODALITE_MANQUANTE).any():
+            ordre.append(config.MODALITE_MANQUANTE)
+        for modalite in ordre:
+            lignes.append(ligne_diagnostic(f"{variable}{config.SEPARATEUR_INDICATRICE}{modalite}",
+                                           (valeurs == modalite).astype(int), traite, poids))
+    fenetre = periode[(periode["semaine"] >= 1) & (periode["semaine"] <= semaine)]
+    inactives = (fenetre["etat_activite"] == config.ETAT_INACTIF).groupby(fenetre[config.COLONNE_ID]).sum()
+    lignes.append(ligne_diagnostic(f"semaines inactives 1-{semaine}",
+                                   inactives.reindex(identifiants).fillna(0).to_numpy(), traite, poids))
+    return pd.DataFrame(lignes)
+
+
+def ce_qu_on_estime(base, periode, population, semaine=config.SEMAINE_LANDMARK):
+    """Chiffres des biais écrits d'avance (D-59, D-61 point 11), sans décrochage par équipe.
+
+    - recouvrement : chez les tutorés de la photo, nombre moyen de semaines de la fenêtre
+      1 à `semaine` qui vont de la semaine du début à la photo (début compris) ;
+    - décrochages silencieux (toutes équipes) dont la série de semaines inactives déborde
+      après la photo : T entre semaine − SEUIL_INACTIVITE + 2 et semaine ;
+    - étudiants de la photo inactifs la semaine de la photo, et inactifs depuis la semaine
+      précédente ;
+    - tutorés partis avant la photo (début <= semaine, début < T, T <= semaine).
+    """
+    tutores = population[population["tutore_photo"] == 1]
+    recouvrement = (semaine - tutores["semaine_debut_tutorat"].astype(float) + 1).mean()
+    premiere = semaine - config.SEUIL_INACTIVITE + 2
+    silencieux = base[(base["type_evenement"] == config.EVENEMENT_DECROCHAGE_SILENCIEUX)
+                      & (base["T"] >= premiere) & (base["T"] <= semaine)]
+    sur_photo = periode[periode[config.COLONNE_ID].isin(population[config.COLONNE_ID])]
+    inactifs = set(sur_photo.loc[(sur_photo["semaine"] == semaine)
+                                 & (sur_photo["etat_activite"] == config.ETAT_INACTIF), config.COLONNE_ID])
+    inactifs_avant = set(sur_photo.loc[(sur_photo["semaine"] == semaine - 1)
+                                       & (sur_photo["etat_activite"] == config.ETAT_INACTIF), config.COLONNE_ID])
+    debut = base["semaine_debut_tutorat"]
+    partis = ((debut <= semaine) & (debut < base["T"]) & (base["T"] <= semaine)).fillna(False)
+    return {
+        "recouvrement_moyen": float(recouvrement),
+        "silencieux_par_semaine": silencieux["T"].value_counts().sort_index(),
+        "nb_silencieux": len(silencieux),
+        "inactifs_semaine_photo": len(inactifs),
+        "inactifs_depuis_semaine_precedente": len(inactifs & inactifs_avant),
+        "tutores_partis_avant": int(partis.sum()),
+    }
+
+
+# ===========================================================================
+# 11. Figure du DAG (CA-01, D-55)
 # ===========================================================================
 
 COULEURS_DAG = {
@@ -478,6 +592,9 @@ BOITES_DAG = {
 }
 LARGEUR_BOITE = 0.34
 HAUTEUR_BOITE = 0.11
+# Couloir à droite des boîtes pour la flèche « facteurs non mesurés -> activité » (RV02-07).
+COULOIR_DROIT_DAG = 1.01
+MARGE_DROITE_DAG = 1.04
 
 
 def bord_de_boite(nom, cote):
@@ -515,7 +632,7 @@ def dessiner_fleche(axe, depart, arrivee, couleur="#444444", epaisseur=1.4, poin
 def dessiner_dag(chemin):
     """Dessine le DAG de D-55 et l'enregistre en PNG à `chemin`."""
     figure, axe = plt.subplots(figsize=(11, 8.5))
-    axe.set_xlim(0, 1)
+    axe.set_xlim(0, MARGE_DROITE_DAG)
     axe.set_ylim(-0.08, 1.0)
     axe.axis("off")
     for nom in BOITES_DAG:
@@ -543,6 +660,15 @@ def dessiner_dag(chemin):
                     couleur=gris, pointilles=True, courbure=-0.35)
     dessiner_fleche(axe, bord_de_boite("non_mesures", "droite"), bord_de_boite("decrochage", "bas_droite"),
                     couleur=gris, pointilles=True, courbure=0.35)
+    # Facteurs non mesurés -> activité des semaines 1 à 8 (D-55, RV02-07) : la flèche passe
+    # par un couloir à droite de toutes les boîtes pour n'en traverser aucune.
+    depart_x, depart_y = bord_de_boite("non_mesures", "droite")
+    arrivee_x, arrivee_y = bord_de_boite("activite", "droite")
+    depart_y -= HAUTEUR_BOITE / 4
+    trajet = Path([(depart_x, depart_y), (COULOIR_DROIT_DAG, depart_y), (COULOIR_DROIT_DAG, arrivee_y),
+                   (arrivee_x, arrivee_y)])
+    axe.add_patch(FancyArrowPatch(path=trajet, arrowstyle="-|>", mutation_scale=16, color=gris, linewidth=1.4,
+                                  linestyle="--", zorder=4))
     legende = [
         Patch(facecolor=COULEURS_DAG["a_prendre_en_compte"][0], edgecolor=COULEURS_DAG["a_prendre_en_compte"][1],
               label="à prendre en compte (dans le score)"),

@@ -614,3 +614,6 @@ DOSSIER_RESULTATS = DOSSIER_PROCESSED / "resultats"
 # Format des nombres écrits dans les résultats : 8 chiffres significatifs (fichiers
 # identiques d'une machine à l'autre malgré le bruit de calcul au 16e chiffre).
 FORMAT_NOMBRES_RESULTATS = "%.8g"
+# Diagnostic hors critère (RV02-06) : activité des 2 dernières semaines avant la photo
+# (semaines 7 et 8 pour la photo de la semaine 8), absente du score.
+SEMAINES_RECENTES_DIAGNOSTIC = 2
