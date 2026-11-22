@@ -559,3 +559,27 @@ SEPARATEUR_INDICATRICE = "="
 # interaction avec la période (semaines 1 à 8, puis 9 à 30).
 TRANSFORMATION_SCHOENFELD = "rank"
 FIN_PREMIERE_PERIODE = 8
+
+# ---------------------------------------------------------------------------
+# Analyse causale : photo de la semaine 8, score de propension, poids (CA-01 à CA-03)
+# ---------------------------------------------------------------------------
+
+# Semaine de la « photo » (landmark, D-53) : on compare, à la fin de cette semaine, les
+# étudiants déjà tutorés et ceux qui ne le sont pas encore ; le suivi reprend en semaine 9.
+SEMAINE_LANDMARK = 8
+# Photos de sensibilité (D-58) et photos décrites dans le tableau de choix (D-53).
+SEMAINES_LANDMARK_SENSIBILITE = (6, 10)
+PHOTOS_COMPAREES = (4, 6, 8, 10, 12)
+# Fenêtre d'activité de sensibilité (D-55) : semaines 1 à 2, avant tout tutorat.
+# La fenêtre principale va de la semaine 1 à SEMAINE_LANDMARK.
+FENETRE_ACTIVITE_SENSIBILITE = (1, 2)
+# Variables d'activité moyennées sur la fenêtre et ajoutées au score (D-55).
+VARIABLES_ACTIVITE_PROPENSION = ["nb_connexions_lms", "devoirs_rendus", "note_moyenne", "absences"]
+# Troncature des poids aux 1er et 99e percentiles de l'ensemble des poids (D-56).
+PERCENTILES_TRONCATURE = (1, 99)
+# Critère d'équilibre : |différence standardisée| < 0,1 pour chaque ligne (D-56).
+SEUIL_SMD = 0.1
+# « Ce qui précède l'entrée » : activité des 2 semaines avant le début du tutorat, pour
+# les débuts des semaines 3 à 12 (CA-01, D-55).
+SEMAINES_AVANT_DEBUT = 2
+SEMAINES_DEBUT_ANALYSEES = range(3, 13)
