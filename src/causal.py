@@ -1,13 +1,18 @@
-"""Analyse causale : le tutorat fait-il baisser le décrochage ? Phase de conception.
+"""Analyse causale : le tutorat fait-il baisser le décrochage ?
 
-Rôle du module : préparer l'estimation de l'effet du tutorat sans jamais regarder le
-décrochage par équipe (D-59) : moment d'entrée en tutorat, « photo » de la semaine 8
-contre le temps immortel (D-53, D-54), covariables et score de propension (D-55, D-56),
-poids stabilisés, support commun et équilibre des deux équipes, figure du DAG.
-Les fonctions de ce module ne calculent rien sur T, E ou la survie selon le tutorat.
+Rôle du module :
+- conception (sections 1 à 11), sans regarder le décrochage par équipe (D-59) : moment
+  d'entrée en tutorat, « photo » de la semaine 8 contre le temps immortel (D-53, D-54),
+  covariables et score de propension (D-55, D-56), poids stabilisés, support commun,
+  équilibre des deux équipes, diagnostic hors critère, figure du DAG ;
+- effet (section 12), une fois la conception relue (R02) et figée (D-57, D-61) :
+  courbes de Kaplan-Meier pondérées, risque à 30 semaines, RMST, HR, bootstrap, E-value.
 
-Tâches couvertes : CA-01, CA-02, CA-03 (CA-04 et CA-05 viendront s'y ajouter).
+Tâches couvertes : CA-01 à CA-04 (CA-05 viendra s'y ajouter).
 """
+
+import time
+import warnings
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,9 +20,13 @@ import pandas as pd
 import statsmodels.api as sm
 from matplotlib.path import Path
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Patch
+from lifelines import CoxPHFitter, KaplanMeierFitter
+from lifelines.exceptions import ConvergenceError, StatisticalWarning
+from lifelines.statistics import proportional_hazard_test
+from lifelines.utils import restricted_mean_survival_time
 from scipy.stats import rankdata
 
-from src import config, survie
+from src import config, eda, survie
 
 
 class ErreurCausal(Exception):
@@ -362,6 +371,9 @@ def poids_stabilises(score, traite):
     """
     score = np.asarray(score, dtype=float)
     traite = np.asarray(traite, dtype=int)
+    if ((score <= 0) | (score >= 1)).any():
+        # Un score de 0 ou 1 donnerait un poids infini.
+        raise ErreurCausal("Score de propension égal à 0 ou 1 : poids infini")
     part_tutores = traite.mean()
     return np.where(traite == 1, part_tutores / score, (1 - part_tutores) / (1 - score))
 
@@ -685,3 +697,261 @@ def dessiner_dag(chemin):
     figure.tight_layout()
     figure.savefig(chemin, dpi=150, bbox_inches="tight")
     plt.close(figure)
+
+
+# ===========================================================================
+# 12. Effet du tutorat : courbes pondérées, RMST, HR, bootstrap (CA-04, D-57, D-61)
+# ===========================================================================
+
+# Mesures de l'effet, dans l'ordre du tableau de résultats.
+MESURES_EFFET = ["risque_tutores", "risque_non_tutores", "difference_risque", "rapport_risques",
+                 "rmst_tutores", "rmst_non_tutores", "difference_rmst", "hr"]
+# Erreurs qui font échouer un tirage bootstrap : il est alors remplacé et compté (D-61).
+ERREURS_TIRAGE = (ErreurCausal, ConvergenceError, np.linalg.LinAlgError, ValueError, ZeroDivisionError)
+
+
+def kaplan_meier_pondere(duree, evenement, poids, nom):
+    """Kaplan-Meier pondéré d'une équipe (lifelines, poids des étudiants)."""
+    kmf = KaplanMeierFitter(label=nom)
+    kmf.fit(np.asarray(duree), event_observed=np.asarray(evenement), weights=np.asarray(poids, dtype=float))
+    return kmf
+
+
+def survie_au_temps(kmf, temps):
+    """Valeur de la courbe de survie à un temps donné (courbe en escalier)."""
+    return float(kmf.survival_function_at_times([temps]).iloc[0])
+
+
+def ajuster_cox_pondere(duree, evenement, traite, poids, robuste=False):
+    """Cox à une seule variable (tutoré à la photo), pondéré, liens d'Efron (D-61, point 3).
+
+    robuste=True donne l'erreur standard « sandwich » (analyse principale, pour
+    information). lifelines prévient que des poids non entiers appellent robust=True :
+    l'avertissement est masqué, car l'IC officiel vient du bootstrap.
+    """
+    table = pd.DataFrame({"duree": np.asarray(duree), "evenement": np.asarray(evenement),
+                          "tutore_photo": np.asarray(traite), "poids": np.asarray(poids, dtype=float)})
+    cph = CoxPHFitter()
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", StatisticalWarning)
+        cph.fit(table, duration_col="duree", event_col="evenement", weights_col="poids", robust=robuste)
+    return cph, table
+
+
+def effet_pondere(duree, evenement, traite, poids, horizon, robuste=False):
+    """Effet du tutorat sur une population pondérée (D-57, D-61 point 4).
+
+    Entrées : durée depuis la photo (T − L), événement, équipe (1 = tutoré), poids
+    tronqués, horizon H = 30 − L. Pour chaque équipe : Kaplan-Meier pondéré, risque de
+    décrochage à 30 semaines = 1 − S(H), RMST = aire sous la courbe jusqu'à H (semaines
+    sans décrochage gagnées sur la période). HR : Cox pondéré à une variable.
+    Sortie : dictionnaire des mesures de MESURES_EFFET + courbes et modèle.
+    """
+    duree = np.asarray(duree)
+    evenement = np.asarray(evenement)
+    traite = np.asarray(traite, dtype=int)
+    poids = np.asarray(poids, dtype=float)
+    courbes = {}
+    for equipe, nom in [(1, "tutores"), (0, "non_tutores")]:
+        dans = traite == equipe
+        courbes[nom] = kaplan_meier_pondere(duree[dans], evenement[dans], poids[dans], nom)
+    risque_t = 1 - survie_au_temps(courbes["tutores"], horizon)
+    risque_n = 1 - survie_au_temps(courbes["non_tutores"], horizon)
+    rmst_t = float(restricted_mean_survival_time(courbes["tutores"], t=horizon))
+    rmst_n = float(restricted_mean_survival_time(courbes["non_tutores"], t=horizon))
+    cph, table = ajuster_cox_pondere(duree, evenement, traite, poids, robuste=robuste)
+    return {
+        "risque_tutores": risque_t,
+        "risque_non_tutores": risque_n,
+        "difference_risque": risque_t - risque_n,
+        "rapport_risques": risque_t / risque_n,
+        "rmst_tutores": rmst_t,
+        "rmst_non_tutores": rmst_n,
+        "difference_rmst": rmst_t - rmst_n,
+        "hr": float(np.exp(cph.params_["tutore_photo"])),
+        "courbes": courbes,
+        "cox": cph,
+        "table_cox": table,
+    }
+
+
+def e_value(rapport):
+    """E-value d'un rapport de risques (D-61, point 5) : RR < 1 -> 1 / RR ; E = RR + √(RR(RR − 1)).
+
+    C'est la force minimale (en rapport de risques) qu'un facteur caché devrait avoir avec
+    le tutorat ET avec le décrochage pour expliquer entièrement l'association observée.
+    """
+    if rapport < 1:
+        rapport = 1 / rapport
+    return float(rapport + np.sqrt(rapport * (rapport - 1)))
+
+
+def e_value_intervalle(borne_basse, borne_haute):
+    """E-value de la borne de l'IC la plus proche de 1 ; 1 si l'IC contient 1."""
+    if borne_basse <= 1 <= borne_haute:
+        return 1.0
+    plus_proche = borne_haute if borne_haute < 1 else borne_basse
+    return e_value(plus_proche)
+
+
+def tirage_bootstrap(conception, duree, evenement, indices, horizon):
+    """Un tirage (D-61, point 1) : X, matrice d'équilibre, équipe, durée et E pris aux indices.
+
+    Le score est ré-estimé avec la spécification de l'analyse (les carrés restent si la
+    retouche a été appliquée ; on ne redécide jamais dans un tirage), puis poids
+    stabilisés, troncature, plus grand |SMD| du tirage et effet pondéré (estimations seules).
+    """
+    X = conception["X"].iloc[indices].reset_index(drop=True)
+    matrice = conception["matrice"].iloc[indices].reset_index(drop=True)
+    traite = np.asarray(conception["traite"])[indices]
+    resultat = score_poids_equilibre(X, traite, matrice)
+    effet = effet_pondere(np.asarray(duree)[indices], np.asarray(evenement)[indices], traite, resultat["poids"],
+                          horizon)
+    ligne = {mesure: effet[mesure] for mesure in MESURES_EFFET}
+    ligne["smd_max"] = float(resultat["equilibre"]["smd_apres"].abs().max())
+    return ligne
+
+
+def bootstrap(conception, duree, evenement, horizon, nb_tirages, graine=config.SEED, fonction_tirage=tirage_bootstrap):
+    """Bootstrap de l'effet : nb_tirages tirages avec remise des étudiants de la population.
+
+    Un générateur neuf par analyse (graine SEED) ; indices = rng.integers(0, n, size=n).
+    Un tirage qui échoue (erreur, score non convergé) est remplacé par le suivant et compté.
+    Sortie : (tableau des tirages, nombre d'échecs).
+    """
+    generateur = np.random.default_rng(graine)
+    n = len(duree)
+    lignes = []
+    echecs = 0
+    while len(lignes) < nb_tirages:
+        indices = generateur.integers(0, n, size=n)
+        try:
+            lignes.append(fonction_tirage(conception, duree, evenement, indices, horizon))
+        except ERREURS_TIRAGE:
+            echecs += 1
+            if echecs > nb_tirages:
+                raise ErreurCausal(f"Bootstrap : plus de {nb_tirages} tirages en échec")
+    tirages = pd.DataFrame(lignes)
+    tirages.insert(0, "tirage", np.arange(1, len(tirages) + 1))
+    return tirages, echecs
+
+
+def intervalle(valeurs):
+    """IC à 95 % par les percentiles 2,5 et 97,5 (numpy, méthode par défaut)."""
+    bas, haut = np.percentile(np.asarray(valeurs, dtype=float), config.QUANTILES_IC)
+    return float(bas), float(haut)
+
+
+def tableau_effet(effet, tirages):
+    """Tableau mesure, estimation, borne basse, borne haute (IC bootstrap)."""
+    lignes = []
+    for mesure in MESURES_EFFET:
+        bas, haut = intervalle(tirages[mesure])
+        lignes.append({"mesure": mesure, "estimation": effet[mesure], "ic_bas": bas, "ic_haut": haut})
+    return pd.DataFrame(lignes)
+
+
+def analyse_effet(population, periode, semaine, fenetre, duree="T", evenement="E", nb_tirages=None,
+                  robuste=False):
+    """Conception (chaîne de C10) puis effet pondéré et bootstrap pour une population.
+
+    Durée depuis la photo = duree − semaine ; horizon = N_SEMAINES − semaine.
+    Sortie : dictionnaire : conception, effet, tirages, échecs, tableau, horizon.
+    """
+    population = population.reset_index(drop=True)
+    conception = chaine_de_conception(population, periode, fenetre, semaine, duree=duree, evenement=evenement)
+    horizon = config.N_SEMAINES - semaine
+    durees = (population[duree] - semaine).to_numpy()
+    evenements = population[evenement].to_numpy()
+    effet = effet_pondere(durees, evenements, conception["traite"], conception["poids"], horizon, robuste=robuste)
+    tirages, echecs = bootstrap(conception, durees, evenements, horizon, nb_tirages)
+    return {
+        "population": population,
+        "conception": conception,
+        "effet": effet,
+        "tirages": tirages,
+        "echecs": echecs,
+        "tableau": tableau_effet(effet, tirages),
+        "horizon": horizon,
+        "semaine": semaine,
+    }
+
+
+def courbes_ponderees(effet, semaine, horizon):
+    """Survie pondérée des deux équipes, de la semaine de la photo à la semaine 30."""
+    durees = np.arange(0, horizon + 1)
+    return pd.DataFrame({
+        "semaine": semaine + durees,
+        "survie_tutores": effet["courbes"]["tutores"].survival_function_at_times(durees).to_numpy(),
+        "survie_non_tutores": effet["courbes"]["non_tutores"].survival_function_at_times(durees).to_numpy(),
+    })
+
+
+def schoenfeld_pondere(effet):
+    """Test de Schoenfeld (« rank ») du Cox pondéré : indicatif sur un modèle pondéré (D-61)."""
+    test = proportional_hazard_test(effet["cox"], effet["table_cox"],
+                                    time_transform=config.TRANSFORMATION_SCHOENFELD)
+    resume = test.summary
+    return pd.DataFrame({"variable": ["tutore_photo"], "statistique": [float(resume["test_statistic"].iloc[0])],
+                         "p": [float(resume["p"].iloc[0])]})
+
+
+def tableau_effet_principal(analyse):
+    """Tableau de l'effet principal + IC « sandwich » du HR (pour information) + E-value."""
+    tableau = analyse["tableau"].copy()
+    resume = analyse["effet"]["cox"].summary.loc["tutore_photo"]
+    niveau = f"{100 * (1 - config.ALPHA):.0f}%"
+    rr = tableau.set_index("mesure").loc["rapport_risques"]
+    lignes_en_plus = pd.DataFrame([
+        {"mesure": "hr_ic_sandwich", "estimation": float(resume["exp(coef)"]),
+         "ic_bas": float(resume[f"exp(coef) lower {niveau}"]), "ic_haut": float(resume[f"exp(coef) upper {niveau}"])},
+        {"mesure": "e_value", "estimation": e_value(rr["estimation"]), "ic_bas": np.nan, "ic_haut": np.nan},
+        {"mesure": "e_value_borne_ic", "estimation": e_value_intervalle(rr["ic_bas"], rr["ic_haut"]),
+         "ic_bas": np.nan, "ic_haut": np.nan},
+    ])
+    return pd.concat([tableau, lignes_en_plus], ignore_index=True)
+
+
+def diagnostic_bootstrap(nom, analyse):
+    """Tirages hors critère (|SMD| >= SEUIL_SMD dans le tirage) et tirages en échec."""
+    tirages = analyse["tirages"]
+    hors = int((tirages["smd_max"] >= config.SEUIL_SMD).sum())
+    return {"analyse": nom, "tirages": len(tirages), "echecs": analyse["echecs"], "hors_critere": hors,
+            "part_hors_critere": hors / len(tirages)}
+
+
+def ecrire_resultat(df, nom_fichier):
+    """Écrit un résultat en CSV dans DOSSIER_RESULTATS (UTF-8, LF, 8 chiffres significatifs)."""
+    config.DOSSIER_RESULTATS.mkdir(parents=True, exist_ok=True)
+    chemin = config.DOSSIER_RESULTATS / nom_fichier
+    df.to_csv(chemin, sep=config.SEPARATEUR_PROCESSED, index=False, encoding=config.ENCODAGE,
+              lineterminator="\n", float_format=config.FORMAT_NOMBRES_RESULTATS)
+    return chemin
+
+
+def resultats_principaux(base, periode):
+    """Analyse principale (photo de la semaine 8, fenêtre 1 à 8, 500 tirages) -> tables à écrire."""
+    semaine = config.SEMAINE_LANDMARK
+    population = population_photo(base, semaine)
+    analyse = analyse_effet(population, periode, semaine, (1, semaine), nb_tirages=config.NB_TIRAGES_PRINCIPAL,
+                            robuste=True)
+    return analyse, {
+        "ca_effet_principal.csv": tableau_effet_principal(analyse),
+        "ca_tirages_principal.csv": analyse["tirages"],
+        "ca_courbes_ponderees.csv": courbes_ponderees(analyse["effet"], semaine, analyse["horizon"]),
+        "ca_schoenfeld_principal.csv": schoenfeld_pondere(analyse["effet"]),
+    }
+
+
+def lancer():
+    """Étape causale de run_all.py : effet du tutorat et sensibilité, résultats enregistrés."""
+    debut = time.perf_counter()
+    base, periode = eda.lire_bases()
+    analyse, fichiers = resultats_principaux(base, periode)
+    fichiers["ca_diagnostic_bootstrap.csv"] = pd.DataFrame([diagnostic_bootstrap("principale", analyse)])
+    for nom_fichier, table in fichiers.items():
+        ecrire_resultat(table, nom_fichier)
+    duree = time.perf_counter() - debut
+    print(f"Analyse causale (CA-04) : {len(fichiers)} fichiers écrits dans "
+          f"{config.DOSSIER_RESULTATS.relative_to(config.RACINE)} en {duree:.0f} s.")
+    return fichiers

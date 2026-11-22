@@ -2,14 +2,14 @@
 
 Rôle du module : enchaîner les étapes dans l'ordre : nettoyage des 5 tables, puis
 construction de T et E (base_survie.csv, base_periode_personne.csv), puis modèles
-prédictifs de survie entraînés sur 2024 et testés sur 2025 (data/processed/resultats/).
-Les étapes suivantes (causal, LLM) seront ajoutées au fil des tâches.
+prédictifs de survie entraînés sur 2024 et testés sur 2025, puis effet du tutorat
+(résultats dans data/processed/resultats/). L'étape LLM sera ajoutée plus tard.
 Lancement depuis la racine du dépôt : python run_all.py
 
-Tâches couvertes : DA-02 à DA-07, SV-03, SV-04.
+Tâches couvertes : DA-02 à DA-07, SV-03, SV-04, CA-04.
 """
 
-from src import base_survie, ml_survie
+from src import base_survie, causal, ml_survie
 from src.nettoyage import lancer_nettoyage
 
 
@@ -18,6 +18,7 @@ def main():
     lancer_nettoyage()
     base_survie.lancer()
     ml_survie.lancer()
+    causal.lancer()
 
 
 if __name__ == "__main__":

@@ -617,3 +617,13 @@ FORMAT_NOMBRES_RESULTATS = "%.8g"
 # Diagnostic hors critère (RV02-06) : activité des 2 dernières semaines avant la photo
 # (semaines 7 et 8 pour la photo de la semaine 8), absente du score.
 SEMAINES_RECENTES_DIAGNOSTIC = 2
+
+# ---------------------------------------------------------------------------
+# Analyse causale : effet du tutorat et sensibilité (CA-04, CA-05 ; D-57, D-61)
+# ---------------------------------------------------------------------------
+
+# Bootstrap (D-61, point 6) : 500 tirages pour l'analyse principale, 200 par variante.
+NB_TIRAGES_PRINCIPAL = 500
+NB_TIRAGES_VARIANTE = 200
+# Intervalle de confiance à 95 % : percentiles 2,5 et 97,5 des tirages.
+QUANTILES_IC = (2.5, 97.5)
