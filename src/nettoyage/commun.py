@@ -47,14 +47,18 @@ def ecrire_table(df, table):
     """Écrit une table nettoyée dans data/processed/<table>.csv (UTF-8, sans index)."""
     config.DOSSIER_PROCESSED.mkdir(parents=True, exist_ok=True)
     chemin = config.DOSSIER_PROCESSED / f"{table}.csv"
-    df.to_csv(chemin, sep=config.SEPARATEUR_PROCESSED, index=False, encoding=config.ENCODAGE)
+    # Fins de ligne LF imposées : sous Windows, pandas 2.x écrirait sinon CRLF (RV02-08).
+    df.to_csv(chemin, sep=config.SEPARATEUR_PROCESSED, index=False, encoding=config.ENCODAGE,
+              lineterminator="\n")
     return chemin
 
 
 def ecrire_rejets(df, chemin):
     """Écrit des lignes retirées dans data/processed/rejets/ (traçabilité, D-17, D-23)."""
     chemin.parent.mkdir(parents=True, exist_ok=True)
-    df.to_csv(chemin, sep=config.SEPARATEUR_PROCESSED, index=False, encoding=config.ENCODAGE)
+    # Fins de ligne LF imposées : sous Windows, pandas 2.x écrirait sinon CRLF (RV02-08).
+    df.to_csv(chemin, sep=config.SEPARATEUR_PROCESSED, index=False, encoding=config.ENCODAGE,
+              lineterminator="\n")
     return chemin
 
 

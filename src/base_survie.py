@@ -271,7 +271,9 @@ def construire_periode_personne(base, activite):
 
 def ecrire(df, chemin):
     """Écrit une table finale en CSV (UTF-8, séparateur « , », sans index)."""
-    df.to_csv(chemin, sep=config.SEPARATEUR_PROCESSED, index=False, encoding=config.ENCODAGE)
+    # Fins de ligne LF imposées : sous Windows, pandas 2.x écrirait sinon CRLF (RV02-08).
+    df.to_csv(chemin, sep=config.SEPARATEUR_PROCESSED, index=False, encoding=config.ENCODAGE,
+              lineterminator="\n")
     return chemin
 
 
