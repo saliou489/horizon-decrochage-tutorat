@@ -611,3 +611,6 @@ NB_REPETITIONS_PERMUTATION = 10
 ETATS_ACTIVITE = ("actif", "inactif", "inconnu")
 # Résultats des modèles, relus par le notebook 04 et le tableau de bord.
 DOSSIER_RESULTATS = DOSSIER_PROCESSED / "resultats"
+# Format des nombres écrits dans les résultats : 8 chiffres significatifs (fichiers
+# identiques d'une machine à l'autre malgré le bruit de calcul au 16e chiffre).
+FORMAT_NOMBRES_RESULTATS = "%.8g"

@@ -371,11 +371,16 @@ def mesures_rentree(nom, survies, test, censure):
 
 
 def ecrire_resultat(df, nom_fichier):
-    """Écrit un résultat en CSV dans DOSSIER_RESULTATS (UTF-8, fins de ligne LF)."""
+    """Écrit un résultat en CSV dans DOSSIER_RESULTATS (UTF-8, fins de ligne LF).
+
+    Les nombres sont écrits avec 8 chiffres significatifs : d'une machine à l'autre, les
+    calculs diffèrent au 16e chiffre (bruit de calcul) ; arrondis, les fichiers restent
+    identiques et git ne signale pas de fausse modification.
+    """
     config.DOSSIER_RESULTATS.mkdir(parents=True, exist_ok=True)
     chemin = config.DOSSIER_RESULTATS / nom_fichier
     df.to_csv(chemin, sep=config.SEPARATEUR_PROCESSED, index=False, encoding=config.ENCODAGE,
-              lineterminator="\n")
+              lineterminator="\n", float_format=config.FORMAT_NOMBRES_RESULTATS)
     return chemin
 
 

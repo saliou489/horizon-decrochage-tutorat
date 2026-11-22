@@ -1,4 +1,4 @@
 modele,auc,decrochages_attendus,decrochages_observes
-Cox,0.6883974707401924,,
-Gradient boosting « rentrée »,0.6576770145709341,,
-Gradient boosting hebdomadaire,0.6853031727419724,748.9657057407168,725.0
+Cox,0.68839747,,
+Gradient boosting « rentrée »,0.65767701,,
+Gradient boosting hebdomadaire,0.68530317,748.96571,725

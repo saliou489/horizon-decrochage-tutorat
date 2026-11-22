@@ -1,22 +1,22 @@
 modele,mesure,variable,baisse_moyenne,ecart_type
-rentree,baisse du C-index,age,0.0035612199803398137,0.0055390431833706
-rentree,baisse du C-index,note_bac,0.04504717058567435,0.008413990930875637
-rentree,baisse du C-index,log2_distance,0.012558663634686152,0.003780297022548317
-rentree,baisse du C-index,genre,0.0005641296046890121,0.002145817948692249
-rentree,baisse du C-index,boursier,0.012105902183827056,0.004017376967353817
-rentree,baisse du C-index,filiere,0.007987611606190104,0.002249519085545481
-rentree,baisse du C-index,region_dakar,0.003653742226062884,0.000721470341818083
-rentree,baisse du C-index,emploi_parallele,0.023482067166291153,0.002483726148087424
-hebdomadaire,baisse de l'AUC hebdomadaire,age,0.0019194764172389745,0.002997017867351526
-hebdomadaire,baisse de l'AUC hebdomadaire,note_bac,0.01896974482918149,0.004182412407187045
-hebdomadaire,baisse de l'AUC hebdomadaire,log2_distance,-0.001106466841923559,0.0029755939298891027
-hebdomadaire,baisse de l'AUC hebdomadaire,genre,-0.0015287709570415476,0.0008330472016084281
-hebdomadaire,baisse de l'AUC hebdomadaire,boursier,0.0026661960484018477,0.001250913138295497
-hebdomadaire,baisse de l'AUC hebdomadaire,filiere,0.0008100343106923313,0.001195832448276048
-hebdomadaire,baisse de l'AUC hebdomadaire,region_dakar,-0.0002211826078633572,0.0007020817376415598
-hebdomadaire,baisse de l'AUC hebdomadaire,emploi_parallele,0.0067941324271937106,0.0012482782544970357
-hebdomadaire,baisse de l'AUC hebdomadaire,nb_connexions_lms_prec,0.012171926082165574,0.0039080538750854025
-hebdomadaire,baisse de l'AUC hebdomadaire,devoirs_rendus_prec,0.005523835732574855,0.001211392349005282
-hebdomadaire,baisse de l'AUC hebdomadaire,note_moyenne_prec,0.008444410638935473,0.0026864913060497394
-hebdomadaire,baisse de l'AUC hebdomadaire,absences_prec,0.01506739868887801,0.003078257605403074
-hebdomadaire,baisse de l'AUC hebdomadaire,etat_activite_prec,-6.476071966997621e-05,0.00022660258812360796
+rentree,baisse du C-index,age,0.00356122,0.0055390432
+rentree,baisse du C-index,note_bac,0.045047171,0.0084139909
+rentree,baisse du C-index,log2_distance,0.012558664,0.003780297
+rentree,baisse du C-index,genre,0.0005641296,0.0021458179
+rentree,baisse du C-index,boursier,0.012105902,0.004017377
+rentree,baisse du C-index,filiere,0.0079876116,0.0022495191
+rentree,baisse du C-index,region_dakar,0.0036537422,0.00072147034
+rentree,baisse du C-index,emploi_parallele,0.023482067,0.0024837261
+hebdomadaire,baisse de l'AUC hebdomadaire,age,0.0019194764,0.0029970179
+hebdomadaire,baisse de l'AUC hebdomadaire,note_bac,0.018969745,0.0041824124
+hebdomadaire,baisse de l'AUC hebdomadaire,log2_distance,-0.0011064668,0.0029755939
+hebdomadaire,baisse de l'AUC hebdomadaire,genre,-0.001528771,0.0008330472
+hebdomadaire,baisse de l'AUC hebdomadaire,boursier,0.002666196,0.0012509131
+hebdomadaire,baisse de l'AUC hebdomadaire,filiere,0.00081003431,0.0011958324
+hebdomadaire,baisse de l'AUC hebdomadaire,region_dakar,-0.00022118261,0.00070208174
+hebdomadaire,baisse de l'AUC hebdomadaire,emploi_parallele,0.0067941324,0.0012482783
+hebdomadaire,baisse de l'AUC hebdomadaire,nb_connexions_lms_prec,0.012171926,0.0039080539
+hebdomadaire,baisse de l'AUC hebdomadaire,devoirs_rendus_prec,0.0055238357,0.0012113923
+hebdomadaire,baisse de l'AUC hebdomadaire,note_moyenne_prec,0.0084444106,0.0026864913
+hebdomadaire,baisse de l'AUC hebdomadaire,absences_prec,0.015067399,0.0030782576
+hebdomadaire,baisse de l'AUC hebdomadaire,etat_activite_prec,-6.476072e-05,0.00022660259

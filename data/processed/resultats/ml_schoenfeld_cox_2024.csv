@@ -1,14 +1,14 @@
 colonne,variable,statistique,p
-age,age,0.14546323073860498,0.7029091155554352
-boursier=Oui,boursier,0.570778565464103,0.4499497009918604
-emploi_parallele=(manquant),emploi_parallele,0.8942348804913914,0.34433226980318554
-emploi_parallele=Oui,emploi_parallele,4.700035357566908,0.030161996891315476
-filiere=Communication,filiere,0.8156966372606975,0.36644137987264125
-filiere=Droit,filiere,0.7831519386006914,0.37617889507941393
-filiere=Gestion,filiere,0.004507544643224333,0.9464716433002115
-filiere=Génie civil,filiere,0.8275589169389185,0.36297934467702764
-genre=M,genre,0.13920745037042664,0.7090701884314993
-log2_distance,log2_distance,0.016744096842639163,0.897041952238718
-note_bac,note_bac,0.10496079962188459,0.7459557941740267
-region_dakar=(manquant),region_dakar,0.015651484136330905,0.9004397190490037
-region_dakar=Hors Dakar,region_dakar,0.19485251805148945,0.6589082265868994
+age,age,0.14546323,0.70290912
+boursier=Oui,boursier,0.57077857,0.4499497
+emploi_parallele=(manquant),emploi_parallele,0.89423488,0.34433227
+emploi_parallele=Oui,emploi_parallele,4.7000354,0.030161997
+filiere=Communication,filiere,0.81569664,0.36644138
+filiere=Droit,filiere,0.78315194,0.3761789
+filiere=Gestion,filiere,0.0045075446,0.94647164
+filiere=Génie civil,filiere,0.82755892,0.36297934
+genre=M,genre,0.13920745,0.70907019
+log2_distance,log2_distance,0.016744097,0.89704195
+note_bac,note_bac,0.1049608,0.74595579
+region_dakar=(manquant),region_dakar,0.015651484,0.90043972
+region_dakar=Hors Dakar,region_dakar,0.19485252,0.65890823
