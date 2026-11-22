@@ -432,3 +432,10 @@ Gabarit :
   - biais attendus, écrits d'avance : estimation plutôt prudente (plus proche de « aucun effet » que la réalité) à cause des 11 % de futurs tutorés chez les non-tutorés, de la fenêtre d'activité 1 à 8 et du caractère marginal du HR ; biais inverse possible : la motivation non mesurée (demandes personnelles) ;
   - vocabulaire : « effet » seulement pour cette estimation, avec ses trois conditions rappelées (pas de facteur caché important ; chaque profil pouvait être tutoré ou non ; score bien construit) ; le résultat est rapporté quel qu'il soit.
 - Statut : validée (Saliou, 22/11)
+
+## D-60 — Modèle non linéaire de survie : gradient boosting à temps discret avec scikit-learn (SV-03, Q1)
+- Date / tâche : 22/11/2026 — SV-03
+- Constat (pilotage) : scikit-survival 0.28.0 (forêt aléatoire de survie, conseillée au cahier §7) dépend d'`ecos`, qui n'a de version précompilée que jusqu'à Python 3.12 (roues Windows cp37 à cp312 ; sur Linux, installation seulement en compilant). Le PC de Saliou est en Python 3.14, sans compilateur ; numpy 2.5 exige Python ≥ 3.12 (D-05) : l'enseignant devrait donc avoir exactement Python 3.12.
+- Options : (A) forêt aléatoire de survie (scikit-survival) en imposant Python 3.12 ; (B) gradient boosting de survie à temps discret avec scikit-learn : un `HistGradientBoostingClassifier` estime, pour chaque étudiant encore suivi, le risque de décrocher dans la semaine (table semaine par semaine, D-39) ; la courbe de survie est le produit des (1 − risque) semaine après semaine.
+- Décision : (B). Conforme au cahier (F4 : « gradient boosting de survie » ; « Random Survival Forest ou équivalent ») ; aucun changement d'environnement ; `scikit-learn==1.9.1` (s'installe sous Python 3.14 avec pandas 2.3.3). Le Brier score intégré et la calibration sont codés dans `src/ml_survie.py` et testés ; le pilotage les vérifie contre scikit-survival dans son propre environnement (ce n'est pas une dépendance du projet).
+- Statut : validée (Saliou, 22/11)
