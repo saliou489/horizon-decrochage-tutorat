@@ -177,3 +177,17 @@ def test_lignes_semaines_liste_positive(inventees):
         for colonne in colonnes:
             assert colonne not in ("T", "E", "evenement", "nb_connexions_lms", "etat_activite", "tutorat_commence")
             assert "tutor" not in colonne and "cohorte" not in colonne
+
+
+def test_importance_meme_graine_memes_resultats(inventees):
+    base, periode = inventees
+    entrainement, test = ml_survie.separer_cohortes(base)
+    rentree = ml_survie.variables_rentree(entrainement, test)
+    lignes_2024, colonnes = ml_survie.lignes_semaines(periode, rentree["entrainement"], rentree["colonnes"],
+                                                      hebdomadaire=True)
+    lignes_2025, _ = ml_survie.lignes_semaines(periode, rentree["test"], rentree["colonnes"], hebdomadaire=True)
+    modele = ml_survie.entrainer_gradient_boosting(lignes_2024, colonnes)
+    premiere = ml_survie.importance_hebdomadaire(modele, lignes_2025, colonnes)
+    seconde = ml_survie.importance_hebdomadaire(modele, lignes_2025, colonnes)
+    pd.testing.assert_frame_equal(premiere, seconde)
+    assert len(premiere) == len(ml_survie.VARIABLES_HEBDOMADAIRES_PERMUTATION)

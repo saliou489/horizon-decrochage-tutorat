@@ -7,11 +7,11 @@ final : rien de 2025 ne sert à l'entraînement, ni médianes, ni colonnes, ni r
 - un gradient boosting « hebdomadaire » qui ajoute l'activité de la semaine précédente
   (colonnes *_prec, D-42) : le score actualisable chaque semaine ;
 - les mesures sur 2025 (C-index, Brier score intégré, calibration à 20 semaines, AUC
-  hebdomadaire) ;
+  hebdomadaire) et l'importance des variables par permutation ;
 - l'enregistrement des résultats dans data/processed/resultats/ (relus par le notebook
   04 et le tableau de bord). Aucune variable de tutorat (D-43).
 
-Tâches couvertes : SV-03 (SV-04 viendra s'y ajouter).
+Tâches couvertes : SV-03, SV-04.
 """
 
 import time
@@ -37,6 +37,11 @@ COLONNE_ETAT_PREC = "etat_activite" + config.SUFFIXE_PREC
 # Variables d'activité numériques de la semaine précédente (D-42) et indicatrices d'état.
 COLONNES_ACTIVITE_NUMERIQUES_PREC = [f"{v}{config.SUFFIXE_PREC}" for v in config.VARIABLES_ACTIVITE_PROPENSION]
 COLONNES_ETAT_PREC = [f"{COLONNE_ETAT_PREC}{config.SEPARATEUR_INDICATRICE}{etat}" for etat in config.ETATS_ACTIVITE]
+# Variables expliquées par permutation (une variable qualitative = toutes ses indicatrices).
+VARIABLES_RENTREE_PERMUTATION = ["age", "note_bac", config.COLONNE_DISTANCE_COX, "genre", "boursier", "filiere",
+                                 config.COLONNE_REGION_COX, "emploi_parallele"]
+VARIABLES_HEBDOMADAIRES_PERMUTATION = (VARIABLES_RENTREE_PERMUTATION + COLONNES_ACTIVITE_NUMERIQUES_PREC
+                                       + [COLONNE_ETAT_PREC])
 
 
 # ===========================================================================
@@ -293,7 +298,63 @@ def risque_semaine_par_ligne(lignes, table, matrice_risques):
 
 
 # ===========================================================================
-# 6. Chaîne complète et enregistrement
+# 6. Importance par permutation (D-63)
+# ===========================================================================
+
+def colonnes_de_la_variable(colonnes, variable):
+    """Colonnes d'une variable : elle-même, ou toutes ses indicatrices « variable=… »."""
+    return [c for c in colonnes if c == variable or survie.variable_d_origine(c) == variable]
+
+
+def importance_rentree(modele, table, colonnes, graine=config.SEED):
+    """Baisse du C-index du gradient boosting « rentrée » quand on mélange une variable.
+
+    Le mélange se fait au niveau des étudiants (toutes les indicatrices d'une variable
+    qualitative ensemble). Sortie : variable, baisse_moyenne, ecart_type.
+    """
+    generateur = np.random.default_rng(graine)
+    reference = c_index(table["T"], table["E"],
+                        survie_depuis_risques(risques_gradient_boosting_rentree(modele, table, colonnes))[:, -1])
+    lignes = []
+    for variable in VARIABLES_RENTREE_PERMUTATION:
+        concernees = colonnes_de_la_variable(colonnes, variable)
+        baisses = []
+        for _ in range(config.NB_REPETITIONS_PERMUTATION):
+            melangee = table.copy()
+            ordre = generateur.permutation(len(table))
+            melangee[concernees] = table[concernees].to_numpy()[ordre]
+            survies = survie_depuis_risques(risques_gradient_boosting_rentree(modele, melangee, colonnes))
+            baisses.append(reference - c_index(table["T"], table["E"], survies[:, -1]))
+        lignes.append({"variable": variable, "baisse_moyenne": float(np.mean(baisses)),
+                       "ecart_type": float(np.std(baisses))})
+    return pd.DataFrame(lignes)
+
+
+def importance_hebdomadaire(modele, lignes, colonnes, graine=config.SEED):
+    """Baisse de l'AUC hebdomadaire du modèle hebdomadaire quand on mélange une variable.
+
+    Le mélange se fait au niveau des lignes semaine-étudiant.
+    Sortie : variable, baisse_moyenne, ecart_type.
+    """
+    generateur = np.random.default_rng(graine)
+    cible = lignes[COLONNE_EVENEMENT]
+    reference = roc_auc_score(cible, modele.predict_proba(lignes[colonnes])[:, 1])
+    resultats = []
+    for variable in VARIABLES_HEBDOMADAIRES_PERMUTATION:
+        concernees = colonnes_de_la_variable(colonnes, variable)
+        baisses = []
+        for _ in range(config.NB_REPETITIONS_PERMUTATION):
+            melangee = lignes[colonnes].copy()
+            ordre = generateur.permutation(len(lignes))
+            melangee[concernees] = lignes[concernees].to_numpy()[ordre]
+            baisses.append(reference - roc_auc_score(cible, modele.predict_proba(melangee)[:, 1]))
+        resultats.append({"variable": variable, "baisse_moyenne": float(np.mean(baisses)),
+                          "ecart_type": float(np.std(baisses))})
+    return pd.DataFrame(resultats)
+
+
+# ===========================================================================
+# 7. Chaîne complète et enregistrement
 # ===========================================================================
 
 def mesures_rentree(nom, survies, test, censure):
@@ -371,6 +432,13 @@ def modeles_et_mesures(base, periode):
          "decrochages_attendus": float(risque_hebdo.sum()), "decrochages_observes": int(cible.sum())},
     ])
 
+    # Importance par permutation.
+    importances = pd.concat([
+        importance_rentree(gb_rentree, table_test, colonnes).assign(modele="rentree", mesure="baisse du C-index"),
+        importance_hebdomadaire(gb_hebdo, lignes_hebdo_2025, colonnes_hebdo).assign(
+            modele="hebdomadaire", mesure="baisse de l'AUC hebdomadaire"),
+    ], ignore_index=True)[["modele", "mesure", "variable", "baisse_moyenne", "ecart_type"]]
+
     # Données décrites par cohorte (section 2 du notebook).
     donnees = pd.DataFrame([
         {"cohorte": config.COHORTE_ENTRAINEMENT, "role": "entraînement", "etudiants": len(table_entrainement),
@@ -402,6 +470,7 @@ def modeles_et_mesures(base, periode):
         "ml_brier_par_semaine.csv": tableau_brier,
         "ml_calibration_20_semaines.csv": pd.concat(calibrations, ignore_index=True),
         "ml_score_hebdomadaire.csv": hebdomadaire,
+        "ml_importance.csv": importances,
         "ml_hr_cox_2024.csv": hr,
         "ml_schoenfeld_cox_2024.csv": schoenfeld,
         "ml_predictions_2025.csv": predictions,
