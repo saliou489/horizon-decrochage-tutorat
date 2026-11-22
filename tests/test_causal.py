@@ -150,6 +150,18 @@ def test_difference_standardisee():
     assert causal.difference_standardisee(valeurs, traite, [1, 3, 1, 1]) == pytest.approx(-1.75 / np.sqrt(0.5))
 
 
+def test_support_commun():
+    support = causal.support_commun([0.1, 0.4, 0.6, 0.2, 0.5, 0.9], [1, 1, 1, 0, 0, 0])
+    assert support["bornes"] == pytest.approx((0.2, 0.6))
+    assert support["hors_support_tutores"] == 1  # score 0,1
+    assert support["hors_support_autres"] == 1  # score 0,9
+    assert list(support["dans_support"]) == [False, True, True, True, True, False]
+
+
+def test_auc_par_les_rangs():
+    # Tous les tutorés au-dessus des autres : AUC = 1 ; ordre inverse : 0.
+    assert causal.auc_par_les_rangs([0.9, 0.8, 0.2, 0.1], [1, 1, 0, 0]) == pytest.approx(1.0)
+    assert causal.auc_par_les_rangs([0.1, 0.2, 0.8, 0.9], [1, 1, 0, 0]) == pytest.approx(0.0)
 
 
 # ---------------------------------------------------------------------------

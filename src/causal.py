@@ -12,7 +12,9 @@ Tâches couvertes : CA-01, CA-02, CA-03 (CA-04 et CA-05 viendront s'y ajouter).
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import statsmodels.api as sm
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Patch
+from scipy.stats import rankdata
 
 from src import config, survie
 
@@ -247,6 +249,68 @@ def covariables_du_score(population, periode, fenetre, duree="T", evenement="E")
         X[colonne] = activite[colonne].fillna(medianes[colonne]).to_numpy()
     verifier_colonnes_autorisees(X.columns)
     return X, medianes
+
+
+# ===========================================================================
+# 6. Score de propension et support commun (CA-02, D-56)
+# ===========================================================================
+
+def ajuster_score(X, traite):
+    """Régression logistique sans pénalité (GLM binomial avec constante, statsmodels).
+
+    Sortie : (modèle ajusté, score = probabilité prédite d'être tutoré à la photo).
+    """
+    exogenes = sm.add_constant(X, has_constant="add")
+    modele = sm.GLM(np.asarray(traite, dtype=float), exogenes, family=sm.families.Binomial()).fit()
+    return modele, np.asarray(modele.predict(exogenes), dtype=float)
+
+
+def auc_par_les_rangs(score, traite):
+    """AUC = (somme des rangs des tutorés − n1(n1 + 1)/2) / (n1 × n0).
+
+    C'est la probabilité qu'un tutoré pris au hasard ait un score plus élevé qu'un
+    non-tutoré pris au hasard (ex aequo comptés pour moitié).
+    """
+    traite = np.asarray(traite, dtype=int)
+    rangs = rankdata(score)
+    n1 = int(traite.sum())
+    n0 = len(traite) - n1
+    return float((rangs[traite == 1].sum() - n1 * (n1 + 1) / 2) / (n1 * n0))
+
+
+def rapports_de_cotes(modele):
+    """Rapports de cotes du score : exp(coef), IC à 95 %, p (sans la constante)."""
+    intervalles = modele.conf_int(alpha=config.ALPHA)
+    tableau = pd.DataFrame({
+        "rapport_de_cotes": np.exp(modele.params),
+        "ic_bas": np.exp(intervalles[0]),
+        "ic_haut": np.exp(intervalles[1]),
+        "p": modele.pvalues,
+    })
+    return tableau.drop(index="const")
+
+
+def support_commun(score, traite):
+    """Support commun : [plus grand des minimums ; plus petit des maximums] des deux équipes.
+
+    Sortie : dictionnaire : bornes, min et max par équipe, masque « dans le support »,
+    effectifs hors support par équipe.
+    """
+    score = np.asarray(score, dtype=float)
+    traite = np.asarray(traite, dtype=int)
+    tutores = score[traite == 1]
+    autres = score[traite == 0]
+    bas = max(tutores.min(), autres.min())
+    haut = min(tutores.max(), autres.max())
+    dans_support = (score >= bas) & (score <= haut)
+    return {
+        "bornes": (float(bas), float(haut)),
+        "tutores_min_max": (float(tutores.min()), float(tutores.max())),
+        "autres_min_max": (float(autres.min()), float(autres.max())),
+        "dans_support": dans_support,
+        "hors_support_tutores": int((~dans_support & (traite == 1)).sum()),
+        "hors_support_autres": int((~dans_support & (traite == 0)).sum()),
+    }
 
 
 # ===========================================================================
