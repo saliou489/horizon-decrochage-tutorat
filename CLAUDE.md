@@ -77,6 +77,7 @@ Si la consigne ne couvre pas un cas : décris-le dans `docs/decisions.md` (statu
   - Windows : `py -m venv .venv` puis `.venv\Scripts\activate`
   - Linux / macOS : `python3 -m venv .venv` puis `source .venv/bin/activate`
 - `pip install -r requirements.txt`. Toute nouvelle bibliothèque est ajoutée à `requirements.txt` (version exacte) dans le même commit et justifiée dans le compte rendu.
+- **pandas reste en 2.3.x** (décision D-52) : lifelines exige pandas < 3. Ne jamais monter pandas en 3.x ; une nouvelle bibliothèque doit être compatible avec les versions fixées dans `requirements.txt` et s'installer sous Python 3.14 sans compilation (sinon : s'arrêter et le signaler).
 - Bibliothèques prévues (cahier §7) : pandas, numpy, pytest, lifelines, scikit-survival, scikit-learn, statsmodels, matplotlib, streamlit ; DoWhy et plotly en option.
 - Si une bibliothèque refuse de s'installer avec la version de Python présente : s'arrêter et le signaler, ne pas bricoler.
 - Commandes :
