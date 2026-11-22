@@ -11,7 +11,7 @@ Tâche couverte : DA-03.
 """
 
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pandas as pd
 
@@ -283,7 +283,7 @@ def regle_inscriptions_reconstituees(df, etudiants):
 def fin_du_suivi(date_debut):
     """Date de fin du suivi : date_debut + N_SEMAINES semaines (texte AAAA-MM-JJ)."""
     debut = datetime.strptime(date_debut, config.FORMAT_DATE_PROCESSED)
-    return ecrire_date(debut + pd.Timedelta(weeks=config.N_SEMAINES))
+    return ecrire_date(debut + timedelta(weeks=config.N_SEMAINES))
 
 
 def sortie_et_drapeaux(ligne, reconstituee, inversee):
