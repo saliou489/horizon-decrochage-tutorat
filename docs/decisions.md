@@ -476,3 +476,10 @@ Gabarit :
   5. **Explication** : importance par permutation (10 répétitions, `SEED`) : baisse du C-index pour le modèle « rentrée » (une variable = toutes ses indicatrices), baisse de l'AUC hebdomadaire pour le modèle hebdomadaire ; HR du Cox 2024 en regard.
   6. Aucune variable de tutorat (D-43). Résultats rapportés tels quels, même si le gradient boosting ne fait pas mieux que le Cox. Prédictions 2025 enregistrées pour le tableau de bord et les fiches LLM (le modèle qu'ils utiliseront sera choisi en LL-01 / DB-01).
 - Statut : validée (Saliou, 22/11)
+
+## D-64 — Cox prédictif de 2024 : proportionnalité de l'emploi non corrigée (SV-03, SV-04)
+- Date / tâche : 22/11/2026 — SV-04
+- Constat : dans le Cox entraîné sur la seule cohorte 2024 (modèle prédictif de SV-03), le test de Schoenfeld (« rank ») donne p = 0,030 pour l'emploi en parallèle ; les 12 autres colonnes ont toutes p > 0,3.
+- Options : (a) ne pas corriger et l'écrire ; (b) stratifier par l'emploi ou ajouter une interaction avec la période (règle de D-51), c'est-à-dire modifier le modèle après avoir vu ses résultats sur 2025.
+- Décision : (a). 13 colonnes sont testées à la fois : le seuil corrigé de Bonferroni vaut 0,05 / 13 ≈ 0,0038, que 0,030 ne franchit pas ; sur les 5 000 étudiants (SV-02), aucune violation après stratification par cohorte (p minimum 0,36) ; ce Cox sert à prédire, et sa calibration est mesurée directement sur 2025 (écart de 2,8 points). Ces raisons seront ajoutées aux limites du notebook 04 lors d'une prochaine consigne.
+- Statut : validée (Saliou, 22/11)
