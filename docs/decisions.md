@@ -313,3 +313,44 @@ Gabarit :
 - Constat (RV01-08) : `requirements.txt` fige les 5 paquets installés directement ; l'installation en compte 53. Un `pip freeze` fait sous Windows contient des paquets propres à Windows (ex. `pywin32`, utilisé par Jupyter) qui ne s'installent pas sous Linux : un fichier verrouillé empêcherait l'installation chez l'enseignant.
 - Décision : garder les 5 paquets directs figés ; signaler dans le README que les dépendances indirectes ne sont pas figées et que le projet a été testé sous Windows avec Python 3.14.3.
 - Statut : validée (Saliou, 20/11)
+
+## D-45 — Rattrapage après la journée du 21/11 (option A)
+- Date / tâche : 22/11/2026 — GP-05
+- Constat : aucun travail le 21/11 ; environ 1,5 jour de retard sur le planning v2 ; environ 30 h de travail restant pour environ 26 h disponibles au rythme prévu.
+- Options : (A) ajouter environ 1 h par jour jusqu'au 25/11 et travailler la journée complète du 22/11, en gardant le LLM et le tableau de bord ; (B) réduire le LLM et le tableau de bord à une version minimale.
+- Décision : A (LLM et tableau de bord valent 2 points au barème).
+- Statut : validée (Saliou, 22/11)
+
+## D-46 — Kaplan-Meier : sous-groupes et tests multiples (SV-01, K1 et K3)
+- Date / tâche : 22/11/2026 — SV-01
+- Décision : sous-groupes du cahier (boursier, filière, mention, emploi) ; les valeurs manquantes d'une variable sont exclues de sa comparaison et leur nombre est indiqué ; test du log-rank (à k groupes pour filière et mention) ; 4 tests → seuil de Bonferroni 0,05 / 4 = 0,0125, en plus des p-valeurs brutes.
+- Statut : validée (Saliou, 22/11)
+
+## D-47 — Définition d'une semaine critique (SV-01, K2)
+- Date / tâche : 22/11/2026 — SV-01
+- Constat (pilotage) : risque hebdomadaire moyen = 1 440 décrochages / 121 938 semaines-étudiant = 1,18 %.
+- Options : semaine dont le risque ≥ 1,5 fois le risque moyen (semaines 4 à 7, 15 et 16) ; semaine dont la borne basse de l'IC 95 % dépasse le risque moyen (semaines 3 à 8, 15 à 17).
+- Décision : risque de la semaine ≥ 1,5 fois le risque moyen (règle simple à expliquer) ; l'IC 95 % de chaque semaine est aussi affiché.
+- Statut : validée (Saliou, 22/11)
+
+## D-48 — Cox explicatif sur tous les étudiants (SV-02, C1)
+- Date / tâche : 22/11/2026 — SV-02
+- Décision : le Cox de SV-02 (hazard ratios et interprétation) est ajusté sur les 5 000 étudiants ; le Cox prédictif, entraîné sur la cohorte 2024 et évalué sur 2025, est construit en SV-03 / SV-04.
+- Statut : validée (Saliou, 22/11)
+
+## D-49 — Variables du Cox (SV-02, C2)
+- Date / tâche : 22/11/2026 — SV-02 (et SV-03 / SV-04)
+- Constat (pilotage) : depuis D-10, la mention est calculée à partir de la note du bac (information redondante) ; les 14 régions n'apportent rien au-delà de la distance (AIC partiel 23 698,3 avec les 14 régions contre 23 694,4 avec Dakar / hors Dakar) ; la distance est très asymétrique (médiane 9,8 km, 1 % au-delà de 152 km).
+- Décision : covariables issues de `COVARIABLES_RENTREE` : genre (réf. F), âge, boursier (réf. Non), filière (réf. Informatique, la plus nombreuse), note du bac (pas la mention), région regroupée en Dakar / hors Dakar (réf. Dakar), log2 de la distance (effet d'un doublement), emploi (réf. Non) ; la cohorte sert de strate (D-51).
+- Statut : validée (Saliou, 22/11)
+
+## D-50 — Valeurs manquantes dans les modèles (SV-02, C3)
+- Date / tâche : 22/11/2026 — SV-02 (et SV-03 / SV-04)
+- Constat : 405 étudiants (8 %) ont au moins une covariable manquante.
+- Décision : variables qualitatives → modalité « (manquant) » ; variables numériques → médiane, calculée sur les données d'ajustement (pour SV-03 / SV-04 : sur la cohorte 2024 seulement) ; sensibilité : même modèle sur les dossiers complets (écart maximal des HR constaté par le pilotage : 0,033).
+- Statut : validée (Saliou, 22/11)
+
+## D-51 — Hypothèse des risques proportionnels (SV-02, C4)
+- Date / tâche : 22/11/2026 — SV-02
+- Décision (fixée avant l'analyse finale) : test des résidus de Schoenfeld par variable (lifelines, transformation « rank ») ; si p < 0,05 : variable qualitative → stratification ; variable numérique → interaction avec la période (semaines 1 à 8 / 9 à 30). Constat du pilotage : seule la cohorte viole l'hypothèse (p = 0,04) → Cox stratifié par cohorte ; après stratification, aucune variable sous 0,05 (p minimum 0,36).
+- Statut : validée (Saliou, 22/11)
