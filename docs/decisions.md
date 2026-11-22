@@ -424,6 +424,7 @@ Gabarit :
   les variantes sont présentées à côté de l'analyse principale, jamais à sa place ;
   bonus (Could, F8) : même chaîne séparément chez les boursiers et les non-boursiers (score refait sans la variable boursier) ; différence entre les deux différences de RMST, avec IC bootstrap.
 - Statut : validée (Saliou, 22/11)
+- Révision (22/11, relecture RV02) : le point 3 est remplacé par D-62 ; nombres de tirages, support strict et autres réglages précisés par D-61.
 
 ## D-59 — Garde-fous de l'analyse causale, écrits avant le résultat
 - Date / tâche : 22/11/2026 — CA-01 à CA-05
@@ -432,10 +433,35 @@ Gabarit :
   - biais attendus, écrits d'avance : estimation plutôt prudente (plus proche de « aucun effet » que la réalité) à cause des 11 % de futurs tutorés chez les non-tutorés, de la fenêtre d'activité 1 à 8 et du caractère marginal du HR ; biais inverse possible : la motivation non mesurée (demandes personnelles) ;
   - vocabulaire : « effet » seulement pour cette estimation, avec ses trois conditions rappelées (pas de facteur caché important ; chaque profil pouvait être tutoré ou non ; score bien construit) ; le résultat est rapporté quel qu'il soit.
 - Statut : validée (Saliou, 22/11)
+- Complément (22/11, relecture RV02-07) : deux biais de plus et la phrase exacte de ce qui est estimé, en D-61 (point 11).
 
 ## D-60 — Modèle non linéaire de survie : gradient boosting à temps discret avec scikit-learn (SV-03, Q1)
 - Date / tâche : 22/11/2026 — SV-03
 - Constat (pilotage) : scikit-survival 0.28.0 (forêt aléatoire de survie, conseillée au cahier §7) dépend d'`ecos`, qui n'a de version précompilée que jusqu'à Python 3.12 (roues Windows cp37 à cp312 ; sur Linux, installation seulement en compilant). Le PC de Saliou est en Python 3.14, sans compilateur ; numpy 2.5 exige Python ≥ 3.12 (D-05) : l'enseignant devrait donc avoir exactement Python 3.12.
 - Options : (A) forêt aléatoire de survie (scikit-survival) en imposant Python 3.12 ; (B) gradient boosting de survie à temps discret avec scikit-learn : un `HistGradientBoostingClassifier` estime, pour chaque étudiant encore suivi, le risque de décrocher dans la semaine (table semaine par semaine, D-39) ; la courbe de survie est le produit des (1 − risque) semaine après semaine.
 - Décision : (B). Conforme au cahier (F4 : « gradient boosting de survie » ; « Random Survival Forest ou équivalent ») ; aucun changement d'environnement ; `scikit-learn==1.9.1` (s'installe sous Python 3.14 avec pandas 2.3.3). Le Brier score intégré et la calibration sont codés dans `src/ml_survie.py` et testés ; le pilotage les vérifie contre scikit-survival dans son propre environnement (ce n'est pas une dépendance du projet).
+- Statut : validée (Saliou, 22/11)
+
+## D-61 — Réglages figés de CA-04 et CA-05 (relecture RV02)
+- Date / tâche : 22/11/2026 — CA-04, CA-05 (constats RV02-01, RV02-03 à RV02-07)
+- Constat : la relecture RV02 a relevé 8 choix de CA-04 et CA-05 encore ouverts, qui auraient pu être tranchés après avoir vu le résultat, ainsi que des fragilités du code et des biais non écrits.
+- Décision :
+  1. **Bootstrap** : les covariables du score (X) et la matrice d'équilibre sont construites une fois sur la photo (médianes de la photo). Chaque tirage reprend des étudiants avec remise (index remis à zéro), puis ré-estime le score avec **la même spécification que l'analyse principale** (la retouche de D-56 n'est jamais appliquée dans un tirage), les poids, la troncature, les courbes, le RMST, le risque à 30 semaines et le HR. On rapporte la part des tirages où un |SMD| dépasse 0,1. Chaque analyse (principale, chaque variante, chaque groupe du bonus) part d'un générateur neuf `numpy.random.default_rng(SEED)`. Un tirage qui échoue (erreur, score non convergé) est remplacé par un nouveau tirage et compté.
+  2. **Poids de CA-04** : les poids stabilisés tronqués, ceux du tableau d'équilibre.
+  3. **Cox pondéré** : lifelines, liens d'Efron, `robust=True` pour l'ajustement principal (erreur standard « sandwich » donnée pour information ; l'IC officiel est celui du bootstrap) ; dans les tirages, seule l'estimation est utilisée. Le test de Schoenfeld sur un modèle pondéré est seulement indicatif.
+  4. **Échelle et RMST** : durée = T − 8 (de 0 à 22) ; RMST = `lifelines.utils.restricted_mean_survival_time(kmf, t=22)` sur le Kaplan-Meier pondéré (aire exacte sous la courbe en escalier) ; risque à 30 semaines = 1 − S(22).
+  5. **E-value** : RR = risque des tutorés / risque des non-tutorés à 30 semaines ; si RR < 1, on prend 1 / RR ; E = RR + racine(RR × (RR − 1)) ; pour l'IC, borne la plus proche de 1, et E-value = 1 si l'IC contient 1 (exemple de test : RR = 0,5 → E = 2 + √2 ≈ 3,41).
+  6. **Nombre de tirages** : 500 pour l'analyse principale ; 200 pour chaque variante (seuils de 3 et 5 semaines, L = 6, L = 10, fenêtre 1 à 2, support strict) ; 200 par groupe pour le bonus. Le bootstrap est relancé par `run_all.py` ; les résultats sont enregistrés dans `data/processed/` et relus par le notebook 05 et le tableau de bord. Repli si `run_all.py` dépasse 15 min : 100 tirages pour les variantes et le bonus.
+  7. **Variantes** : support strict = retirer les étudiants hors du support commun de l'analyse principale, puis refaire toute la chaîne ; L = 6 rapportée telle quelle même si l'équilibre n'est pas atteint (D-56) ; seuil de 5 semaines : les 2 étudiants de la photo qui ont moins de 8 semaines d'activité sont signalés ; fenêtre 1 à 2 : deux tableaux d'équilibre (le sien et celui de la fenêtre 1 à 8).
+  8. **Diagnostic hors critère** (RV02-06) : notes et connexions des semaines 7 et 8, mention du bac, région détaillée, semaines inactives, affichés dans le notebook 05 avec leur lecture ; le score n'est pas modifié (l'activité récente est en partie un médiateur ; la mention découle de la note du bac).
+  9. **Code** (RV02-03 à RV02-05) : liste positive des colonnes du score (variables numériques du score et indicatrices de `VARIABLES_COX_QUALITATIVES`, sur le principe de D-43) ; erreur si la fenêtre d'activité dépasse la semaine de la photo ; option pour retirer une variable du score (bonus) ; erreur si la régression logistique du score ne converge pas ; les 7 tests proposés par RV02-05.
+  10. **Figure du DAG** (RV02-07) : ajout de la flèche en pointillés « facteurs non mesurés → activité ». Le recouvrement de la fenêtre 1 à 8 avec la période après le début (3,6 semaines sur 8 en moyenne chez les tutorés) est écrit sous la figure plutôt que dessiné (une flèche donnerait l'impression d'une boucle).
+  11. **Compléments à D-59**, écrits avant le résultat : (a) la photo s'appuie sur jusqu'à 3 semaines postérieures à la semaine 8 : 83 décrochages silencieux avec T = 6, 7 ou 8 n'en sont exclus que grâce aux semaines 9 à 11, et 15 étudiants inactifs en semaine 8 y figurent parce que leur inactivité s'est arrêtée ; (b) l'effet du tutorat pendant les semaines 1 à 8 n'est pas mesuré (45 tutorés sont partis avant la photo). Ce qui est estimé : « l'effet d'avoir commencé le tutorat au plus tard en semaine 8, chez les étudiants encore présents à la fin de la semaine 8, sur le décrochage des semaines 9 à 30 ».
+- Statut : validée (Saliou, 22/11)
+
+## D-62 — Spécification alternative : Cox dépendant du temps, activité figée au début du tutorat (relecture RV02-02)
+- Date / tâche : 22/11/2026 — CA-05 (remplace le point 3 de D-58)
+- Constat : D-58 (point 3) ajustait sur la moyenne d'activité des semaines 1 à t − 1, y compris après le début du tutorat, c'est-à-dire sur le médiateur exclu par D-55.
+- Options : (a) figer l'activité d'un tutoré à sa semaine de début ; (b) garder D-58 et présenter un « effet hors médiation par l'activité » ; (c) profil seul.
+- Décision : (a). Covariable d'activité = moyenne des semaines 1 à min(t − 1, semaine de début) pour un tutoré (le tutorat compte à partir de la semaine qui suit le début, D-39), des semaines 1 à t − 1 pour les autres ; en semaine 1 (aucune semaine antérieure) : médiane de la covariable sur toutes les semaines-étudiant où elle est définie. Profil comme D-55 ; strates : cohorte ; IC du modèle. Ce modèle répond à une question voisine (tous les étudiants dès la semaine 1, HR « à profil et activité passée égaux ») : on le compare à l'analyse principale sur le sens et l'ordre de grandeur, pas sur le chiffre exact.
 - Statut : validée (Saliou, 22/11)
