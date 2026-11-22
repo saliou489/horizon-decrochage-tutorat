@@ -354,3 +354,81 @@ Gabarit :
 - Date / tâche : 22/11/2026 — SV-02
 - Décision (fixée avant l'analyse finale) : test des résidus de Schoenfeld par variable (lifelines, transformation « rank ») ; si p < 0,05 : variable qualitative → stratification ; variable numérique → interaction avec la période (semaines 1 à 8 / 9 à 30). Constat du pilotage : seule la cohorte viole l'hypothèse (p = 0,04) → Cox stratifié par cohorte ; après stratification, aucune variable sous 0,05 (p minimum 0,36).
 - Statut : validée (Saliou, 22/11)
+
+## D-52 — Version de pandas : 2.3.3 (SV-01, C09)
+- Date / tâche : 22/11/2026 — SV-01
+- Constat : lifelines 0.30.3 (dernière version, utilisée pour Kaplan-Meier et Cox) exige officiellement `pandas<3.0,>=2.1` ; son installation a fait passer pandas de 3.1.1 à 2.3.3. Avec 2.3.3 : 134 tests passent ; les notebooks 01 à 03, relancés par le pilotage, donnent les mêmes sorties ; seul `base_periode_personne.csv` change, sur 45 notes (écart de 1e-15, bruit de calcul sans effet).
+- Options : garder pandas 2.3.3 ; forcer 3.1.1 (combinaison non supportée : avec des versions exactes, `pip install -r requirements.txt` échouerait chez l'enseignant) ; renoncer à lifelines.
+- Décision : `pandas==2.3.3` tant que lifelines exige pandas < 3. Toute nouvelle bibliothèque doit être compatible avec pandas 2.3.3 (vérifié par le pilotage pour statsmodels 0.15.0 et scikit-survival 0.28.0).
+- Statut : validée (Saliou, 22/11)
+
+## D-53 — Approche contre le temps immortel : une « photo » (landmark) à la semaine 8 (CA-01, Q1)
+- Date / tâche : 22/11/2026 — CA-01
+- Constat (pilotage, sans regarder le décrochage par équipe) : 1 245 tutorats commencent pendant le suivi, entre les semaines 3 et 25 ; 851 (68,4 %) au plus tard en semaine 8. Photos comparées : L = 6 → 4 473 étudiants, 560 tutorés, 16,2 % de futurs tutorés chez les non-tutorés, plus grand écart standardisé après pondération 0,115 (critère non atteint) ; L = 8 → 4 316, 773, 11,0 %, 0,060 ; L = 10 → 4 225, 971, 5,3 %, 0,057 (mais 62 tutorés partis avant la photo et 20 semaines de suivi seulement).
+- Options : (A) analyse landmark (photo à la semaine L) + pondération IPTW ; (B) Cox avec un tutorat « dépendant du temps » ; (C) essais séquentiels (une photo par semaine de 3 à 12, empilées).
+- Décision : (A) en analyse principale, photo à la fin de la semaine L = 8 : bon compromis entre la part des tutorats pris en compte, la dilution et la durée de suivi ; la photo tombe juste après la vague de décrochage des semaines 4 à 7 et avant le pic des semaines 15-16 ; l'équilibre est atteignable ; c'est l'exemple du cahier. (B) = spécification alternative de CA-05 (D-58) ; (C) est citée dans le rapport comme piste d'amélioration.
+- Statut : validée (Saliou, 22/11)
+
+## D-54 — Règles de la photo (CA-01, Q2)
+- Date / tâche : 22/11/2026 — CA-01 (complète D-25, D-26, D-37 ; répond à RV01-05)
+- Décision :
+  1. sur la photo : les étudiants encore suivis et sans décrochage à la fin de la semaine 8 (T > 8) ;
+  2. tutoré à la photo : `semaine_debut_tutorat` ≤ 8 ;
+  3. un tutorat commencé après la semaine 8 (ou hors suivi, D-25) compte comme « pas tutoré » à la photo : ni déplacé chez les tutorés (cela recréerait le temps immortel), ni retiré (ce serait choisir les équipes avec l'avenir) ; conséquence assumée : l'effet est un peu dilué ;
+  4. semaine de début inconnue (D-26) : exclus de l'analyse causale (4 étudiants sur la photo de la semaine 8), conservés dans l'analyse de survie ;
+  5. suivi de la semaine 9 à la semaine 30 (durée = T − 8, même E) ;
+  6. variantes (seuils de 3 et 5 semaines, photos à L = 6 et 10) : population et équipes recalculées avec `T_seuilX` / `E_seuilX` et la semaine L de la variante (tutoré si début ≤ L < T).
+- Résultat (pilotage) : 4 316 étudiants sur la photo, 773 tutorés (17,9 %), 3 543 non tutorés dont 389 futurs tutorés (11,0 %).
+- Statut : validée (Saliou, 22/11)
+
+## D-55 — DAG et variables du score de propension (CA-01, Q3)
+- Date / tâche : 22/11/2026 — CA-01, CA-02
+- Constat (pilotage) : 84 % des tutorats démarrent sur une difficulté (notes faibles 486, absences répétées 326, signalement enseignant 240 ; demande personnelle 203). Dans les 2 semaines qui précèdent leur début, les futurs tutorés ont des notes plus basses (écart standardisé de −0,44 à −0,93 selon la semaine de début) et plus d'absences (+0,43 à +0,64) que les étudiants encore suivis et pas encore tutorés : le tutorat arrive juste après une mauvaise passe. Pondération sur l'activité des semaines 1 à 2 : les tutorés restent plus faibles sur les semaines 1 à 8 (notes −0,33, absences +0,27) ; pondération sur les semaines 1 à 8 : tous les écarts ≤ 0,10.
+- Décision :
+  - DAG : profil à la rentrée → activité, tutorat, décrochage ; activité des semaines 1 à 8 → tutorat, décrochage ; tutorat → décrochage (effet cherché) et tutorat → activité après son début → décrochage (médiateur) ; facteurs non mesurés (motivation, famille, santé) → tutorat, activité, décrochage ;
+  - variables du score : profil codé comme le Cox (D-49, D-50 : âge, note du bac, log2 de la distance, genre, boursier, filière, région Dakar / hors Dakar, emploi, cohorte en variable) + moyenne, sur les semaines 1 à 8, de `nb_connexions_lms`, `devoirs_rendus`, `note_moyenne` et `absences` (moyenne des semaines renseignées ; médiane de la photo si aucune) ;
+  - jamais dans le score : l'activité postérieure à la photo, `nb_seances`, `type_tuteur`, `motif_orientation`, T, E et toute autre colonne de tutorat ;
+  - facteurs non mesurés : E-value (D-58) ; fenêtre d'activité des semaines 1 à 2 (avant tout tutorat) en sensibilité.
+- Limite écrite d'avance : pour les tutorats commencés tôt, une partie de la fenêtre 1 à 8 est postérieure au début ; si le tutorat a déjà amélioré l'activité, une partie de l'effet est absorbée.
+- Statut : validée (Saliou, 22/11)
+
+## D-56 — Score de propension, poids et équilibre (CA-02, CA-03)
+- Date / tâche : 22/11/2026 — CA-02, CA-03
+- Décision :
+  - score : régression logistique sans pénalité (statsmodels, GLM binomial, effets principaux) ; AUC rapportée ;
+  - poids stabilisés visant l'effet moyen sur toute la photo (ATE) : P(tutoré) / score pour les tutorés, (1 − P(tutoré)) / (1 − score) pour les autres ; troncature aux 1er et 99e percentiles de l'ensemble des poids ; taille effective de chaque équipe rapportée ;
+  - équilibre : différence standardisée (dénominateur : écart-type combiné avant pondération) pour chaque variable numérique et chaque modalité de chaque variable qualitative (références et « (manquant) » comprises) ; critère |SMD| < 0,1 partout ; love plot ; si le critère n'est pas atteint : une seule retouche, fixée d'avance (ajout au score des carrés des variables numériques) ; si elle ne suffit pas, le résultat est rapporté tel quel ;
+  - support commun : [plus grand des minimums ; plus petit des maximums] du score des deux équipes ; analyse principale sur tous les étudiants ; exclusion des étudiants hors support en sensibilité.
+- Constat (pilotage, photo de la semaine 8) : AUC 0,727 ; 54 étudiants hors support (8 tutorés, 46 non) ; poids tronqués à [0,289 ; 2,794] ; tailles effectives 518 / 773 et 3 431 / 3 543 ; |SMD| maximal 0,757 avant pondération, 0,060 après.
+- Statut : validée (Saliou, 22/11)
+
+## D-57 — Mesures de l'effet et incertitude (CA-04)
+- Date / tâche : 22/11/2026 — CA-04
+- Décision, sur la photo de la semaine 8 (semaines 9 à 30) :
+  - courbes de Kaplan-Meier pondérées des deux équipes ; risque de décrochage à la semaine 30 (1 − S) dans chaque équipe, leur différence et leur rapport (RR) ;
+  - différence de RMST : aire sous les courbes pondérées entre la fin de la semaine 8 et la semaine 30 (22 semaines) ;
+  - HR pondéré : Cox à une seule variable (tutoré à la photo), pondéré, liens d'Efron ; proportionnalité testée (Schoenfeld, « rank ») ; si p < 0,05, c'est écrit et le HR se lit comme une moyenne sur la période ;
+  - phrases phares de la note de synthèse : le risque à 30 semaines dans chaque équipe et les semaines gagnées (RMST) ; le HR vient en complément ;
+  - incertitude : bootstrap, IC percentile à 95 % ; 500 tirages avec remise des étudiants de la photo (graine `SEED` = 42) ; toute la chaîne est refaite à chaque tirage (score, poids, troncature, courbes, RMST, HR) ; 200 tirages pour chaque variante de sensibilité. Si `run_all.py` dépasse 15 min sur le PC de Saliou, seul le nombre de tirages des variantes peut baisser (100).
+- Statut : validée (Saliou, 22/11)
+
+## D-58 — Analyses de sensibilité (CA-05) et bonus F8
+- Date / tâche : 22/11/2026 — CA-05 (et SV-05)
+- Décision :
+  1. seuils d'inactivité de 3 et 5 semaines (photo et équipes recalculées, D-54) ;
+  2. E-value calculée sur le RR du décrochage à 30 semaines (estimation et borne de l'IC la plus proche de 1) ;
+  3. spécification alternative : Cox avec un tutorat dépendant du temps sur `base_periode_personne` (tous les étudiants dès la semaine 1, sauf semaine de début inconnue ; variable `tutorat_commence` ; profil codé comme en D-55 + moyenne de chaque variable d'activité sur les semaines 1 à t − 1, médiane si aucune ; strates : cohorte ; IC du modèle) ;
+  4. photos à L = 6 et L = 10 (fenêtre d'activité des semaines 1 à L) ;
+  5. fenêtre d'activité des semaines 1 à 2 ;
+  6. support commun strict ;
+  les variantes sont présentées à côté de l'analyse principale, jamais à sa place ;
+  bonus (Could, F8) : même chaîne séparément chez les boursiers et les non-boursiers (score refait sans la variable boursier) ; différence entre les deux différences de RMST, avec IC bootstrap.
+- Statut : validée (Saliou, 22/11)
+
+## D-59 — Garde-fous de l'analyse causale, écrits avant le résultat
+- Date / tâche : 22/11/2026 — CA-01 à CA-05
+- Décision :
+  - conception d'abord : photo, score, poids et équilibre (CA-01 à CA-03) sont produits et relus (R02) avant tout calcul du décrochage par équipe (CA-04) ; aucune comparaison de T, E ou de la survie entre tutorés et non tutorés avant CA-04 ;
+  - biais attendus, écrits d'avance : estimation plutôt prudente (plus proche de « aucun effet » que la réalité) à cause des 11 % de futurs tutorés chez les non-tutorés, de la fenêtre d'activité 1 à 8 et du caractère marginal du HR ; biais inverse possible : la motivation non mesurée (demandes personnelles) ;
+  - vocabulaire : « effet » seulement pour cette estimation, avec ses trois conditions rappelées (pas de facteur caché important ; chaque profil pouvait être tutoré ou non ; score bien construit) ; le résultat est rapporté quel qu'il soit.
+- Statut : validée (Saliou, 22/11)
