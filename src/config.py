@@ -513,3 +513,19 @@ SEMAINE_REPERE_TUTORAT = 8
 
 # Libellé de la ligne des valeurs manquantes dans le profil d'une variable qualitative.
 MODALITE_MANQUANTE = "(manquant)"
+
+# ---------------------------------------------------------------------------
+# Analyse de survie : Kaplan-Meier et Cox (SV-01, SV-02)
+# ---------------------------------------------------------------------------
+
+# Semaines auxquelles la survie (part des étudiants sans décrochage) est rapportée.
+SEMAINES_SURVIE = (10, 20, 30)
+# Niveau des tests et des intervalles de confiance (IC à 95 %).
+ALPHA = 0.05
+
+# Sous-groupes comparés par Kaplan-Meier et le log-rank (D-46, sous-groupes du cahier).
+# Avec 4 tests, le seuil de Bonferroni est ALPHA / 4 = 0,0125.
+VARIABLES_KAPLAN_MEIER = ["boursier", "filiere", "mention_bac", "emploi_parallele"]
+
+# Semaine critique (D-47) : risque de la semaine >= 1,5 fois le risque hebdomadaire moyen.
+FACTEUR_SEMAINE_CRITIQUE = 1.5
