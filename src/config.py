@@ -529,3 +529,33 @@ VARIABLES_KAPLAN_MEIER = ["boursier", "filiere", "mention_bac", "emploi_parallel
 
 # Semaine critique (D-47) : risque de la semaine >= 1,5 fois le risque hebdomadaire moyen.
 FACTEUR_SEMAINE_CRITIQUE = 1.5
+
+# Variables du Cox (D-49), toutes issues de COVARIABLES_RENTREE. La mention n'y est pas :
+# depuis D-10, elle est calculée à partir de la note du bac (information redondante).
+# La région est regroupée en Dakar / Hors Dakar ; la distance entre en log2 (un HR
+# correspond à un doublement de la distance).
+REGION_DAKAR = "Dakar"
+REGION_HORS_DAKAR = "Hors Dakar"
+COLONNE_REGION_COX = "region_dakar"
+COLONNE_DISTANCE_COX = "log2_distance"
+VARIABLE_COHORTE = "cohorte"
+VARIABLES_COX_NUMERIQUES = ["age", "note_bac", COLONNE_DISTANCE_COX]
+VARIABLES_COX_QUALITATIVES = [VARIABLE_COHORTE, "genre", "boursier", "filiere", COLONNE_REGION_COX,
+                              "emploi_parallele"]
+# Modalité de référence de chaque variable qualitative (D-49 ; filière : la plus nombreuse).
+REFERENCES_COX = {
+    VARIABLE_COHORTE: "2024",
+    "genre": "F",
+    "boursier": "Non",
+    "filiere": "Informatique",
+    COLONNE_REGION_COX: REGION_DAKAR,
+    "emploi_parallele": "Non",
+}
+# Séparateur entre variable et modalité dans le nom d'une indicatrice (ex. « filiere=Droit »).
+SEPARATEUR_INDICATRICE = "="
+
+# Proportionnalité des risques (D-51) : test des résidus de Schoenfeld, transformation
+# « rank » ; si p < ALPHA : variable qualitative -> stratification ; variable numérique ->
+# interaction avec la période (semaines 1 à 8, puis 9 à 30).
+TRANSFORMATION_SCHOENFELD = "rank"
+FIN_PREMIERE_PERIODE = 8
