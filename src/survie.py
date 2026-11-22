@@ -201,24 +201,27 @@ def indicatrices(valeurs, variable):
     return pd.DataFrame(colonnes, index=valeurs.index)
 
 
-def preparer_donnees_cox(base, medianes=None, duree="T", evenement="E"):
+def preparer_donnees_cox(base, medianes=None, duree="T", evenement="E", variables_exclues=()):
     """Table d'ajustement du Cox : T, E, variables numériques et indicatrices (D-49, D-50).
 
     Entrées : base_survie ; medianes = dictionnaire {variable numérique: médiane} à utiliser
     pour remplacer les manquants (ex. médianes de la cohorte 2024 appliquées à 2025, SV-03) ;
     si None, elles sont calculées sur les données reçues ; colonnes de durée et
-    d'événement (T et E, ou une variante de sensibilité).
+    d'événement (T et E, ou une variante de sensibilité) ; variables_exclues = variables
+    du Cox à ne pas mettre dans la table (ex. la cohorte quand il n'y en a qu'une, SV-03).
     Variables qualitatives manquantes -> modalité config.MODALITE_MANQUANTE.
     Sortie : (donnees, medianes utilisées). Les colonnes de durée et d'événement sont
     renommées T et E.
     """
     variables = variables_du_cox(base)
+    numeriques = [v for v in config.VARIABLES_COX_NUMERIQUES if v not in variables_exclues]
+    qualitatives = [v for v in config.VARIABLES_COX_QUALITATIVES if v not in variables_exclues]
     if medianes is None:
-        medianes = {v: float(variables[v].median()) for v in config.VARIABLES_COX_NUMERIQUES}
+        medianes = {v: float(variables[v].median()) for v in numeriques}
     donnees = pd.DataFrame({"T": base[duree].astype(int), "E": base[evenement].astype(int)}, index=base.index)
-    for variable in config.VARIABLES_COX_NUMERIQUES:
+    for variable in numeriques:
         donnees[variable] = variables[variable].fillna(medianes[variable])
-    for variable in config.VARIABLES_COX_QUALITATIVES:
+    for variable in qualitatives:
         valeurs = variables[variable].fillna(config.MODALITE_MANQUANTE).astype(str)
         donnees = donnees.join(indicatrices(valeurs, variable))
     return donnees.reset_index(drop=True), medianes

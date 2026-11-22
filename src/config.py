@@ -583,3 +583,31 @@ SEUIL_SMD = 0.1
 # les débuts des semaines 3 à 12 (CA-01, D-55).
 SEMAINES_AVANT_DEBUT = 2
 SEMAINES_DEBUT_ANALYSEES = range(3, 13)
+
+# ---------------------------------------------------------------------------
+# ML de survie : Cox et gradient boosting, validation 2024 -> 2025 (SV-03, SV-04)
+# ---------------------------------------------------------------------------
+
+# Validation temporelle imposée (CLAUDE.md §6) : entraînement sur 2024, test sur 2025.
+COHORTE_ENTRAINEMENT = 2024
+COHORTE_TEST = 2025
+# Réglages du gradient boosting fixés d'avance (D-63), sans aucun essai sur 2025.
+REGLAGES_GRADIENT_BOOSTING = {
+    "learning_rate": 0.05,
+    "max_iter": 300,
+    "max_leaf_nodes": 15,
+    "min_samples_leaf": 100,
+    "l2_regularization": 1.0,
+    "early_stopping": False,
+    "random_state": SEED,
+}
+# Brier score intégré sur les semaines 1 à 29 (D-63) ; calibration à 20 semaines, 10 groupes.
+SEMAINES_BRIER = range(1, 30)
+SEMAINE_CALIBRATION = 20
+NB_GROUPES_CALIBRATION = 10
+# Importance par permutation : 10 répétitions (D-63).
+NB_REPETITIONS_PERMUTATION = 10
+# États possibles de etat_activite (une indicatrice par état pour etat_activite_prec).
+ETATS_ACTIVITE = ("actif", "inactif", "inconnu")
+# Résultats des modèles, relus par le notebook 04 et le tableau de bord.
+DOSSIER_RESULTATS = DOSSIER_PROCESSED / "resultats"
