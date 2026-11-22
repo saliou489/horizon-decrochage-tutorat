@@ -137,6 +137,18 @@ def test_colonne_interdite_detectee():
 # Poids, troncature, différence standardisée, support commun (D-56)
 # ---------------------------------------------------------------------------
 
+def test_poids_stabilises():
+    poids = causal.poids_stabilises([0.2, 0.5, 0.8], [1, 0, 1])
+    # P(tutoré) = 2/3 : 0,667 / 0,2 ; 0,333 / 0,5 ; 0,667 / 0,8.
+    assert poids == pytest.approx([3.333, 0.667, 0.833], abs=1e-3)
+
+
+def test_troncature():
+    poids = np.array(list(range(1, 100)) + [1000], dtype=float)
+    tronques, (bas, haut), nb_modifies = causal.tronquer_poids(poids)
+    assert (bas, haut) == pytest.approx(tuple(np.percentile(poids, config.PERCENTILES_TRONCATURE)))
+    assert tronques.min() == pytest.approx(bas) and tronques.max() == pytest.approx(haut)
+    assert nb_modifies == 2  # le poids 1 et le poids 1000
 
 
 def test_difference_standardisee():

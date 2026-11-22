@@ -29,6 +29,7 @@ MOTS_INTERDITS = ["tutor", "tuteur", "seance", "motif", "statut", "seuil"]
 NOMS_INTERDITS = ["T", "E", "evenement"]
 
 SUFFIXE_MOYENNE = "_moy"
+PREFIXE_CARRE = "carre_"
 
 
 # ===========================================================================
@@ -251,6 +252,20 @@ def covariables_du_score(population, periode, fenetre, duree="T", evenement="E")
     return X, medianes
 
 
+def colonnes_numeriques_du_score():
+    """Variables numériques du score : âge, note du bac, log2 distance, 4 moyennes d'activité."""
+    return list(config.VARIABLES_COX_NUMERIQUES) + [
+        f"{v}{SUFFIXE_MOYENNE}" for v in config.VARIABLES_ACTIVITE_PROPENSION]
+
+
+def ajouter_carres(X):
+    """Retouche fixée d'avance (D-56) : ajoute le carré de chaque variable numérique."""
+    avec_carres = X.copy()
+    for colonne in colonnes_numeriques_du_score():
+        avec_carres[f"{PREFIXE_CARRE}{colonne}"] = X[colonne] ** 2
+    return avec_carres
+
+
 # ===========================================================================
 # 6. Score de propension et support commun (CA-02, D-56)
 # ===========================================================================
@@ -311,6 +326,132 @@ def support_commun(score, traite):
         "hors_support_tutores": int((~dans_support & (traite == 1)).sum()),
         "hors_support_autres": int((~dans_support & (traite == 0)).sum()),
     }
+
+
+# ===========================================================================
+# 7. Poids stabilisés et troncature (CA-03, D-56)
+# ===========================================================================
+
+def poids_stabilises(score, traite):
+    """Poids stabilisés (effet moyen sur toute la photo, ATE).
+
+    Tutorés : P(tutoré) / score ; autres : (1 − P(tutoré)) / (1 − score). Le
+    numérateur garde une moyenne des poids proche de 1 (taille de la photo conservée).
+    """
+    score = np.asarray(score, dtype=float)
+    traite = np.asarray(traite, dtype=int)
+    part_tutores = traite.mean()
+    return np.where(traite == 1, part_tutores / score, (1 - part_tutores) / (1 - score))
+
+
+def tronquer_poids(poids):
+    """Troncature aux percentiles 1 et 99 de l'ensemble des poids (numpy, méthode par défaut).
+
+    Sortie : (poids tronqués, (borne basse, borne haute), nombre de poids modifiés).
+    """
+    poids = np.asarray(poids, dtype=float)
+    bas, haut = np.percentile(poids, config.PERCENTILES_TRONCATURE)
+    tronques = np.clip(poids, bas, haut)
+    return tronques, (float(bas), float(haut)), int((tronques != poids).sum())
+
+
+def taille_effective(poids):
+    """Taille effective (Σw)² / Σw² : nombre d'étudiants « équivalents » après pondération."""
+    poids = np.asarray(poids, dtype=float)
+    return float(poids.sum() ** 2 / (poids ** 2).sum())
+
+
+# ===========================================================================
+# 8. Équilibre des deux équipes (CA-03, D-56)
+# ===========================================================================
+
+def matrice_equilibre(population, X):
+    """Variables dont on vérifie l'équilibre.
+
+    Numériques : âge, note du bac, log2 distance, 4 moyennes d'activité (valeurs du
+    score, manquants remplacés). Qualitatives : une colonne 0/1 par modalité, références
+    et « (manquant) » comprises (une référence peut être déséquilibrée elle aussi).
+    """
+    matrice = X[colonnes_numeriques_du_score()].copy()
+    variables = survie.variables_du_cox(population.reset_index(drop=True))
+    for variable in config.VARIABLES_COX_QUALITATIVES:
+        valeurs = variables[variable].fillna(config.MODALITE_MANQUANTE).astype(str)
+        presentes = list(valeurs.unique())
+        ordre = survie.modalites_ordonnees(variable, [m for m in presentes if m != config.MODALITE_MANQUANTE])
+        if config.MODALITE_MANQUANTE in presentes:
+            ordre.append(config.MODALITE_MANQUANTE)
+        for modalite in ordre:
+            colonne = f"{variable}{config.SEPARATEUR_INDICATRICE}{modalite}"
+            matrice[colonne] = (valeurs == modalite).astype(int).to_numpy()
+    return matrice
+
+
+def tableau_equilibre(matrice, traite, poids):
+    """SMD avant et après pondération pour chaque ligne, et le critère |SMD| < SEUIL_SMD."""
+    lignes = []
+    for colonne in matrice.columns:
+        avant = difference_standardisee(matrice[colonne], traite)
+        apres = difference_standardisee(matrice[colonne], traite, poids)
+        lignes.append({"variable": colonne, "smd_avant": avant, "smd_apres": apres,
+                       "equilibre": abs(apres) < config.SEUIL_SMD})
+    return pd.DataFrame(lignes)
+
+
+# ===========================================================================
+# 9. Chaîne de conception complète (relancée telle quelle en C11)
+# ===========================================================================
+
+def score_poids_equilibre(X, traite, matrice):
+    """Score -> support commun -> poids bruts et tronqués -> tableau d'équilibre."""
+    modele, score = ajuster_score(X, traite)
+    poids = poids_stabilises(score, traite)
+    tronques, bornes, nb_modifies = tronquer_poids(poids)
+    traite = np.asarray(traite, dtype=int)
+    return {
+        "modele": modele,
+        "score": score,
+        "support": support_commun(score, traite),
+        "poids_bruts": poids,
+        "poids": tronques,
+        "bornes_troncature": bornes,
+        "nb_poids_modifies": nb_modifies,
+        "tailles_effectives": {
+            "tutores": taille_effective(tronques[traite == 1]),
+            "autres": taille_effective(tronques[traite == 0]),
+        },
+        "equilibre": tableau_equilibre(matrice, traite, tronques),
+    }
+
+
+def chaine_de_conception(population, periode, fenetre, duree="T", evenement="E"):
+    """Enchaîne covariables, score, support, poids et équilibre pour une population.
+
+    Entrées : population d'une photo (population_photo, ou un tirage bootstrap de
+    celle-ci) ; base_periode_personne ; fenêtre d'activité (première, dernière) ;
+    colonnes de durée et d'événement (variantes de seuil). Si une ligne reste à
+    |SMD| >= SEUIL_SMD après pondération, une seule retouche fixée d'avance (D-56) :
+    carrés des variables numériques ajoutés au score ; le résultat final est rapporté
+    tel quel. Sortie : dictionnaire (voir score_poids_equilibre) + X, médianes,
+    tableau d'équilibre de la première tentative, retouche (booléen).
+    """
+    traite = population["tutore_photo"].to_numpy()
+    X, medianes = covariables_du_score(population, periode, fenetre, duree=duree, evenement=evenement)
+    matrice = matrice_equilibre(population, X)
+    resultat = score_poids_equilibre(X, traite, matrice)
+    equilibre_initial = resultat["equilibre"]
+    retouche = not equilibre_initial["equilibre"].all()
+    if retouche:
+        X = ajouter_carres(X)
+        resultat = score_poids_equilibre(X, traite, matrice)
+    resultat.update({
+        "X": X,
+        "medianes": medianes,
+        "traite": traite,
+        "equilibre_initial": equilibre_initial,
+        "retouche": retouche,
+        "critere_atteint": bool(resultat["equilibre"]["equilibre"].all()),
+    })
+    return resultat
 
 
 # ===========================================================================
