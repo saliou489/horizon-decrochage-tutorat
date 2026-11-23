@@ -1,0 +1,3797 @@
+[
+  {
+    "id_etudiant": "HZ26904",
+    "semaine": 8,
+    "risque_decrochage_pct": 71,
+    "statut": "validée",
+    "situation": "Le risque estimé de décrochage avant la semaine 30, sachant que l'étudiant est encore inscrit à la semaine 8, est de 71 %, contre 18 % en moyenne dans la promotion. Ce risque est associé à plusieurs facteurs connus dès la rentrée, dont l'âge et la distance domicile-campus.",
+    "points_attention": [
+      "L'âge est de 28 ans, associé à un multiplicateur de 2.1.",
+      "L'emploi en parallèle des études est présent, associé à un multiplicateur de 1.6.",
+      "La distance domicile-campus est de 131 km, associée à un multiplicateur de 1.5.",
+      "Durant les semaines 7 à 8, la moyenne des devoirs rendus est de 0.5 et la moyenne des séances manquées est de 4.5."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:28:48",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 71,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "28 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 2.1
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "131 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 4.5,
+        "note_moyenne": 9.0
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ57110",
+    "semaine": 8,
+    "risque_decrochage_pct": 62,
+    "statut": "validée",
+    "situation": "A la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 62 % pour l'étudiant, contre un risque moyen de 18 % dans la promotion. Ce risque estimé est associé à plusieurs caractéristiques connues dès la rentrée.",
+    "points_attention": [
+      "Le facteur âge est associé à un multiplicateur de 1.7 par rapport à un étudiant moyen de la promotion, à autres caractéristiques égales.",
+      "Le facteur emploi en parallèle des études est associé à un multiplicateur de 1.6 par rapport à un étudiant moyen de la promotion, à autres caractéristiques égales.",
+      "Le facteur note du bac est associé à un multiplicateur de 1.4 par rapport à un étudiant moyen de la promotion, à autres caractéristiques égales.",
+      "Aucun tutorat n'est en cours à la semaine d'observation."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:30:28",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 62,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "26 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.7
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,8 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 1.0,
+        "note_moyenne": 8.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ81577",
+    "semaine": 8,
+    "risque_decrochage_pct": 58,
+    "statut": "validée",
+    "situation": "Le risque estimé de décrochage avant la semaine 30, sachant que l'étudiant est encore inscrit à la semaine 8, est de 58 %, alors que le risque moyen de la promotion est de 18 %. Le modèle statistique associe ce risque plus élevé à des caractéristiques connues dès la rentrée telles que l'âge, l'emploi en parallèle des études et la note du bac.",
+    "points_attention": [
+      "Pour le facteur âge, l'étudiant a 26 ans contre 20,1 ans en moyenne dans la promotion, avec un multiplicateur de 1.7.",
+      "L'emploi en parallèle des études est présent avec la valeur oui, contre 18 % de la promotion dans ce cas, associé à un multiplicateur de 1.6.",
+      "La note du bac est de 10,3 / 20 pour l'étudiant contre 12,8 / 20 en moyenne dans la promotion, avec un multiplicateur de 1.5.",
+      "Pour les semaines 7 et 8, les observations montrent 3.5 connexions à la plateforme, 1.0 devoirs rendus, 4.0 séances manquées et une note moyenne de 9.8 sur 20."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:30:40",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 58,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "26 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.7
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,3 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.5,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 4.0,
+        "note_moyenne": 9.8
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 8
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ42162",
+    "semaine": 8,
+    "risque_decrochage_pct": 57,
+    "statut": "validée",
+    "situation": "Le risque estimé de décrochage avant la semaine 30, observé à la semaine 8, est de 57 %, contre 18 % en moyenne dans la promotion. Ce risque est associé à plusieurs facteurs connus dès la rentrée, dont l'emploi en parallèle des études.",
+    "points_attention": [
+      "L'étudiant a un emploi en parallèle des études, un facteur où le risque est multiplié par 1.6.",
+      "La distance domicile-campus est de 116 km, ce qui est associé à un multiplicateur de 1.5.",
+      "L'âge est de 23 ans, avec un multiplicateur de 1.3.",
+      "L'activité récente montre 5.5 séances manquées et une note moyenne de 9.4 sur 20."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:31:20",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 57,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "116 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "23 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 8.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 5.5,
+        "note_moyenne": 9.4
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ16114",
+    "semaine": 8,
+    "risque_decrochage_pct": 54,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 54 %, contre 18 % en moyenne dans la promotion. Ce risque estimé est associé à plusieurs facteurs connus dès la rentrée, tels que la note du bac (10,1 / 20), l'emploi en parallèle des études (oui) et l'âge (24 ans).",
+    "points_attention": [
+      "Les facteurs identifiés dès la rentrée multiplient le risque par 1,6 pour la note du bac et l'emploi en parallèle, et par 1,4 pour l'âge.",
+      "Entre les semaines 7 et 8, l'étudiant a enregistré en moyenne 7,0 connexions à la plateforme, 2,0 devoirs rendus et 3,5 séances manquées, pour une note moyenne de 10,3 sur 20.",
+      "Le statut du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 3,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:33:19",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 54,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "24 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.0,
+        "devoirs_rendus": 2.0,
+        "seances_manquees": 3.5,
+        "note_moyenne": 10.3
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ23213",
+    "semaine": 8,
+    "risque_decrochage_pct": 51,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 51 %, contre 18 % en moyenne pour la promotion. Ce risque est associé à plusieurs facteurs connus dès la rentrée, dont l'emploi en parallèle des études, la note du bac et l'âge.",
+    "points_attention": [
+      "L'étudiant a un emploi en parallèle des études, caractéristique associée à un multiplicateur de risque de 1.6 par rapport à un étudiant moyen de la promotion à autres caractéristiques égales.",
+      "La note du bac est de 10,4 / 20, ce qui est associé à un multiplicateur de 1.5, la moyenne de la promotion étant de 12,8 / 20.",
+      "L'âge est de 23 ans, associé à un multiplicateur de 1.3, pour une moyenne de 20,1 ans dans la promotion.",
+      "Le statut du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "relancer sur les devoirs"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:33:59",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 51,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,4 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "23 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 2.0,
+        "note_moyenne": 9.7
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ53255",
+    "semaine": 8,
+    "risque_decrochage_pct": 51,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 51 %, contre un risque moyen de 18 % dans la promotion. Ce risque estimé est associé à plusieurs facteurs connus dès la rentrée, dont l'emploi en parallèle des études, la note du bac et l'âge.",
+    "points_attention": [
+      "L'étudiant déclare un emploi en parallèle des études, une caractéristique associée à un multiplicateur de 1.6.",
+      "La note du bac est de 10,8 / 20, associée à un multiplicateur de 1.4.",
+      "L'âge est de 23 ans, associé à un multiplicateur de 1.3.",
+      "Le statut du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:34:08",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 51,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,8 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "23 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 3.0,
+        "note_moyenne": 12.8
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ68015",
+    "semaine": 8,
+    "risque_decrochage_pct": 50,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 50 %, contre un risque moyen de 18 % dans la promotion. Ce risque estimé est associé à plusieurs facteurs connus dès la rentrée, tels que la note du bac, la distance domicile-campus et un emploi en parallèle des études.",
+    "points_attention": [
+      "La note du bac est de 10,0 / 20 avec un multiplicateur de 1.6 dans le modèle.",
+      "La distance domicile-campus est de 193 km, ce qui est associé à un multiplicateur de 1.6.",
+      "L'étudiant déclare un emploi en parallèle des études, associé à un multiplicateur de 1.6.",
+      "Le statut du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:56:19",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 50,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,0 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "193 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 2.5,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 4.0,
+        "note_moyenne": 9.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ87386",
+    "semaine": 8,
+    "risque_decrochage_pct": 50,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 50 %, contre 18 % en moyenne dans la promotion. Ce risque est notamment associé à l'emploi en parallèle des études, pour lequel le multiplicateur est de 1.6.",
+    "points_attention": [
+      "L'étudiant a un emploi en parallèle des études, une situation présente chez 18 % de la promotion et associée à un multiplicateur de 1.6.",
+      "La note du bac est de 10,9 / 20, ce qui est associé à un multiplicateur de 1.4, sachant que la moyenne de la promotion est de 12,8 / 20.",
+      "L'âge est de 23 ans, associé à un multiplicateur de 1.3, pour une moyenne de 20,1 ans dans la promotion.",
+      "Le tutorat est en cours depuis la semaine 6."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:37:18",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 50,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,9 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "23 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 6.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 3.0,
+        "note_moyenne": 6.0
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 6
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ55110",
+    "semaine": 8,
+    "risque_decrochage_pct": 50,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 50 %, contre 18 % en moyenne dans la promotion. Ce risque est associé à la note du bac, à l'âge et à la présence d'un emploi en parallèle des études.",
+    "points_attention": [
+      "Le modèle indique que la note du bac est de 10,2 / 20 pour une référence de 12,8 / 20 en moyenne dans la promotion, ce qui est associé à un multiplicateur de 1,6.",
+      "L'âge est de 25 ans contre 20,1 ans en moyenne dans la promotion, ce qui est également associé à un multiplicateur de 1,6.",
+      "La présence d'un emploi en parallèle des études concerne l'étudiant, alors que 18 % de la promotion sont dans ce cas, avec un multiplicateur de 1,6.",
+      "Concernant le tutorat, le statut est actuellement aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "relancer sur les devoirs"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:37:26",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 50,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "25 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 1.5,
+        "note_moyenne": 11.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ37633",
+    "semaine": 8,
+    "risque_decrochage_pct": 49,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 49 %, contre 18 % en moyenne dans la promotion. Ce risque estimé est associé à plusieurs facteurs connus dès la rentrée, dont le niveau de la note du bac (10,2 / 20) et la présence d'un emploi en parallèle des études.",
+    "points_attention": [
+      "Le facteur note du bac est de 10,2 / 20, pour une référence de 12,8 / 20 en moyenne dans la promotion, avec un multiplicateur de 1.6.",
+      "L'étudiant a un emploi en parallèle des études, un facteur associé à un multiplicateur de 1.6.",
+      "Le statut du tutorat à la semaine d'observation est aucun.",
+      "Sur les semaines 7 à 8, l'activité observée indique 4.0 connexions à la plateforme, 1.5 devoirs rendus, 4.0 séances manquées et une note moyenne de 6.6 sur une note maximum de 20."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:37:34",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 49,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 4.0,
+        "note_moyenne": 6.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ45251",
+    "semaine": 8,
+    "risque_decrochage_pct": 49,
+    "statut": "validée",
+    "situation": "A la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 49 %, contre 18 % en moyenne dans la promotion. Ce risque est associé à des caractéristiques connues dès la rentrée telles que l'emploi en parallèle des études, la distance domicile-campus et l'âge.",
+    "points_attention": [
+      "Le facteur emploi en parallèle des études est présent, avec un multiplicateur de 1.6.",
+      "La distance domicile-campus est de 115 km, contre 11 km pour un étudiant typique de la promotion, avec un multiplicateur de 1.5.",
+      "L'âge est de 22 ans, avec un multiplicateur de 1.2.",
+      "Le statut du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:37:43",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 49,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "115 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 15.1
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ73699",
+    "semaine": 8,
+    "risque_decrochage_pct": 49,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 49 %, contre 18 % en moyenne dans la promotion. Ce risque est associé à des caractéristiques telles que l'emploi en parallèle des études, la note du bac et l'âge.",
+    "points_attention": [
+      "Le facteur emploi en parallèle des études est associé à un multiplicateur de 1.6.",
+      "La note du bac est de 11,1 / 20 pour l'étudiant, alors que la moyenne de la promotion est de 12,8 / 20.",
+      "L'âge est de 22 ans, pour une moyenne de 20,1 ans dans la promotion.",
+      "Un tutorat est en cours depuis la semaine 5."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:38:23",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 49,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 1.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 3.0,
+        "note_moyenne": 6.1
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 5
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ95676",
+    "semaine": 8,
+    "risque_decrochage_pct": 48,
+    "statut": "validée",
+    "situation": "Le risque estimé de décrochage avant la semaine 30, sachant l'étudiant encore inscrit à la semaine 8, est de 48 %, tandis que le risque moyen de la promotion est de 18 %. Ce niveau de risque est associé à plusieurs facteurs connus dès la rentrée, dont la distance domicile-campus, l'emploi en parallèle des études et la note du bac.",
+    "points_attention": [
+      "La distance domicile-campus est de 159 km, associée à un multiplicateur de 1.6.",
+      "L'emploi en parallèle des études est présent, associé à un multiplicateur de 1.6.",
+      "La note du bac est de 10,7 / 20, associée à un multiplicateur de 1.5.",
+      "Le statut du tutorat à la semaine 8 est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:39:03",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 48,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "159 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,7 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.5,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 3.5,
+        "note_moyenne": 8.1
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ63413",
+    "semaine": 8,
+    "risque_decrochage_pct": 48,
+    "statut": "validée",
+    "situation": "Le modèle statistique estime un risque de décrochage de 48 % avant la semaine 30 pour cet étudiant, contre un risque moyen de 18 % dans la promotion. Ce risque est associé à des caractéristiques connues dès la rentrée comme la note du bac, l'emploi en parallèle des études et la bourse.",
+    "points_attention": [
+      "La note du bac de l'étudiant est de 10,1 / 20, pour une référence de 12,8 / 20 en moyenne dans la promotion.",
+      "L'étudiant a un emploi en parallèle des études, ce qui concerne 18 % de la promotion dans ce cas.",
+      "L'étudiant est non boursier, une situation qui concerne 57 % de la promotion dans ce cas.",
+      "Le statut du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:39:12",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 48,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.5,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 1.5,
+        "note_moyenne": 10.1
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ64213",
+    "semaine": 8,
+    "risque_decrochage_pct": 48,
+    "statut": "validée",
+    "situation": "Le risque estimé de décrochage avant la semaine 30, sachant l'étudiant encore inscrit à la semaine 8, est de 48 %, pour un risque moyen de la promotion de 18 %. Ce risque estimé est associé à plusieurs facteurs connus dès la rentrée, tels que la note du bac, l'emploi en parallèle des études et l'âge.",
+    "points_attention": [
+      "Le facteur note du bac (10,3 / 20) est associé à un multiplicateur de 1.6.",
+      "Le facteur emploi en parallèle des études (oui) est associé à un multiplicateur de 1.6.",
+      "Le facteur âge (23 ans) est associé à un multiplicateur de 1.3.",
+      "L'observation sur les semaines 7 à 8 montre une moyenne de séances manquées de 8.0."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 2,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:39:30",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 48,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,3 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "23 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 8.0,
+        "note_moyenne": 8.8
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ63546",
+    "semaine": 8,
+    "risque_decrochage_pct": 47,
+    "statut": "validée",
+    "situation": "Le risque estimé de décrochage avant la semaine 30, sachant l'étudiant encore inscrit à la semaine 8, est de 47 %, contre 18 % en moyenne dans la promotion. Ce risque est associé à plusieurs caractéristiques connues dès la rentrée, dont l'emploi en parallèle des études.",
+    "points_attention": [
+      "L'étudiant a un emploi en parallèle des études, un facteur dont le multiplicateur est 1.6.",
+      "La note du bac est de 10,5 / 20, avec un multiplicateur de 1.5.",
+      "La distance domicile-campus est de 90 km, avec un multiplicateur de 1.4.",
+      "Le statut du tutorat à la semaine d'observation est en cours."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:39:38",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 47,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,5 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "90 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 12.1
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 5
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ18278",
+    "semaine": 8,
+    "risque_decrochage_pct": 47,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 47 %, contre un risque moyen de 18 % dans la promotion. Ce risque estimé va de pair avec l'emploi en parallèle des études, la note du bac et la distance domicile-campus.",
+    "points_attention": [
+      "L'étudiant a un emploi en parallèle des études, un facteur associé à un multiplicateur de 1.6.",
+      "La note du bac est de 10,3 / 20, contre 12,8 / 20 en moyenne dans la promotion, ce qui est associé à un multiplicateur de 1.6.",
+      "La distance domicile-campus est de 41 km, ce qui est associé à un multiplicateur de 1.2.",
+      "Sur les semaines 7 et 8, les observations montrent une moyenne de 1.5 connexions à la plateforme, 1.0 devoirs rendus, 6.0 séances manquées et une note moyenne de 10.2 sur 20."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:40:18",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 47,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,3 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "41 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 1.5,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 6.0,
+        "note_moyenne": 10.2
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ75960",
+    "semaine": 8,
+    "risque_decrochage_pct": 46,
+    "statut": "validée",
+    "situation": "À la semaine 8, le modèle statistique estime le risque que l'étudiant décroche avant la semaine 30 à 46 %, alors que le risque moyen de la promotion est de 18 %. Ce risque est associé à plusieurs facteurs connus dès la rentrée, dont l'emploi en parallèle des études, la note du bac et le statut de non boursier.",
+    "points_attention": [
+      "L'étudiant a un emploi en parallèle des études, un facteur dont le multiplicateur est de 1.6.",
+      "La note du bac est de 10,6 / 20, pour une moyenne de 12,8 / 20 dans la promotion, avec un multiplicateur de 1.5.",
+      "Sur les semaines 7 à 8, la note moyenne est de 6.7 sur 20.",
+      "Le statut du tutorat à la semaine d'observation est en cours."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "relancer sur les devoirs"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:40:33",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 46,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,6 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 6.7
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 6
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ81157",
+    "semaine": 8,
+    "risque_decrochage_pct": 46,
+    "statut": "validée",
+    "situation": "Le risque de décrochage estimé est de 46 % avant la semaine 30, alors que le risque moyen de la promotion est de 18 %. Le profil de l'étudiant présente plusieurs facteurs associés à un risque plus élevé, notamment l'emploi en parallèle des études, l'âge et la distance domicile-campus.",
+    "points_attention": [
+      "Le facteur emploi en parallèle des études est associé à un multiplicateur de 1.6.",
+      "Le facteur âge est associé à un multiplicateur de 1.4, avec une valeur de 24 ans contre 20,1 ans en moyenne dans la promotion.",
+      "La distance domicile-campus est de 36 km, associée à un multiplicateur de 1.2.",
+      "Un tutorat est actuellement en cours depuis la semaine 3."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:40:48",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 46,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "24 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "36 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 1.5,
+        "note_moyenne": 10.1
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 3
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ74072",
+    "semaine": 8,
+    "risque_decrochage_pct": 46,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 46 %, alors que le risque moyen de la promotion est de 18 %. Le modèle statistique indique que ce niveau de risque est associé à plusieurs caractéristiques connues dès la rentrée.",
+    "points_attention": [
+      "L'étudiant est concerné par l'emploi en parallèle des études, un facteur dont le multiplicateur est 1.6.",
+      "La note du bac est de 10,6 / 20, ce qui est associé à un multiplicateur de 1.5 par rapport à la moyenne de la promotion de 12,8 / 20.",
+      "Le statut concernant la bourse est non boursier, associé à un multiplicateur de 1.1.",
+      "Pour les semaines 7 à 8, l'activité observée montre 3.0 séances manquées et une note moyenne de 5.6 sur une note maximum de 20."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:41:03",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 46,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,6 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 2.0,
+        "devoirs_rendus": 2.0,
+        "seances_manquees": 3.0,
+        "note_moyenne": 5.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ36651",
+    "semaine": 8,
+    "risque_decrochage_pct": 46,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 46 %, alors que le risque moyen de la promotion est de 18 %. Ce risque est associé à l'emploi en parallèle des études, à la note du bac et à l'âge.",
+    "points_attention": [
+      "Le facteur emploi en parallèle des études est associé à un multiplicateur de 1.6.",
+      "La note du bac est de 11,1 / 20 pour l'étudiant, avec un multiplicateur de 1.4.",
+      "L'âge est de 22 ans, associé à un multiplicateur de 1.2.",
+      "Le statut du tutorat est actuellement aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:41:16",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 46,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 2.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 6.5,
+        "note_moyenne": 5.5
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ34968",
+    "semaine": 8,
+    "risque_decrochage_pct": 45,
+    "statut": "validée",
+    "situation": "Le risque estimé de décrochage avant la semaine 30, sachant que l'étudiant est encore inscrit à la semaine 8, est de 45 %, contre 18 % en moyenne dans la promotion. Ce risque est associé à plusieurs caractéristiques connues dès la rentrée.",
+    "points_attention": [
+      "Le facteur note du bac est de 10,1 / 20 avec un multiplicateur de 1.6.",
+      "Le facteur emploi en parallèle des études est présent avec un multiplicateur de 1.6.",
+      "Le facteur distance domicile-campus est de 86 km avec un multiplicateur de 1.4.",
+      "Entre les semaines 7 et 8, le nombre de devoirs rendus est de 0.5 et le nombre de séances manquées est de 4.0."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "relancer sur les devoirs"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 2,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:41:52",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 45,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "86 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 4.0,
+        "note_moyenne": 4.2
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 6
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ15409",
+    "semaine": 8,
+    "risque_decrochage_pct": 45,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 45 %, contre 18 % en moyenne dans la promotion. Ce risque estimé va de pair avec des caractéristiques connues dès la rentrée telles que la note du bac, l'emploi en parallèle des études et l'âge.",
+    "points_attention": [
+      "Le facteur note du bac (valeur etudiant: 10,1 / 20) est associé à un multiplicateur de 1.6.",
+      "Le facteur emploi en parallèle des études (valeur etudiant: oui) est associé à un multiplicateur de 1.6.",
+      "Le facteur âge (valeur etudiant: 22 ans) est associé à un multiplicateur de 1.2.",
+      "Le statut du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:42:41",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 45,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 8.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 0.5,
+        "note_moyenne": 11.7
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ72971",
+    "semaine": 8,
+    "risque_decrochage_pct": 45,
+    "statut": "validée",
+    "situation": "À la semaine 8, le modèle statistique estime un risque de décrochage de 45 % avant la semaine 30, contre 18 % en moyenne dans la promotion. Ce risque est associé à plusieurs facteurs connus dès la rentrée, dont l'emploi en parallèle des études, la distance domicile-campus et l'âge.",
+    "points_attention": [
+      "Le profil de l'étudiant présente un emploi en parallèle des études, associé à un multiplicateur de 1.6.",
+      "La distance domicile-campus est de 130 km, associée à un multiplicateur de 1.5.",
+      "L'âge est de 24 ans, associé à un multiplicateur de 1.4.",
+      "Pour les semaines 7 à 8, l'étudiant a en moyenne 0.5 devoirs rendus, 4.0 séances manquées et une note moyenne de 9.0 sur 20."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "relancer sur les devoirs"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 2,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:43:39",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 45,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "130 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "24 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 6.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 4.0,
+        "note_moyenne": 9.0
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ83054",
+    "semaine": 8,
+    "risque_decrochage_pct": 45,
+    "statut": "validée",
+    "situation": "Le modèle statistique estime que le risque de décrochage de l'étudiant est de 45 % avant la semaine 30, à la semaine 8, contre un risque moyen de 18 % dans la promotion. Ce niveau de risque est associé à l'âge, à l'emploi en parallèle des études et à la note du bac.",
+    "points_attention": [
+      "L'âge est un facteur associé à un multiplicateur de 1.7 par rapport à un étudiant moyen.",
+      "L'emploi en parallèle des études est associé à un multiplicateur de 1.6.",
+      "La note du bac est de 11,3 / 20 avec un multiplicateur de 1.3.",
+      "Le statut du tutorat est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:44:35",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 45,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "26 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.7
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,3 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 2.0,
+        "seances_manquees": 1.0,
+        "note_moyenne": 9.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ13627",
+    "semaine": 8,
+    "risque_decrochage_pct": 45,
+    "statut": "validée",
+    "situation": "Le risque estimé de décrochage avant la semaine 30, sachant que l'étudiant est encore inscrit à la semaine 8, est de 45 %, contre 18 % en moyenne dans la promotion. Ce risque est associé à plusieurs facteurs connus dès la rentrée, dont l'emploi en parallèle des études, pour lequel le multiplicateur est de 1.6.",
+    "points_attention": [
+      "L'étudiant a un emploi en parallèle des études, ce qui est associé à un multiplicateur de 1.6 dans le modèle.",
+      "La distance domicile-campus est de 104 km, alors qu'elle est de 11 km pour un étudiant typique de la promotion.",
+      "La note du bac est de 11,1 / 20, pour une moyenne de 12,8 / 20 dans la promotion.",
+      "Pour les semaines 7 à 8, le nombre moyen de séances manquées est de 3.5, et la note moyenne est de 8.4 sur une note maximum de 20."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:44:49",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 45,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "104 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 1.5,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 3.5,
+        "note_moyenne": 8.4
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ35224",
+    "semaine": 8,
+    "risque_decrochage_pct": 44,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 44 %, contre 18 % en moyenne dans la promotion. Ce risque va de pair avec des facteurs connus dès la rentrée tels que l'emploi en parallèle des études, la distance domicile-campus et la note du bac.",
+    "points_attention": [
+      "Le facteur emploi en parallèle des études est associé à un multiplicateur de 1.6.",
+      "La distance domicile-campus est de 62 km, pour un multiplicateur de 1.3.",
+      "La note du bac est de 11,3 / 20, pour un multiplicateur de 1.3.",
+      "Concernant le tutorat, la situation est en cours depuis la semaine 6."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:45:01",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 44,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "62 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.3
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,3 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.5,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 6.0,
+        "note_moyenne": 6.8
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 6
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ81874",
+    "semaine": 8,
+    "risque_decrochage_pct": 44,
+    "statut": "validée",
+    "situation": "À la semaine 8, le modèle estime pour l'étudiant un risque de décrochage de 44 % avant la semaine 30, comparé à une moyenne de la promotion de 18 %. Ce risque est associé à plusieurs caractéristiques connues dès la rentrée, dont l'emploi en parallèle des études, la note du bac et l'âge.",
+    "points_attention": [
+      "L'étudiant a un emploi en parallèle des études, un facteur dont le multiplicateur est de 1,6.",
+      "La note du bac est de 10,5 / 20, avec un multiplicateur associé de 1,5.",
+      "L'âge est de 24 ans, associé à un multiplicateur de 1,4.",
+      "Le statut du tutorat à la semaine d'observation est indiqué comme étant aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:45:10",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 44,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,5 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "24 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.5,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 7.0
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ34332",
+    "semaine": 8,
+    "risque_decrochage_pct": 44,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 44 %, contre 18 % en moyenne dans la promotion. Ce risque estimé est associé à l'emploi en parallèle des études, à la distance domicile-campus et à la note du bac.",
+    "points_attention": [
+      "L'étudiant a un emploi en parallèle des études, un facteur dont le multiplicateur est de 1.6.",
+      "La distance domicile-campus est de 61 km.",
+      "La note moyenne observée aux semaines 7 et 8 est de 8,5 / 20 pour une note maximum de 20, alors que la moyenne de la promotion est de 10,4.",
+      "Un tutorat est en cours depuis la semaine 6."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:45:19",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 44,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "61 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.3
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 3.0,
+        "note_moyenne": 8.5
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 6
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ59769",
+    "semaine": 8,
+    "risque_decrochage_pct": 44,
+    "statut": "validée",
+    "situation": "Le risque estimé de décrochage avant la semaine 30, estimé à la semaine 8, est de 44 %, contre 18 % en moyenne dans la promotion. Ce risque va de pair avec des caractéristiques connues dès la rentrée telles que l'emploi en parallèle des études, la note du bac et l'âge.",
+    "points_attention": [
+      "L'étudiant a un emploi en parallèle des études, un facteur dont le multiplicateur est de 1.6.",
+      "La note du bac est de 11,1 / 20, avec un multiplicateur de 1.3.",
+      "L'âge est de 22 ans, associé à un multiplicateur de 1.2.",
+      "Sur les semaines 7 à 8, l'activité montre 4.0 connexions à la plateforme, 0.5 devoirs rendus, 0.5 séances manquées et une note moyenne de 8.8 sur 20, alors qu'il n'y a aucun tutorat en cours."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "relancer sur les devoirs"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:45:59",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 44,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 0.5,
+        "note_moyenne": 8.8
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ52205",
+    "semaine": 8,
+    "risque_decrochage_pct": 43,
+    "statut": "validée",
+    "situation": "Le risque estimé que l'étudiant décroche avant la semaine 30, sachant qu'il est encore inscrit à la semaine 8, est de 43 pourcent, alors que le risque moyen dans sa promotion est de 18 pourcent. Ce risque est associé à plusieurs caractéristiques connues dès la rentrée, telles que l'âge, l'emploi en parallèle des études et la note du bac.",
+    "points_attention": [
+      "L'âge de l'étudiant est de 25 ans, pour une moyenne de 20,1 ans dans la promotion, avec un multiplicateur de 1.6.",
+      "L'emploi en parallèle des études est présent, un cas que l'on retrouve chez 18 pourcent de la promotion, avec un multiplicateur de 1.6.",
+      "La note du bac est de 10,7 sur 20, contre 12,8 sur 20 en moyenne dans la promotion, avec un multiplicateur de 1.4.",
+      "Le statut du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:46:14",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 43,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "25 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,7 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.5,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 0.5,
+        "note_moyenne": 12.2
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ45683",
+    "semaine": 8,
+    "risque_decrochage_pct": 43,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 43 %, contre 18 % en moyenne dans la promotion. Ce risque est associé à plusieurs facteurs connus dès la rentrée, dont l'emploi en parallèle des études.",
+    "points_attention": [
+      "Le facteur note du bac est associé à un multiplicateur de 1.6.",
+      "L'étudiant a un emploi en parallèle des études, ce qui est associé à un multiplicateur de 1.6.",
+      "Le facteur âge est associé à un multiplicateur de 1.4.",
+      "La situation du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:47:04",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 43,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "24 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 2.5,
+        "note_moyenne": 9.3
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ99810",
+    "semaine": 8,
+    "risque_decrochage_pct": 42,
+    "statut": "validée",
+    "situation": "À la semaine 8, le modèle statistique estime le risque de décrochage de l'étudiant à 42 % avant la semaine 30, tandis que le risque moyen de la promotion est de 18 %. Ce risque est associé à plusieurs facteurs connus dès la rentrée, tels qu'un emploi en parallèle des études, la note du bac et l'âge.",
+    "points_attention": [
+      "L'étudiant a un emploi en parallèle des études, avec un multiplicateur de 1.6.",
+      "La note du bac est de 10,8 / 20 pour une moyenne de 12,8 / 20 dans la promotion, avec un multiplicateur de 1.4.",
+      "L'âge est de 22 ans pour une moyenne de 20,1 ans dans la promotion, avec un multiplicateur de 1.2.",
+      "Un tutorat est en cours depuis la semaine 6."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:47:45",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,8 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 0.5,
+        "note_moyenne": 6.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 6
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ39784",
+    "semaine": 8,
+    "risque_decrochage_pct": 42,
+    "statut": "validée",
+    "situation": "A la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 42 %, comparé à une moyenne de la promotion de 18 %. Ce risque est associé à plusieurs caractéristiques connues dès la rentrée, dont l'emploi en parallèle des études et la note du bac.",
+    "points_attention": [
+      "Le facteur note du bac indique une valeur de 10,2 / 20 pour l'étudiant, avec un multiplicateur de 1.6.",
+      "L'étudiant a un emploi en parallèle des études, ce qui est associé à un multiplicateur de 1.6.",
+      "L'activité des semaines 7 et 8 montre une note moyenne de 14.3 pour note_maximum 20, pour une note_moyenne de promotion de 10.4.",
+      "Le tutorat indique un statut aucun à la semaine d'observation."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:47:54",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 2.5,
+        "note_moyenne": 14.3
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ21956",
+    "semaine": 8,
+    "risque_decrochage_pct": 42,
+    "statut": "validée",
+    "situation": "À la semaine 8, le modèle statistique estime un risque de décrochage de 42 % avant la semaine 30, alors que le risque moyen de la promotion est de 18 %. Ce risque estimé est associé à plusieurs caractéristiques connues dès la rentrée.",
+    "points_attention": [
+      "L'étudiant présente un emploi en parallèle des études, un facteur associé à un multiplicateur de 1.6.",
+      "La note du bac est de 11,3 / 20 pour une moyenne de promotion de 12,8 / 20, associé à un multiplicateur de 1.3.",
+      "L'étudiant est non boursier, un facteur associé à un multiplicateur de 1.1.",
+      "Le tutorat est en cours depuis la semaine 7."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:49:36",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,3 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.5,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.9
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 7
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ81574",
+    "semaine": 8,
+    "risque_decrochage_pct": 42,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 42 %, comparé à un risque moyen de 18 % dans la promotion. Ce risque est associé à plusieurs facteurs connus dès la rentrée, dont l'emploi en parallèle des études, la distance domicile-campus et la note du bac.",
+    "points_attention": [
+      "L'étudiant est concerné par un emploi en parallèle des études, ce qui est associé à un multiplicateur de 1.6.",
+      "La distance domicile-campus est de 70 km, associée à un multiplicateur de 1.4.",
+      "La note du bac est de 11,1 / 20, associée à un multiplicateur de 1.3.",
+      "Le statut du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 2,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:49:53",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "70 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.2
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ70304",
+    "semaine": 8,
+    "risque_decrochage_pct": 42,
+    "statut": "validée",
+    "situation": "A la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 42 %, alors que le risque moyen de la promotion est de 18 %. Le profil présente des facteurs initiaux tels que la note du bac, l'emploi en parallèle des études et la distance domicile-campus qui sont associés à un risque plus élevé.",
+    "points_attention": [
+      "La note du bac est de 10,3 / 20, associée à un multiplicateur de 1.6.",
+      "L'étudiant a un emploi en parallèle des études, associé à un multiplicateur de 1.6.",
+      "La distance domicile-campus est de 28 km, associée à un multiplicateur de 1.2.",
+      "Sur les semaines 7 et 8, les observations montrent 3.5 séances manquées."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:50:01",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,3 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "28 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 6.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 3.5,
+        "note_moyenne": 11.0
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ20443",
+    "semaine": 8,
+    "risque_decrochage_pct": 42,
+    "statut": "validée",
+    "situation": "A la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 42 % pour l'étudiant, contre 18 % en moyenne dans la promotion. Ce risque estimé est associé à plusieurs facteurs connus dès la rentrée, tels que l'âge, l'emploi en parallèle des études et la distance domicile-campus.",
+    "points_attention": [
+      "Le facteur âge est associé à un multiplicateur de 1.6 par rapport à un étudiant moyen de la promotion, à autres caractéristiques égales.",
+      "L'emploi en parallèle des études est associé à un multiplicateur de 1.6.",
+      "La distance domicile-campus est associée à un multiplicateur de 1.2.",
+      "Sur les semaines 7 à 8, l'étudiant a enregistré 4.0 connexions à la plateforme, 1.0 devoirs rendus, 3.0 séances manquées et une note moyenne de 11.0 sur 20."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:50:10",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "25 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "34 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 3.0,
+        "note_moyenne": 11.0
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ90568",
+    "semaine": 8,
+    "risque_decrochage_pct": 42,
+    "statut": "validée",
+    "situation": "Le risque estimé de décrochage avant la semaine 30 est de 42 %, comparé à une moyenne de la promotion de 18 %. Le profil de l'étudiant comporte plusieurs facteurs associés à un risque plus élevé, dont l'emploi en parallèle des études, la note du bac et le statut non boursier.",
+    "points_attention": [
+      "Le facteur emploi en parallèle des études est associé à un multiplicateur de risque de 1.6.",
+      "Le facteur note du bac est associé à une valeur de 10,4 / 20 pour l'étudiant.",
+      "Entre les semaines 7 et 8, les séances manquées sont en moyenne de 7.0 par semaine.",
+      "Le statut du tutorat est en cours avec un début à la semaine 8."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:50:50",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,4 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 7.0,
+        "note_moyenne": 5.7
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 8
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ54884",
+    "semaine": 8,
+    "risque_decrochage_pct": 42,
+    "statut": "validée",
+    "situation": "Le modèle statistique estime un risque de décrochage de 42 % avant la semaine 30, pour une moyenne de 18 % dans la promotion. Ce niveau de risque va de pair avec des caractéristiques connues dès la rentrée telles que la distance domicile-campus, la note du bac et l'âge.",
+    "points_attention": [
+      "La distance domicile-campus est de 98 km, ce qui est associé à un multiplicateur de 1,4.",
+      "L'âge est de 23 ans, ce qui est associé à un multiplicateur de 1,3.",
+      "Sur les semaines 7 et 8, le nombre moyen de devoirs rendus est de 0,5 par semaine pour une note moyenne de 13,5 sur 20.",
+      "Le statut du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "relancer sur les devoirs"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:50:58",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "98 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "23 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 10.5,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 1.5,
+        "note_moyenne": 13.5
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ42192",
+    "semaine": 8,
+    "risque_decrochage_pct": 42,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 42 %, pour une moyenne de la promotion s'établissant à 18 %. Ce niveau de risque est associé à plusieurs facteurs connus dès la rentrée, notamment le fait d'avoir un emploi en parallèle des études, une note du bac et le statut de non boursier.",
+    "points_attention": [
+      "Le facteur emploi en parallèle des études est associé à un multiplicateur de 1.6.",
+      "La note du bac de l'étudiant est de 10,8 / 20 pour une moyenne de la promotion de 12,8 / 20.",
+      "La situation du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:51:38",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,8 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.5,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 3.0,
+        "note_moyenne": 10.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ35258",
+    "semaine": 8,
+    "risque_decrochage_pct": 42,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé que l'étudiant décroche avant la semaine 30 est de 42 %, alors que le risque moyen de la promotion est de 18 %. Les facteurs associés à un risque plus élevé sont l'emploi en parallèle des études, la note du bac et l'âge.",
+    "points_attention": [
+      "L'étudiant a un emploi en parallèle des études, ce qui est associé à un multiplicateur de 1.6.",
+      "La note du bac est de 10,9 / 20, associée à un multiplicateur de 1.4, tandis que la moyenne de la promotion est de 12,8 / 20.",
+      "L'âge est de 22 ans, associé à un multiplicateur de 1.2, par rapport à une moyenne de 20,1 ans dans la promotion.",
+      "Pour la période des semaines 7 à 8, l'étudiant compte en moyenne 3.0 séances manquées et une note moyenne de 7.1 sur 20."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:51:47",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,9 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 3.0,
+        "note_moyenne": 7.1
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ67041",
+    "semaine": 8,
+    "risque_decrochage_pct": 42,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé que l'étudiant décroche avant la semaine 30 est de 42 %, alors que le risque moyen de la promotion est de 18 %. Ce risque est associé à plusieurs facteurs connus dès la rentrée, dont l'emploi en parallèle des études.",
+    "points_attention": [
+      "L'étudiant présente un facteur associé à un multiplicateur de risque de 1.6 lié à l'emploi en parallèle des études.",
+      "La distance domicile-campus est de 130 km, contre 11 km pour un étudiant typique de la promotion.",
+      "Sur les semaines 7 à 8, l'étudiant a une note moyenne de 9.5 sur 20 pour une note maximum de 20, avec 2.0 séances manquées.",
+      "Le statut du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:51:57",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "130 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 6.5,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 2.0,
+        "note_moyenne": 9.5
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ28787",
+    "semaine": 8,
+    "risque_decrochage_pct": 41,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 41 % pour l'étudiant, contre 18 % en moyenne dans la promotion. Ce risque est associé à plusieurs facteurs connus dès la rentrée, dont l'emploi en parallèle des études, la distance domicile-campus et l'âge.",
+    "points_attention": [
+      "Le facteur emploi en parallèle des études est associé à un multiplicateur de 1.6.",
+      "La distance domicile-campus est de 152 km.",
+      "Entre les semaines 7 et 8, les connexions à la plateforme sont de 2.0.",
+      "Le statut du tutorat est en cours depuis la semaine 7."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "relancer sur les devoirs"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:52:06",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 41,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "152 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 2.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 2.0,
+        "note_moyenne": 9.7
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 7
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ91056",
+    "semaine": 8,
+    "risque_decrochage_pct": 41,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 41 %, tandis que le risque moyen de la promotion est de 18 %. Ce risque est associé à plusieurs facteurs connus dès la rentrée, dont l'emploi en parallèle des études.",
+    "points_attention": [
+      "L'étudiant a un emploi en parallèle des études, un facteur associé à un multiplicateur de 1.6.",
+      "L'âge est de 22 ans, ce qui est supérieur à la moyenne de 20,1 ans de la promotion.",
+      "La note du bac est de 11,9 / 20, pour une moyenne de promotion de 12,8 / 20.",
+      "Le statut du tutorat à la semaine d'observation est en cours."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:52:14",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 41,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,9 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.0,
+        "note_moyenne": 8.2
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 4
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ63544",
+    "semaine": 8,
+    "risque_decrochage_pct": 41,
+    "statut": "validée",
+    "situation": "À la semaine 8, le modèle statistique estime un risque de décrochage de 41 % avant la semaine 30, comparé à un risque moyen de 18 % dans la promotion. Ce niveau de risque est associé à plusieurs caractéristiques connues dès la rentrée.",
+    "points_attention": [
+      "Le facteur note du bac est de 10,1 / 20 avec une référence promotionnelle à 12,8 / 20 en moyenne dans la promotion et un multiplicateur de 1.6.",
+      "Le facteur emploi en parallèle des études est présent avec la valeur oui, et un multiplicateur de 1.6.",
+      "L'activité des semaines 7 à 8 indique une note moyenne de 5.8 sur une note maximum de 20.",
+      "Le statut du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "relancer sur les devoirs"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:52:54",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 41,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 5.8
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ49682",
+    "semaine": 8,
+    "risque_decrochage_pct": 41,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 41 %, alors que le risque moyen de la promotion est de 18 %. Le modèle statistique indique que ce risque est associé à des caractéristiques telles que la distance domicile-campus, la note du bac et la situation de bourse.",
+    "points_attention": [
+      "La distance domicile-campus est de 326 km, avec un multiplicateur de 1,8, associé à un risque plus élevé.",
+      "La note du bac est de 10,2 / 20, avec un multiplicateur de 1,6.",
+      "L'étudiant est non boursier, avec un multiplicateur de 1,1.",
+      "Le statut du tutorat est en cours depuis la semaine 4."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:53:03",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 41,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "326 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.8
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 2.5,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 10.0,
+        "note_moyenne": 6.0
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 4
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ40111",
+    "semaine": 8,
+    "risque_decrochage_pct": 41,
+    "statut": "validée",
+    "situation": "A la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 41 %, contre 18 % en moyenne dans la promotion. Ce risque est associé à plusieurs facteurs connus dès la rentrée, dont l'emploi en parallèle des études, la distance domicile-campus et le statut de non boursier.",
+    "points_attention": [
+      "Le facteur emploi en parallèle des études est associé à un multiplicateur de 1.6 par rapport à un étudiant moyen de la promotion.",
+      "La distance domicile-campus est de 143 km, ce qui est associé à un multiplicateur de 1.5.",
+      "Le statut de non boursier est associé à un multiplicateur de 1.1.",
+      "Entre les semaines 7 et 8, l'étudiant a enregistré en moyenne 3.5 connexions à la plateforme, 1.5 devoirs rendus, 2.5 séances manquées et une note moyenne de 10.7 sur 20."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:53:43",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 41,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "143 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.5,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.7
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ80214",
+    "semaine": 8,
+    "risque_decrochage_pct": 41,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 41 %, tandis que le risque moyen de la promotion est de 18 %. Ce risque estimé est associé à plusieurs facteurs connus dès la rentrée, dont l'emploi en parallèle des études, qui a un multiplicateur de 1.6.",
+    "points_attention": [
+      "Le facteur emploi en parallèle des études est présent pour l'étudiant, avec un multiplicateur de 1.6.",
+      "La note du bac est de 11,1 / 20, associée à un multiplicateur de 1.4.",
+      "Le facteur bourse indique non boursier, associé à un multiplicateur de 1.1.",
+      "Le statut du tutorat est actuellement aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:53:51",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 41,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 8.0,
+        "devoirs_rendus": 2.0,
+        "seances_manquees": 1.5,
+        "note_moyenne": 13.9
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ25779",
+    "semaine": 8,
+    "risque_decrochage_pct": 40,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 40 %, contre un risque moyen de 18 % dans la promotion. Ce risque estimé est associé à plusieurs facteurs connus dès la rentrée.",
+    "points_attention": [
+      "Le facteur note du bac est de 10,2 / 20 avec un multiplicateur de 1.6.",
+      "Le facteur emploi en parallèle des études est oui avec un multiplicateur de 1.6.",
+      "Le facteur distance domicile-campus est de 112 km avec un multiplicateur de 1.5.",
+      "Le tutorat a le statut en cours depuis la semaine 3."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 2,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:54:09",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 40,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "112 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 1.0,
+        "devoirs_rendus": 0.0,
+        "seances_manquees": 12.0,
+        "note_moyenne": 5.8
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 3
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ26967",
+    "semaine": 8,
+    "risque_decrochage_pct": 40,
+    "statut": "validée",
+    "situation": "Le risque estimé de décrochage avant la semaine 30, observé à la semaine 8, est de 40 %, contre un risque moyen de 18 % dans la promotion. Ce niveau de risque est associé à plusieurs facteurs connus dès la rentrée.",
+    "points_attention": [
+      "Le facteur emploi en parallèle des études est présent pour l'étudiant, avec un multiplicateur de 1.6.",
+      "La distance domicile-campus est de 64 km, avec un multiplicateur de 1.3.",
+      "La note du bac est de 11,8 / 20, avec un multiplicateur de 1.2.",
+      "Le statut du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:54:17",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 40,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "64 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.3
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,8 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.5,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 3.0,
+        "note_moyenne": 6.9
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ47686",
+    "semaine": 8,
+    "risque_decrochage_pct": 40,
+    "statut": "validée",
+    "situation": "Le risque estimé de décrochage avant la semaine 30, observé à la semaine 8, est de 40 %, contre un risque moyen de 18 % dans la promotion. Ce niveau de risque va de pair avec des caractéristiques connues dès la rentrée telles que la note du bac, l'emploi en parallèle des études et l'âge.",
+    "points_attention": [
+      "La note du bac est de 10,2 / 20, ce qui est associé à un multiplicateur de 1.6.",
+      "L'emploi en parallèle des études est présent, avec un multiplicateur de 1.6.",
+      "L'âge est de 22 ans, associé à un multiplicateur de 1.2.",
+      "Pour l'activité entre les semaines 7 et 8, les connexions à la plateforme sont de 2.0, les devoirs rendus de 0.5, les séances manquées de 2.5 et la note moyenne de 8.3 sur 20."
+    ],
+    "actions": [
+      "entretien individuel",
+      "faire le point sur le tutorat en cours",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:54:26",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 40,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 2.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 8.3
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 3
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ65741",
+    "semaine": 8,
+    "risque_decrochage_pct": 40,
+    "statut": "validée",
+    "situation": "À la semaine 8, le risque estimé de décrochage avant la semaine 30 est de 40 %, contre un risque moyen de 18 % dans la promotion. Ce risque estimé est associé à l'emploi en parallèle des études, à la note du bac et au fait d'être non boursier.",
+    "points_attention": [
+      "Le modèle indique un multiplicateur de 1.6 lié à l'emploi en parallèle des études.",
+      "La note du bac est de 10,6 / 20.",
+      "La moyenne des devoirs rendus est de 1.0 entre les semaines 7 et 8, et les séances manquées s'élèvent à 4.5.",
+      "Le statut du tutorat à la semaine d'observation est aucun."
+    ],
+    "actions": [
+      "entretien individuel",
+      "proposer un tutorat",
+      "suivre l'assiduité"
+    ],
+    "motifs_rejet": [],
+    "nb_essais": 1,
+    "avertissement": "Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le conseiller. Les facteurs sont des associations, pas des causes.",
+    "modele": "gemini-3.5-flash-lite",
+    "version_prompt": "v1",
+    "date_generation": "2026-11-23T23:55:05",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 40,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,6 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 4.5,
+        "note_moyenne": 8.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  }
+]
