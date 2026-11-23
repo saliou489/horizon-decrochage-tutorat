@@ -27,7 +27,7 @@ Prérequis : Python 3.12 ou plus (décision D-05). Toutes les commandes se lance
    - Windows : `py -m venv .venv` puis `.venv\Scripts\activate`
    - Linux / macOS : `python3 -m venv .venv` puis `source .venv/bin/activate`
 2. Installer les dépendances : `pip install -r requirements.txt`
-3. Tout relancer (nettoyage des 5 tables, `base_survie.csv` et `base_periode_personne.csv`, modèles de survie, effet du tutorat, entrées des fiches d'alerte) : `python run_all.py` (environ 6 min sur le PC de développement ; aucune clé d'API nécessaire)
+3. Tout relancer (nettoyage des 5 tables, `base_survie.csv` et `base_periode_personne.csv`, modèles de survie, effet du tutorat, entrées des fiches d'alerte) : `python run_all.py` (environ 4 min sur le PC de développement, PC au repos sur secteur : 224 à 239 s mesurés le 23/11 ; un premier lancement après une installation neuve peut être nettement plus long, car Python prépare alors les bibliothèques ; aucune clé d'API nécessaire)
 4. Lancer les tests : `pytest`
 5. Exécuter un notebook de haut en bas et l'enregistrer avec ses sorties :
    `jupyter nbconvert --to notebook --execute --inplace notebooks/01_nettoyage.ipynb`

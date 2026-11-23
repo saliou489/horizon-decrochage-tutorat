@@ -622,9 +622,12 @@ SEMAINES_RECENTES_DIAGNOSTIC = 2
 # Analyse causale : effet du tutorat et sensibilité (CA-04, CA-05 ; D-57, D-61)
 # ---------------------------------------------------------------------------
 
-# Bootstrap (D-61, point 6) : 500 tirages pour l'analyse principale, 200 par variante.
+# Bootstrap (D-61, point 6) : 500 tirages pour l'analyse principale, 100 par variante.
 NB_TIRAGES_PRINCIPAL = 500
-NB_TIRAGES_VARIANTE = 200
+# Repli de D-61 déclenché le 23/11 (D-67, point 8) : run_all.py a pris 16 min 41 s au premier
+# lancement après une installation neuve (RV03) ; les variantes passent de 200 à 100 tirages.
+# Les estimations ponctuelles ne changent pas, seuls leurs intervalles de confiance.
+NB_TIRAGES_VARIANTE = 100
 # Intervalle de confiance à 95 % : percentiles 2,5 et 97,5 des tirages.
 QUANTILES_IC = (2.5, 97.5)
 
