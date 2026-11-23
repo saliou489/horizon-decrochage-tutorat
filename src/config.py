@@ -627,3 +627,96 @@ NB_TIRAGES_PRINCIPAL = 500
 NB_TIRAGES_VARIANTE = 200
 # Intervalle de confiance à 95 % : percentiles 2,5 et 97,5 des tirages.
 QUANTILES_IC = (2.5, 97.5)
+
+# ---------------------------------------------------------------------------
+# Fiches d'alerte par LLM (LL-01, D-65, D-66)
+# ---------------------------------------------------------------------------
+
+# Modèle Gemini (D-65, point 2) : un Flash-Lite stable, dont le niveau gratuit permet assez
+# de requêtes par jour pour les fiches (jusqu'à 3 essais par fiche) ; secours si indisponible.
+MODELE_LLM = "gemini-3.5-flash-lite"
+MODELE_LLM_SECOURS = "gemini-3.1-flash-lite"
+# Version du gabarit de prompt (src/prompts/fiche_<version>.md) : une fiche n'est réutilisée
+# que si elle a été produite avec la même version (D-65, point 5).
+VERSION_PROMPT = "v1"
+DOSSIER_PROMPTS = RACINE / "src" / "prompts"
+# La clé est lue dans .env (ignoré par git), jamais dans le code ni dans les variables
+# d'environnement de la machine (D-65, point 1).
+FICHIER_ENV = RACINE / ".env"
+NOM_CLE_API = "GEMINI_API_KEY"
+
+# Qui reçoit une fiche (D-66) : étudiants encore suivis à la semaine de la photo causale,
+# dont le risque de décrocher d'ici la semaine 30 atteint 40 %.
+SEMAINE_FICHES = SEMAINE_LANDMARK
+# Activité récente décrite dans la fiche : les 2 dernières semaines (observations, pas score).
+SEMAINES_ACTIVITE_FICHE = (7, 8)
+SEUIL_RISQUE_FICHE = 0.40
+
+# Facteurs affichables (liste positive, D-66 point 6) : le genre et la région restent dans le
+# score mais ne sont jamais affichés (non significatifs et attributs sensibles).
+VARIABLES_FACTEURS_FICHE = ["age", "note_bac", COLONNE_DISTANCE_COX, "boursier", "emploi_parallele", "filiere"]
+# Libellés lus par le LLM et par le conseiller (le LLM ne voit jamais les noms de colonnes).
+LIBELLES_FACTEURS_FICHE = {
+    "age": "âge",
+    "note_bac": "note du bac",
+    COLONNE_DISTANCE_COX: "distance domicile-campus",
+    "boursier": "bourse",
+    "emploi_parallele": "emploi en parallèle des études",
+    "filiere": "filière",
+}
+# Au plus 3 facteurs, et seulement ceux qui multiplient le risque par au moins 1,1 (un
+# multiplicateur arrondi à 1,0 n'apprendrait rien au conseiller).
+NB_FACTEURS_FICHE = 3
+MULTIPLICATEUR_MIN_FACTEUR = 1.1
+
+# Liste fermée des actions proposées (D-66, point 4) : le LLM les recopie mot pour mot.
+ACTIONS_FICHE = [
+    "entretien individuel",
+    "proposer un tutorat",
+    "faire le point sur le tutorat en cours",
+    "informer sur les aides",
+    "aménager l'emploi du temps",
+    "suivre l'assiduité",
+    "relancer sur les devoirs",
+]
+STATUTS_TUTORAT_FICHE = ("en cours", "aucun", "signalé, semaine de début inconnue")
+
+# Mots interdits dans une fiche (D-65, point 4), en minuscules, recherchés comme mots entiers :
+# causalité (le modèle donne des associations), certitude (c'est un risque estimé),
+# jugement de la personne, attributs sensibles, nombres en lettres (non vérifiables).
+MOTS_INTERDITS_FICHE = [
+    "cause", "causes", "causé", "causée", "à cause", "provoque", "provoqué", "provoquée", "entraîne", "entraîné",
+    "entraînée", "entraine", "entrainé", "entrainée", "parce que", "dû à", "due à",
+    "certainement", "forcément", "inévitable", "inévitablement", "à coup sûr", "sans aucun doute", "va décrocher",
+    "va abandonner",
+    "paresseux", "paresseuse", "fainéant", "fainéante", "incapable", "démotivé", "démotivée", "mauvais étudiant",
+    "homme", "hommes", "femme", "femmes", "garçon", "garçons", "fille", "filles", "genre", "sexe", "origine",
+    "ethnie", "religion", "santé", "maladie", "handicap", "famille", "pauvre", "pauvreté",
+    "double", "triple", "moitié", "deux fois", "trois fois", "quatre fois",
+]
+
+# Appels à l'API : 3 essais par fiche ; 7 s entre deux appels (niveau gratuit : 10 requêtes
+# par minute) ; après une erreur de quota (429) ou de surcharge (503), attendre 30 s puis 60 s.
+NB_ESSAIS_FICHE = 3
+PAUSE_ENTRE_APPELS_LLM = 7
+ATTENTES_QUOTA_LLM = (30, 60)
+DELAI_MAX_APPEL_LLM_MS = 60000
+
+# Longueurs maximales : fiches courtes, lisibles en entretien ; textes d'entrée courts (un texte
+# long dans l'entrée signalerait une donnée qui n'a rien à faire là).
+LONGUEUR_MAX_SITUATION = 350
+LONGUEUR_MAX_POINT = 200
+LONGUEUR_MAX_TEXTE_ENTREE = 80
+
+STATUT_FICHE_VALIDEE = "validée"
+STATUT_FICHE_A_REVOIR = "à revoir"
+# Avertissement fixe ajouté par le code à chaque fiche (D-66, point 4).
+AVERTISSEMENT_FICHE = ("Fiche générée automatiquement à partir d'un modèle statistique : à vérifier par le "
+                       "conseiller. Les facteurs sont des associations, pas des causes.")
+
+# Fichiers : entrées (produites par run_all.py, sans API) et fiches (cache de la génération).
+FICHIER_ENTREES_LLM = DOSSIER_RESULTATS / f"llm_entrees_semaine{SEMAINE_FICHES}.json"
+FICHIER_FICHES_LLM = DOSSIER_RESULTATS / f"llm_fiches_semaine{SEMAINE_FICHES}.json"
+# Évaluation LL-02 : 20 fiches tirées au hasard, notées par Saliou dans une grille.
+NB_FICHES_EVALUATION = 20
+FICHIER_GRILLE_EVALUATION = RACINE / "docs" / "evaluation_fiches_llm.csv"
