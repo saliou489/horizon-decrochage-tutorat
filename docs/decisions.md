@@ -512,3 +512,18 @@ Gabarit :
      - références : moyenne de la promotion pour l'âge et la note du bac ; pour la distance, la distance « typique » 2^(moyenne de log2 de la distance), qui correspond au centrage du Cox ; pour une modalité, la part de la promotion dans le même cas ;
      - contrôle automatique de cohérence : un tutorat en cours exclut l'action « proposer un tutorat » ; l'absence de tutorat exclut « faire le point sur le tutorat en cours ».
 - Statut : validée (Saliou, 23/11) ; le point 6, proposé par le pilotage, a été validé le même jour, après l'exécution de C13.
+
+## D-67 — Suites de la relecture de sécurité RV03 (LL-01)
+- Date / tâche : 23/11/2026 — LL-01 (et CA-05 pour le point 8)
+- Contexte : relecture RV03 (`docs/revues/RV03_securite_llm.md`) : 0 constat rouge, 3 orange, 5 jaunes ; premier appel possible après correction de `.gitignore`, génération après correction des contrôles de réponse.
+- Décision :
+  1. **Statut des entrées (RV03-02, option a)** : aucune donnée directement identifiante n'est envoyée (ni identifiant, ni nom, ni contact, ni texte libre), mais les entrées restent des **données personnelles pseudonymisées** au sens de la loi n° 2008-12 et du RGPD (article 4, considérant 26) : chaque combinaison envoyée est propre à un étudiant de la promotion. Le jeu étant synthétique, aucun étudiant réel n'est concerné. Un déploiement réel demanderait un LLM local (préférence du cahier) ou une offre sans réutilisation des données, avec un contrat de sous-traitance et l'information des étudiants. Ce point précise D-65 (points 3 et 7) ; README et notebook 06 reformulés. La minimisation supplémentaire (option b : activité envoyée en simple comparaison) n'est pas retenue, car elle changerait les fiches et laisserait les entrées pseudonymisées.
+  2. **Contrôle d'entrée strict (RV03-04)** : chaque valeur est vérifiée par son type et son format (formats écrits par le code, listes fermées, bornes du nettoyage), plus seulement les clés.
+  3. **Contrôles de réponse (RV03-03)** : mots interdits complétés (nombres en lettres, formes conjuguées de causalité, circonstances inventées, certitude) ; fiches du cache revérifiées à chaque lancement et par une commande `--verifier`, sans appel ; limites écrites (nombre calculé qui coïncide avec un nombre de l'entrée, nombre attribué au mauvais champ, action citée hors du champ `actions`), contrôlées par la relecture humaine de LL-02.
+  4. **Client Gemini (RV03-06)** : `vertexai=False` et adresse de l'API fixée dans le code, pour qu'aucune variable d'environnement ne puisse envoyer la clé ailleurs.
+  5. **Finitions (RV03-07)** : arrêt sans trace Python (message et code de sortie 1), écriture atomique des fichiers JSON, option `--revoir` qui ne régénère que les fiches « à revoir ».
+  6. **Secrets (RV03-01)** : `.gitignore` ignore toutes les variantes de `.env` sauf `.env.example` ; le README donne la commande de copie et la vérification par `git status`.
+  7. **Fins de ligne (RV03-08)** : index de `data/processed` renormalisé, pour que `git status` reste propre après `run_all.py` sous Windows.
+  8. **Durée de `run_all.py`** : le repli prévu par D-61 (point 6) est appliqué, car sa condition est remplie : 16 min 41 s au premier lancement après une installation neuve (RV03, 23/11). Les variantes (et le bonus) passent à 100 tirages ; l'analyse principale garde ses 500 tirages, et les estimations ponctuelles ne changent pas.
+  9. **Tableau de bord** : une fiche « à revoir » est affichée avec un bandeau « à revoir » et ses motifs, jamais comme une fiche validée (question de RV03, pour DB-01).
+- Statut : proposée par le pilotage le 23/11 (22 h 30), à valider par Saliou.
