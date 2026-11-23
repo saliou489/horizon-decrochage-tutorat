@@ -693,6 +693,18 @@ MOTS_INTERDITS_FICHE = [
     "homme", "hommes", "femme", "femmes", "garçon", "garçons", "fille", "filles", "genre", "sexe", "origine",
     "ethnie", "religion", "santé", "maladie", "handicap", "famille", "pauvre", "pauvreté",
     "double", "triple", "moitié", "deux fois", "trois fois", "quatre fois",
+    # Ajouts de D-67 (RV03-03).
+    # Nombres en lettres (« un » reste permis : article) :
+    "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix", "vingt", "trente", "cent",
+    "quart", "tiers", "quadruple",
+    # Formes conjuguées ou sans accent de la causalité :
+    "entraîner", "entrainer", "entraînent", "entrainent", "provoquer", "provoquent", "causer", "causent",
+    "causal", "causale", "causaux", "causalité", "du à", "dus à", "dues à",
+    # Circonstances personnelles inventées (règle 1 du prompt) :
+    "familial", "familiale", "familiaux", "familiales", "financier", "financière", "financiers", "financières",
+    "argent", "motivation", "motivé", "motivée",
+    # Certitude :
+    "décrochera", "abandonnera", "sûrement", "surement", "certain", "certaine",
 ]
 
 # Appels à l'API : 3 essais par fiche ; 7 s entre deux appels (niveau gratuit : 10 requêtes
@@ -701,12 +713,18 @@ NB_ESSAIS_FICHE = 3
 PAUSE_ENTRE_APPELS_LLM = 7
 ATTENTES_QUOTA_LLM = (30, 60)
 DELAI_MAX_APPEL_LLM_MS = 60000
+# Adresse de l'API Gemini fixée dans le code (D-67, point 4) : elle l'emporte sur la variable
+# d'environnement GOOGLE_GEMINI_BASE_URL, pour que la clé ne parte jamais ailleurs.
+URL_API_GEMINI = "https://generativelanguage.googleapis.com/"
 
 # Longueurs maximales : fiches courtes, lisibles en entretien ; textes d'entrée courts (un texte
 # long dans l'entrée signalerait une donnée qui n'a rien à faire là).
 LONGUEUR_MAX_SITUATION = 350
 LONGUEUR_MAX_POINT = 200
 LONGUEUR_MAX_TEXTE_ENTREE = 80
+# Borne haute d'un champ d'activité de l'entrée quand le nettoyage n'en fixe pas (connexions) ;
+# au-delà, la valeur serait aberrante et l'entrée n'est pas envoyée (D-67, point 2).
+BORNE_HAUTE_PAR_DEFAUT_ENTREE = 100
 
 STATUT_FICHE_VALIDEE = "validée"
 STATUT_FICHE_A_REVOIR = "à revoir"

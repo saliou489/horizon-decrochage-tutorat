@@ -13,13 +13,15 @@ vérifier par le conseiller.
 
 Tâches couvertes : LL-01, LL-02.
 
-Commandes : python -m src.llm --entrees | --tester | --generer [--forcer] | --grille
+Commandes : python -m src.llm --entrees | --tester | --generer [--forcer | --revoir] | --verifier | --grille
 """
 
 import argparse
 import json
 import math
+import os
 import re
+import sys
 import time
 from datetime import datetime
 
@@ -59,6 +61,28 @@ TITRE_MESSAGE = "## Message"
 MESSAGE_TEST = "Réponds uniquement par le mot OK."
 LONGUEUR_MAX_REPONSE_BRUTE = 2000
 CODES_QUOTA = (429, 503)
+# Formats exacts des textes de l'entrée, tels que le code les écrit (D-67, point 2), par facteur.
+# Un texte qui ne suit pas son format (nom propre, instruction, texte libre) bloque l'envoi.
+FORMATS_VALEUR_FACTEUR = {
+    "age": r"\d{1,2} ans",
+    "note_bac": r"\d{1,2},\d / " + str(NOTE_MAXIMUM_BAC),
+    config.COLONNE_DISTANCE_COX: r"\d{1,4} km",
+    "boursier": r"boursier|non boursier",
+    "emploi_parallele": r"oui|non",
+    "filiere": "|".join(re.escape(filiere) for filiere in config.MODALITES[("etudiants", "filiere")]),
+}
+FORMAT_REFERENCE_MODALITE = r"\d{1,3} % de la promotion dans ce cas"
+FORMATS_REFERENCE_FACTEUR = {
+    "age": r"\d{1,2},\d ans en moyenne dans la promotion",
+    "note_bac": r"\d{1,2},\d / " + str(NOTE_MAXIMUM_BAC) + r" en moyenne dans la promotion",
+    config.COLONNE_DISTANCE_COX: r"\d{1,4} km pour un étudiant typique de la promotion",
+    "boursier": FORMAT_REFERENCE_MODALITE,
+    "emploi_parallele": FORMAT_REFERENCE_MODALITE,
+    "filiere": FORMAT_REFERENCE_MODALITE,
+}
+VARIABLE_DU_LIBELLE = {libelle: variable for variable, libelle in config.LIBELLES_FACTEURS_FICHE.items()}
+TABLE_ACTIVITE = "activite_hebdo"
+MULTIPLICATEUR_MAX = 100
 MOTIF_NOMBRE = r"\d+(?:[.,]\d+)?"
 DECIMALES_COMPARAISON = 6
 
@@ -86,11 +110,23 @@ def lire_resultat(nom_fichier):
 
 
 def ecrire_json(objet, chemin):
-    """Écrit un JSON lisible (UTF-8, accents gardés, fins de ligne LF)."""
+    """Écrit un JSON lisible (UTF-8, accents gardés, fins de ligne LF), de façon atomique.
+
+    On écrit d'abord un fichier temporaire du même dossier, puis os.replace le met à la
+    place de l'ancien d'un seul coup : un arrêt pendant l'écriture (Ctrl+C) laisse
+    l'ancien fichier intact et lisible (D-67, point 5).
+    """
     chemin.parent.mkdir(parents=True, exist_ok=True)
-    with open(chemin, "w", encoding=config.ENCODAGE, newline="\n") as fichier:
-        json.dump(objet, fichier, ensure_ascii=False, indent=2)
-        fichier.write("\n")
+    temporaire = chemin.with_name(chemin.name + ".tmp")
+    try:
+        with open(temporaire, "w", encoding=config.ENCODAGE, newline="\n") as fichier:
+            json.dump(objet, fichier, ensure_ascii=False, indent=2)
+            fichier.write("\n")
+        os.replace(temporaire, chemin)
+    except BaseException:
+        # BaseException : le fichier temporaire est aussi supprimé après un Ctrl+C.
+        temporaire.unlink(missing_ok=True)
+        raise
 
 
 def lire_json(chemin):
@@ -300,26 +336,106 @@ def verifier_cles(objet, attendues, niveau):
         raise ErreurLLM(f"Entrée non conforme ({niveau}) : clés attendues {attendues}, reçues {recues}")
 
 
-def verifier_entree_sans_donnee_personnelle(entree):
-    """Contrôle avant tout envoi (D-65, point 3) : rien n'est envoyé si une règle échoue.
+def est_entier(valeur):
+    """Vrai pour un entier Python (un booléen n'est pas un nombre ici)."""
+    return isinstance(valeur, int) and not isinstance(valeur, bool)
 
-    Clés exactes à chaque niveau ; libellés de facteurs et statuts de tutorat pris dans
-    les listes fermées ; textes courts ; aucun identifiant, e-mail ni téléphone.
+
+def est_nombre(valeur):
+    """Vrai pour un entier ou un réel fini (ni booléen, ni texte, ni None)."""
+    return (isinstance(valeur, (int, float)) and not isinstance(valeur, bool)
+            and math.isfinite(float(valeur)))
+
+
+def verifier_entier(valeur, minimum, maximum, champ):
+    """ErreurLLM si `valeur` n'est pas un entier de minimum à maximum."""
+    if not est_entier(valeur) or not minimum <= valeur <= maximum:
+        raise ErreurLLM(f"Entrée non conforme : {champ} doit être un entier de {minimum} à {maximum}")
+
+
+def verifier_nombre(valeur, minimum, maximum, champ):
+    """ErreurLLM si `valeur` n'est pas un nombre de minimum à maximum."""
+    if not est_nombre(valeur) or not minimum <= valeur <= maximum:
+        raise ErreurLLM(f"Entrée non conforme : {champ} doit être un nombre de {minimum} à {maximum}")
+
+
+def verifier_format(texte, motif, champ):
+    """ErreurLLM si `texte` n'est pas un texte qui suit exactement `motif` (re.fullmatch).
+
+    Le texte lui-même n'est jamais repris dans le message d'erreur.
+    """
+    if not isinstance(texte, str) or re.fullmatch(motif, texte) is None:
+        raise ErreurLLM(f"Entrée non conforme : {champ} ne suit pas le format écrit par le code")
+
+
+def bornes_activite(champ):
+    """(minimum, maximum) d'un champ d'activité, pris dans les bornes du nettoyage ; sans
+    borne haute (connexions), BORNE_HAUTE_PAR_DEFAUT_ENTREE."""
+    bornes = config.BORNES[(TABLE_ACTIVITE, CHAMPS_ACTIVITE[champ])]
+    maximum = bornes["max"] if bornes["max"] is not None else config.BORNE_HAUTE_PAR_DEFAUT_ENTREE
+    return bornes["min"], maximum
+
+
+def verifier_facteur(facteur):
+    """Clés, libellé de la liste, valeur et référence au format de ce facteur, multiplicateur."""
+    verifier_cles(facteur, CLES_FACTEUR, "facteur")
+    libelle = facteur["facteur"]
+    variable = VARIABLE_DU_LIBELLE.get(libelle) if isinstance(libelle, str) else None
+    if variable is None:
+        raise ErreurLLM("Entrée non conforme : libellé de facteur hors de la liste")
+    verifier_format(facteur["valeur_etudiant"], FORMATS_VALEUR_FACTEUR[variable], "valeur_etudiant")
+    verifier_format(facteur["reference_promotion"], FORMATS_REFERENCE_FACTEUR[variable], "reference_promotion")
+    verifier_nombre(facteur["multiplicateur"], config.MULTIPLICATEUR_MIN_FACTEUR, MULTIPLICATEUR_MAX,
+                    "multiplicateur")
+
+
+def verifier_activite(activite, activite_promotion, semaine):
+    """Activité de l'étudiant (None permis) et de la promotion (sans None), dans les bornes."""
+    verifier_cles(activite, CLES_ACTIVITE, "activité")
+    verifier_cles(activite_promotion, CLES_ACTIVITE_PROMOTION, "activité de la promotion")
+    if not isinstance(activite["semaines"], list) or not activite["semaines"]:
+        raise ErreurLLM("Entrée non conforme : semaines doit être une liste d'entiers")
+    for numero in activite["semaines"]:
+        verifier_entier(numero, 1, semaine, "semaines")
+    if not est_entier(activite["note_maximum"]) or activite["note_maximum"] != NOTE_MAXIMUM:
+        raise ErreurLLM(f"Entrée non conforme : note_maximum doit valoir {NOTE_MAXIMUM}")
+    for champ in CHAMPS_ACTIVITE:
+        minimum, maximum = bornes_activite(champ)
+        if activite[champ] is not None:
+            verifier_nombre(activite[champ], minimum, maximum, champ)
+        verifier_nombre(activite_promotion[champ], minimum, maximum, f"{champ} de la promotion")
+
+
+def verifier_tutorat(tutorat, semaine):
+    """Statut de la liste fermée ; semaine de début (entier) seulement si « en cours »."""
+    statut = tutorat.get("statut") if isinstance(tutorat, dict) else None
+    if not isinstance(statut, str) or statut not in config.STATUTS_TUTORAT_FICHE:
+        raise ErreurLLM("Entrée non conforme : statut de tutorat hors de la liste")
+    verifier_cles(tutorat, ["statut", "semaine_debut"] if statut == "en cours" else ["statut"], "tutorat")
+    if statut == "en cours":
+        verifier_entier(tutorat["semaine_debut"], 1, semaine, "semaine_debut")
+
+
+def verifier_entree_sans_donnee_personnelle(entree):
+    """Contrôle avant tout envoi (D-65, point 3 ; D-67, point 2) : rien n'est envoyé si une
+    règle échoue.
+
+    Clés exactes (ordre compris) à chaque niveau ; chaque valeur vérifiée par son type et
+    son format (formats écrits par le code, listes fermées, bornes du nettoyage) ; textes
+    courts ; aucun identifiant, e-mail ni téléphone.
     """
     verifier_cles(entree, CLES_ENTREE, "entrée")
+    verifier_entier(entree["semaine_observation"], 1, config.N_SEMAINES, "semaine_observation")
+    semaine = entree["semaine_observation"]
+    verifier_entier(entree["horizon_semaines"], config.N_SEMAINES, config.N_SEMAINES, "horizon_semaines")
+    verifier_entier(entree["risque_decrochage_pct"], 0, 100, "risque_decrochage_pct")
+    verifier_entier(entree["risque_moyen_promotion_pct"], 0, 100, "risque_moyen_promotion_pct")
     if not isinstance(entree["facteurs"], list):
         raise ErreurLLM("Entrée non conforme : facteurs doit être une liste")
     for facteur in entree["facteurs"]:
-        verifier_cles(facteur, CLES_FACTEUR, "facteur")
-        if facteur["facteur"] not in config.LIBELLES_FACTEURS_FICHE.values():
-            raise ErreurLLM("Entrée non conforme : libellé de facteur hors de la liste")
-    verifier_cles(entree["activite"], CLES_ACTIVITE, "activité")
-    verifier_cles(entree["activite_promotion"], CLES_ACTIVITE_PROMOTION, "activité de la promotion")
-    tutorat = entree["tutorat"]
-    statut = tutorat.get("statut") if isinstance(tutorat, dict) else None
-    if statut not in config.STATUTS_TUTORAT_FICHE:
-        raise ErreurLLM("Entrée non conforme : statut de tutorat hors de la liste")
-    verifier_cles(tutorat, ["statut", "semaine_debut"] if statut == "en cours" else ["statut"], "tutorat")
+        verifier_facteur(facteur)
+    verifier_activite(entree["activite"], entree["activite_promotion"], semaine)
+    verifier_tutorat(entree["tutorat"], semaine)
     for texte in textes_de(entree):
         if len(texte) > config.LONGUEUR_MAX_TEXTE_ENTREE:
             raise ErreurLLM("Entrée non conforme : texte trop long")
@@ -413,14 +529,18 @@ def creer_appel_gemini(cle, modele, schema=None):
     from google import genai
     from google.genai import errors, types
 
-    client = genai.Client(api_key=cle)
+    # L'adresse fixée dans le code l'emporte sur GOOGLE_GEMINI_BASE_URL, et vertexai=False
+    # neutralise GOOGLE_GENAI_USE_VERTEXAI : aucune variable d'environnement de la machine
+    # ne peut envoyer la clé ailleurs (D-67, point 4).
+    client = genai.Client(api_key=cle, vertexai=False,
+                          http_options=types.HttpOptions(base_url=config.URL_API_GEMINI,
+                                                         timeout=config.DELAI_MAX_APPEL_LLM_MS))
 
     def appeler(instructions, message):
         reglages = types.GenerateContentConfig(
             system_instruction=instructions or None,
             response_mime_type="application/json" if schema else None,
             response_json_schema=schema,
-            http_options=types.HttpOptions(timeout=config.DELAI_MAX_APPEL_LLM_MS),
         )
         try:
             reponse = client.models.generate_content(model=modele, contents=message, config=reglages)
@@ -428,6 +548,10 @@ def creer_appel_gemini(cle, modele, schema=None):
             if erreur.code in CODES_QUOTA:
                 raise ErreurQuotaLLM(f"Quota ou surcharge de l'API Gemini (code {erreur.code})") from None
             raise ErreurLLM(f"Erreur de l'API Gemini (code {erreur.code})") from None
+        except Exception as erreur:
+            # Réseau, délai dépassé… : seul le type est cité, car le texte pourrait contenir
+            # l'adresse ou des en-têtes.
+            raise ErreurLLM(f"Échec de l'appel à l'API Gemini ({type(erreur).__name__})") from None
         return reponse.text or ""
 
     return appeler
@@ -566,6 +690,30 @@ def fiche_reutilisable(existante, element, modele):
             and existante["entree"] == element["entree"])
 
 
+def texte_de_fiche(fiche):
+    """Texte JSON reconstruit à partir des trois champs rédigés d'une fiche du cache."""
+    return json.dumps({cle: fiche.get(cle) for cle in CLES_FICHE}, ensure_ascii=False)
+
+
+def reverifier_fiches(fiches):
+    """Repasse les contrôles actuels sur chaque fiche « validée » du cache, sans appel.
+
+    Les contrôles peuvent avoir été complétés après la génération (D-67, point 3) : une
+    fiche qui ne les passe plus devient « à revoir », avec ses nouveaux motifs.
+    Sortie : (liste des fiches, nombre de fiches rétrogradées).
+    """
+    resultat = []
+    retrogradees = 0
+    for fiche in fiches:
+        if fiche["statut"] == config.STATUT_FICHE_VALIDEE:
+            _, motifs = verifier_fiche(texte_de_fiche(fiche), fiche["entree"])
+            if motifs:
+                fiche = {**fiche, "statut": config.STATUT_FICHE_A_REVOIR, "motifs_rejet": motifs}
+                retrogradees += 1
+        resultat.append(fiche)
+    return resultat, retrogradees
+
+
 def enregistrement_fiche(element, fiche, motifs, nb_essais, texte, modele):
     """Fiche enregistrée : contenu du dernier essai, statut, motifs, avertissement, traçabilité."""
     entree = element["entree"]
@@ -591,8 +739,12 @@ def enregistrement_fiche(element, fiche, motifs, nb_essais, texte, modele):
     return resultat
 
 
-def generer_fiches(entrees, appeler, fiches_existantes, modele, forcer=False, attendre=time.sleep, enregistrer=None):
+def generer_fiches(entrees, appeler, fiches_existantes, modele, forcer=False, attendre=time.sleep, enregistrer=None,
+                   revoir=False):
     """Génère les fiches manquantes ; réutilise le cache ; enregistre après chaque fiche.
+
+    forcer : tout régénérer ; revoir : régénérer aussi les fiches « à revoir » du cache,
+    en gardant les fiches validées.
 
     Pour chaque entrée : contrôle sans donnée personnelle, prompt, jusqu'à NB_ESSAIS_FICHE
     essais (appel puis verifier_fiche), PAUSE_ENTRE_APPELS_LLM secondes entre deux appels.
@@ -605,7 +757,8 @@ def generer_fiches(entrees, appeler, fiches_existantes, modele, forcer=False, at
     premier_appel = True
     for element in entrees:
         existante = courantes.get(element["id_etudiant"])
-        if not forcer and fiche_reutilisable(existante, element, modele):
+        a_revoir = revoir and existante is not None and existante["statut"] == config.STATUT_FICHE_A_REVOIR
+        if not forcer and not a_revoir and fiche_reutilisable(existante, element, modele):
             resultat.append(existante)
             continue
         verifier_entree_sans_donnee_personnelle(element["entree"])
@@ -665,16 +818,30 @@ def commande_tester(modele):
     print(f"Modèle {modele} : {appeler('', MESSAGE_TEST)}")
 
 
-def commande_generer(modele, forcer):
-    """Génère les fiches à partir des entrées enregistrées ; cache écrit après chaque fiche."""
+def commande_generer(modele, forcer, revoir):
+    """Génère les fiches à partir des entrées enregistrées ; cache revérifié d'abord, puis
+    écrit après chaque fiche."""
     entrees = lire_json(config.FICHIER_ENTREES_LLM)
     existantes = lire_json(config.FICHIER_FICHES_LLM) if config.FICHIER_FICHES_LLM.exists() else []
+    existantes, retrogradees = reverifier_fiches(existantes)
+    if retrogradees:
+        print(f"{retrogradees} fiche(s) du cache rétrogradée(s) « à revoir » par les contrôles actuels.")
     appeler = creer_appel_gemini(lire_cle_api(), modele, schema_fiche())
-    fiches = generer_fiches(entrees, appeler, existantes, modele, forcer=forcer,
+    fiches = generer_fiches(entrees, appeler, existantes, modele, forcer=forcer, revoir=revoir,
                             enregistrer=lambda f: ecrire_json(f, config.FICHIER_FICHES_LLM))
     ecrire_json(fiches, config.FICHIER_FICHES_LLM)
     validees = sum(f["statut"] == config.STATUT_FICHE_VALIDEE for f in fiches)
     print(f"{validees} fiches validées, {len(fiches) - validees} à revoir.")
+
+
+def commande_verifier():
+    """Repasse les contrôles actuels sur les fiches validées du cache (aucun appel), puis
+    réécrit le cache."""
+    if not config.FICHIER_FICHES_LLM.exists():
+        raise ErreurLLM("Aucune fiche en cache : lancer d'abord python -m src.llm --generer")
+    fiches, retrogradees = reverifier_fiches(lire_json(config.FICHIER_FICHES_LLM))
+    ecrire_json(fiches, config.FICHIER_FICHES_LLM)
+    print(f"{retrogradees} fiche(s) rétrogradée(s) « à revoir » sur {len(fiches)}.")
 
 
 def commande_grille():
@@ -692,18 +859,29 @@ def main():
     groupe.add_argument("--entrees", action="store_true", help="écrire les entrées (sans API)")
     groupe.add_argument("--tester", action="store_true", help="un appel neutre, sans donnée d'étudiant")
     groupe.add_argument("--generer", action="store_true", help="générer les fiches (API Gemini)")
+    groupe.add_argument("--verifier", action="store_true", help="revérifier les fiches du cache (sans API)")
     groupe.add_argument("--grille", action="store_true", help="écrire la grille d'évaluation LL-02")
     parseur.add_argument("--forcer", action="store_true", help="régénérer même les fiches en cache")
+    parseur.add_argument("--revoir", action="store_true", help="avec --generer : régénérer les fiches « à revoir »")
     parseur.add_argument("--modele", default=config.MODELE_LLM, help="modèle Gemini (--tester, --generer)")
     arguments = parseur.parse_args()
-    if arguments.entrees:
-        lancer_entrees()
-    elif arguments.tester:
-        commande_tester(arguments.modele)
-    elif arguments.generer:
-        commande_generer(arguments.modele, arguments.forcer)
-    else:
-        commande_grille()
+    if (arguments.forcer or arguments.revoir) and not arguments.generer:
+        parseur.error("--forcer et --revoir s'utilisent seulement avec --generer")
+    try:
+        if arguments.entrees:
+            lancer_entrees()
+        elif arguments.tester:
+            commande_tester(arguments.modele)
+        elif arguments.generer:
+            commande_generer(arguments.modele, arguments.forcer, arguments.revoir)
+        elif arguments.verifier:
+            commande_verifier()
+        else:
+            commande_grille()
+    except ErreurLLM as erreur:
+        # Arrêt sans trace Python (D-67, point 5) : le message suffit, code de sortie 1.
+        print(erreur, file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":
