@@ -6,9 +6,10 @@ Rôle du module :
   covariables et score de propension (D-55, D-56), poids stabilisés, support commun,
   équilibre des deux équipes, diagnostic hors critère, figure du DAG ;
 - effet (section 12), une fois la conception relue (R02) et figée (D-57, D-61) :
-  courbes de Kaplan-Meier pondérées, risque à 30 semaines, RMST, HR, bootstrap, E-value.
+  courbes de Kaplan-Meier pondérées, risque à 30 semaines, RMST, HR, bootstrap, E-value ;
+- sensibilité (section 13) : variantes de D-58 et D-61, Cox dépendant du temps (D-62).
 
-Tâches couvertes : CA-01 à CA-04 (CA-05 viendra s'y ajouter).
+Tâches couvertes : CA-01 à CA-05.
 """
 
 import time
@@ -20,7 +21,7 @@ import pandas as pd
 import statsmodels.api as sm
 from matplotlib.path import Path
 from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Patch
-from lifelines import CoxPHFitter, KaplanMeierFitter
+from lifelines import CoxPHFitter, CoxTimeVaryingFitter, KaplanMeierFitter
 from lifelines.exceptions import ConvergenceError, StatisticalWarning
 from lifelines.statistics import proportional_hazard_test
 from lifelines.utils import restricted_mean_survival_time
@@ -711,9 +712,15 @@ ERREURS_TIRAGE = (ErreurCausal, ConvergenceError, np.linalg.LinAlgError, ValueEr
 
 
 def kaplan_meier_pondere(duree, evenement, poids, nom):
-    """Kaplan-Meier pondéré d'une équipe (lifelines, poids des étudiants)."""
+    """Kaplan-Meier pondéré d'une équipe (lifelines, poids des étudiants).
+
+    lifelines prévient que des poids non entiers faussent ses intervalles de confiance :
+    l'avertissement est masqué, car seule la courbe est utilisée (IC par bootstrap).
+    """
     kmf = KaplanMeierFitter(label=nom)
-    kmf.fit(np.asarray(duree), event_observed=np.asarray(evenement), weights=np.asarray(poids, dtype=float))
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", StatisticalWarning)
+        kmf.fit(np.asarray(duree), event_observed=np.asarray(evenement), weights=np.asarray(poids, dtype=float))
     return kmf
 
 
@@ -948,10 +955,170 @@ def lancer():
     debut = time.perf_counter()
     base, periode = eda.lire_bases()
     analyse, fichiers = resultats_principaux(base, periode)
-    fichiers["ca_diagnostic_bootstrap.csv"] = pd.DataFrame([diagnostic_bootstrap("principale", analyse)])
+    sensibilite, diagnostics = resultats_sensibilite(base, periode, analyse)
+    fichiers.update(sensibilite)
+    fichiers["ca_diagnostic_bootstrap.csv"] = pd.DataFrame([diagnostic_bootstrap("analyse principale", analyse)]
+                                                           + diagnostics)
     for nom_fichier, table in fichiers.items():
         ecrire_resultat(table, nom_fichier)
     duree = time.perf_counter() - debut
-    print(f"Analyse causale (CA-04) : {len(fichiers)} fichiers écrits dans "
+    print(f"Analyse causale (CA-04, CA-05) : {len(fichiers)} fichiers écrits dans "
           f"{config.DOSSIER_RESULTATS.relative_to(config.RACINE)} en {duree:.0f} s.")
     return fichiers
+
+
+# ===========================================================================
+# 13. Sensibilité : variantes, E-value, Cox dépendant du temps (CA-05, D-58, D-61, D-62)
+# ===========================================================================
+
+# Mesures reprises dans le tableau de sensibilité (une estimation et un IC chacune).
+MESURES_SENSIBILITE = ["risque_tutores", "risque_non_tutores", "difference_risque", "rapport_risques",
+                       "difference_rmst", "hr"]
+
+
+def ligne_sensibilite(nom, analyse):
+    """Une ligne du tableau de sensibilité : effectifs, équilibre, effet avec IC bootstrap."""
+    conception = analyse["conception"]
+    tirages = analyse["tirages"]
+    ligne = {
+        "analyse": nom,
+        "semaine_photo": analyse["semaine"],
+        "horizon_rmst": analyse["horizon"],
+        "etudiants": len(analyse["population"]),
+        "tutores": int(np.sum(conception["traite"])),
+        "smd_max": float(conception["equilibre"]["smd_apres"].abs().max()),
+        "retouche": bool(conception["retouche"]),
+        "critere_atteint": bool(conception["critere_atteint"]),
+        "tirages": len(tirages),
+        "echecs": analyse["echecs"],
+        "part_hors_critere": float((tirages["smd_max"] >= config.SEUIL_SMD).mean()),
+    }
+    tableau = analyse["tableau"].set_index("mesure")
+    for mesure in MESURES_SENSIBILITE:
+        ligne[mesure] = tableau.loc[mesure, "estimation"]
+        ligne[f"{mesure}_ic_bas"] = tableau.loc[mesure, "ic_bas"]
+        ligne[f"{mesure}_ic_haut"] = tableau.loc[mesure, "ic_haut"]
+    return ligne
+
+
+def variantes(base, periode, principale):
+    """Les 6 variantes de D-58 / D-61, chacune avec toute la chaîne et NB_TIRAGES_VARIANTE tirages.
+
+    Sortie : dictionnaire nom -> analyse (voir analyse_effet).
+    """
+    semaine = config.SEMAINE_LANDMARK
+    nb = config.NB_TIRAGES_VARIANTE
+    resultats = {}
+    for seuil in config.SEUILS_SENSIBILITE:
+        duree, evenement = f"T_seuil{seuil}", f"E_seuil{seuil}"
+        population = population_photo(base, semaine, duree, evenement)
+        resultats[f"seuil de {seuil} semaines"] = analyse_effet(population, periode, semaine, (1, semaine), duree,
+                                                               evenement, nb_tirages=nb)
+    for autre in config.SEMAINES_LANDMARK_SENSIBILITE:
+        resultats[f"photo en semaine {autre}"] = analyse_effet(population_photo(base, autre), periode, autre,
+                                                               (1, autre), nb_tirages=nb)
+    fenetre = config.FENETRE_ACTIVITE_SENSIBILITE
+    resultats[f"fenêtre {fenetre[0]} à {fenetre[1]}"] = analyse_effet(principale["population"], periode, semaine,
+                                                                     fenetre, nb_tirages=nb)
+    dans_support = principale["conception"]["support"]["dans_support"]
+    resultats["support strict"] = analyse_effet(principale["population"][dans_support], periode, semaine,
+                                                (1, semaine), nb_tirages=nb)
+    return resultats
+
+
+def equilibres_fenetre_courte(analyse_courte, periode):
+    """Fenêtre 1 à 2 (D-61, point 7) : son propre tableau d'équilibre, et l'équilibre de ses
+    poids sur la matrice de la fenêtre 1 à SEMAINE_LANDMARK."""
+    population = analyse_courte["population"]
+    conception = analyse_courte["conception"]
+    X_longue, _ = covariables_du_score(population, periode, (1, config.SEMAINE_LANDMARK))
+    matrice_longue = matrice_equilibre(population, X_longue)
+    fenetre = config.FENETRE_ACTIVITE_SENSIBILITE
+    propre = conception["equilibre"].assign(matrice=f"fenêtre {fenetre[0]} à {fenetre[1]}")
+    longue = tableau_equilibre(matrice_longue, conception["traite"], conception["poids"]).assign(
+        matrice=f"fenêtre 1 à {config.SEMAINE_LANDMARK}")
+    return pd.concat([propre, longue], ignore_index=True)[["matrice", "variable", "smd_avant", "smd_apres",
+                                                           "equilibre"]]
+
+
+def activite_figee(periode, base):
+    """Activité du Cox dépendant du temps (D-62), une ligne par semaine-étudiant de `periode`.
+
+    Moyenne des valeurs renseignées des semaines 1 à t − 1 ; pour un tutoré (statut
+    « tutore », début s), des semaines 1 à min(t − 1, s) : elle est figée à partir de la
+    semaine s + 1, pour ne pas ajuster sur le médiateur (D-55). Aucune valeur (semaine 1)
+    -> médiane de la colonne sur toutes les semaines-étudiants où elle est définie.
+    Sortie : id_etudiant, semaine et <variable>_moy, dans l'ordre des lignes de `periode`.
+    """
+    triee = periode.sort_values([config.COLONNE_ID, "semaine"])
+    cumuls = triee[[config.COLONNE_ID, "semaine"]].copy()
+    for variable in config.VARIABLES_ACTIVITE_PROPENSION:
+        groupes = triee.groupby(config.COLONNE_ID)[variable]
+        somme = groupes.transform(lambda valeurs: valeurs.fillna(0).cumsum())
+        nombre = groupes.transform(lambda valeurs: valeurs.notna().cumsum())
+        cumuls[f"{variable}{SUFFIXE_MOYENNE}"] = (somme / nombre.where(nombre > 0)).to_numpy()
+    tutores = base[base["statut_tutorat"] == config.STATUT_TUTORE]
+    debuts = tutores.set_index(config.COLONNE_ID)["semaine_debut_tutorat"].astype(float)
+    lignes = periode[[config.COLONNE_ID, "semaine"]].copy()
+    derniere = lignes["semaine"] - 1
+    debut = lignes[config.COLONNE_ID].map(debuts)
+    lignes["semaine_lue"] = np.where(debut.notna(), np.minimum(derniere, debut), derniere).astype(int)
+    valeurs = lignes.merge(cumuls.rename(columns={"semaine": "semaine_lue"}), on=[config.COLONNE_ID, "semaine_lue"],
+                           how="left", validate="many_to_one")
+    for variable in config.VARIABLES_ACTIVITE_PROPENSION:
+        colonne = f"{variable}{SUFFIXE_MOYENNE}"
+        valeurs[colonne] = valeurs[colonne].fillna(valeurs[colonne].median())
+    valeurs.index = periode.index
+    return valeurs.drop(columns=["semaine_lue"])
+
+
+def cox_dependant_du_temps(base, periode):
+    """Spécification alternative (D-62) : Cox avec un tutorat dépendant du temps.
+
+    Tous les étudiants sauf semaine de début inconnue, dès la semaine 1 ; intervalles
+    (semaine − 1, semaine] ; traitement = tutorat_commence ; profil codé comme le Cox
+    (sans la cohorte, qui sert de strate) + activité figée ; IC du modèle.
+    Question voisine de l'analyse principale (« à profil et activité passée égaux »).
+    """
+    etudiants = base[~semaine_debut_inconnue(base)].reset_index(drop=True)
+    donnees, _ = survie.preparer_donnees_cox(etudiants, variables_exclues=(config.VARIABLE_COHORTE,))
+    profil = donnees.drop(columns=["T", "E"])
+    profil.insert(0, config.COLONNE_ID, etudiants[config.COLONNE_ID].to_numpy())
+    profil[config.VARIABLE_COHORTE] = etudiants[config.VARIABLE_COHORTE].astype(int).to_numpy()
+    lignes = periode[periode[config.COLONNE_ID].isin(etudiants[config.COLONNE_ID])]
+    activite = activite_figee(lignes, base)
+    table = lignes[[config.COLONNE_ID, "semaine", "evenement", "tutorat_commence"]].copy()
+    table["debut"] = table["semaine"] - 1
+    table = table.join(activite.drop(columns=[config.COLONNE_ID, "semaine"]))
+    table = table.merge(profil, on=config.COLONNE_ID, how="left", validate="many_to_one")
+    table["tutorat_commence"] = table["tutorat_commence"].astype(int)
+    modele = CoxTimeVaryingFitter()
+    modele.fit(table, id_col=config.COLONNE_ID, event_col="evenement", start_col="debut", stop_col="semaine",
+               strata=[config.VARIABLE_COHORTE])
+    resume = modele.summary.loc["tutorat_commence"]
+    niveau = f"{100 * (1 - config.ALPHA):.0f}%"
+    return pd.DataFrame([{
+        "etudiants": table[config.COLONNE_ID].nunique(),
+        "semaines_etudiants": len(table),
+        "semaines_tutorees": int(table["tutorat_commence"].sum()),
+        "decrochages": int(table["evenement"].sum()),
+        "hr": float(resume["exp(coef)"]),
+        "ic_bas": float(resume[f"exp(coef) lower {niveau}"]),
+        "ic_haut": float(resume[f"exp(coef) upper {niveau}"]),
+        "p": float(resume["p"]),
+    }])
+
+
+def resultats_sensibilite(base, periode, principale):
+    """Variantes, tableaux d'équilibre de la fenêtre courte, Cox dépendant du temps -> tables."""
+    analyses = variantes(base, periode, principale)
+    lignes = [ligne_sensibilite("analyse principale", principale)]
+    lignes += [ligne_sensibilite(nom, analyse) for nom, analyse in analyses.items()]
+    fenetre = config.FENETRE_ACTIVITE_SENSIBILITE
+    diagnostics = [diagnostic_bootstrap(nom, analyse) for nom, analyse in analyses.items()]
+    return {
+        "ca_sensibilite.csv": pd.DataFrame(lignes),
+        "ca_equilibre_fenetre_1_2.csv": equilibres_fenetre_courte(analyses[f"fenêtre {fenetre[0]} à {fenetre[1]}"],
+                                                                  periode),
+        "ca_cox_dependant_du_temps.csv": cox_dependant_du_temps(base, periode),
+    }, diagnostics

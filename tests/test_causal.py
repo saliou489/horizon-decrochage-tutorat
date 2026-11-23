@@ -271,3 +271,80 @@ def test_colonne_hors_liste_positive_refusee():
     # Variable exclue (bonus F8) : ses indicatrices sont refusées.
     with pytest.raises(causal.ErreurCausal):
         causal.verifier_liste_positive(["age", "boursier=Oui"], variables_exclues=("boursier",))
+
+
+# ---------------------------------------------------------------------------
+# Effet du tutorat et sensibilité (CA-04, CA-05)
+# ---------------------------------------------------------------------------
+
+def test_effet_pondere_poids_egaux():
+    # Durées [1, 2, 3, 3], E [1, 0, 1, 0] : S(1) = 3/4 ; censure en 2 ; S(3) = 3/4 × 1/2 = 0,375.
+    # RMST sur [0 ; 3] = 1 × 1 + 0,75 × 2 = 2,5. Les deux équipes ont les mêmes données.
+    duree = [1, 2, 3, 3] * 2
+    evenement = [1, 0, 1, 0] * 2
+    traite = [1] * 4 + [0] * 4
+    effet = causal.effet_pondere(duree, evenement, traite, np.ones(8), horizon=3)
+    kmf = effet["courbes"]["tutores"]
+    assert causal.survie_au_temps(kmf, 1) == pytest.approx(0.75)
+    assert causal.survie_au_temps(kmf, 3) == pytest.approx(0.375)
+    assert effet["risque_tutores"] == pytest.approx(0.625)
+    assert effet["rmst_tutores"] == pytest.approx(2.5)
+    assert effet["difference_risque"] == pytest.approx(0) and effet["rapport_risques"] == pytest.approx(1)
+    # Identique au Kaplan-Meier non pondéré.
+    from lifelines import KaplanMeierFitter
+    non_pondere = KaplanMeierFitter().fit([1, 2, 3, 3], [1, 0, 1, 0])
+    assert causal.survie_au_temps(non_pondere, 3) == pytest.approx(0.375)
+
+
+def test_e_value():
+    assert causal.e_value(0.5) == pytest.approx(2 + np.sqrt(2), abs=1e-3)  # 3,414
+    assert causal.e_value(2) == pytest.approx(3.414, abs=1e-3)
+    assert causal.e_value_intervalle(0.8, 1.2) == 1.0  # l'IC contient 1
+    assert causal.e_value_intervalle(0.4, 0.5) == pytest.approx(causal.e_value(0.5))  # borne la plus proche de 1
+
+
+def test_bootstrap_meme_graine_memes_ic():
+    base, periode = base_et_periode_inventees(n=200)
+    population = causal.population_photo(base, 8)
+    premiere = causal.analyse_effet(population, periode, 8, (1, 8), nb_tirages=5)
+    seconde = causal.analyse_effet(population, periode, 8, (1, 8), nb_tirages=5)
+    pd.testing.assert_frame_equal(premiere["tableau"], seconde["tableau"])
+    pd.testing.assert_frame_equal(premiere["tirages"], seconde["tirages"])
+
+
+def test_bootstrap_tirage_en_echec_remplace_et_compte():
+    appels = []
+
+    def tirage_qui_echoue_une_fois(conception, duree, evenement, indices, horizon):
+        appels.append(1)
+        if len(appels) == 1:
+            raise causal.ErreurCausal("score non convergé (simulé)")
+        return {mesure: 1.0 for mesure in causal.MESURES_EFFET} | {"smd_max": 0.0}
+
+    tirages, echecs = causal.bootstrap(None, np.arange(10), np.zeros(10), 5, nb_tirages=3,
+                                       fonction_tirage=tirage_qui_echoue_une_fois)
+    assert echecs == 1 and len(tirages) == 3 and len(appels) == 4
+
+
+def test_activite_figee_cox_dependant_du_temps():
+    valeurs = [10.0, 20.0, 30.0, 40.0]
+    lignes = []
+    for identifiant in ["TUT", "NON"]:
+        for semaine, valeur in enumerate(valeurs, start=1):
+            lignes.append({"id_etudiant": identifiant, "semaine": semaine, "nb_connexions_lms": valeur,
+                           "devoirs_rendus": 1.0, "note_moyenne": valeur, "absences": 0.0})
+    periode = pd.DataFrame(lignes)
+    base = pd.DataFrame({"id_etudiant": ["TUT", "NON"],
+                         "statut_tutorat": [config.STATUT_TUTORE, config.STATUT_NON_TUTORE],
+                         "semaine_debut_tutorat": pd.array([2, None], dtype="Int64")})
+    activite = causal.activite_figee(periode, base).set_index(["id_etudiant", "semaine"])["note_moyenne_moy"]
+    # Tutoré (début en semaine 2) : semaine 2 -> 10 ; semaine 3 -> (10 + 20) / 2 ; semaine 4 figée à 15.
+    assert activite[("TUT", 2)] == pytest.approx(10)
+    assert activite[("TUT", 3)] == pytest.approx(15)
+    assert activite[("TUT", 4)] == pytest.approx(15)
+    # Non tutoré : semaine 4 -> moyenne des semaines 1 à 3 = 20.
+    assert activite[("NON", 4)] == pytest.approx(20)
+    # Semaine 1 (aucune semaine antérieure) : médiane des valeurs définies.
+    definies = [10, 15, 15, 10, 15, 20]
+    assert activite[("TUT", 1)] == pytest.approx(np.median(definies))
+    assert activite[("NON", 1)] == pytest.approx(np.median(definies))

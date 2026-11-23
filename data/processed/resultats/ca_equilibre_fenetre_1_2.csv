@@ -1,0 +1,49 @@
+matrice,variable,smd_avant,smd_apres,equilibre
+fenêtre 1 à 2,age,0.16219875,0.035577132,True
+fenêtre 1 à 2,note_bac,-0.34873325,-0.028114109,True
+fenêtre 1 à 2,log2_distance,0.13931785,0.052401133,True
+fenêtre 1 à 2,nb_connexions_lms_moy,-0.38767842,-0.039615532,True
+fenêtre 1 à 2,devoirs_rendus_moy,-0.31152181,-0.02297283,True
+fenêtre 1 à 2,note_moyenne_moy,-0.5217802,-0.065509728,True
+fenêtre 1 à 2,absences_moy,0.40643363,0.028304363,True
+fenêtre 1 à 2,cohorte=2024,-0.038692595,-0.024881856,True
+fenêtre 1 à 2,cohorte=2025,0.038692595,0.024881856,True
+fenêtre 1 à 2,genre=F,-0.091903362,-0.011372288,True
+fenêtre 1 à 2,genre=M,0.091903362,0.011372288,True
+fenêtre 1 à 2,boursier=Oui,0.16135527,0.021910336,True
+fenêtre 1 à 2,boursier=Non,-0.16135527,-0.021910336,True
+fenêtre 1 à 2,filiere=Informatique,0.14506641,-0.01916567,True
+fenêtre 1 à 2,filiere=Gestion,-0.083164511,-0.018302837,True
+fenêtre 1 à 2,filiere=Droit,0.028460213,0.047137305,True
+fenêtre 1 à 2,filiere=Génie civil,-0.096688012,-0.014031539,True
+fenêtre 1 à 2,filiere=Communication,-0.022953817,0.010863989,True
+fenêtre 1 à 2,region_dakar=Dakar,-0.060113636,0.0084301391,True
+fenêtre 1 à 2,region_dakar=Hors Dakar,0.056152151,-0.011950927,True
+fenêtre 1 à 2,region_dakar=(manquant),0.013369544,0.01352695,True
+fenêtre 1 à 2,emploi_parallele=Oui,0.1318772,-0.0024789144,True
+fenêtre 1 à 2,emploi_parallele=Non,-0.12868438,-0.0014884801,True
+fenêtre 1 à 2,emploi_parallele=(manquant),0.013107781,0.0079660519,True
+fenêtre 1 à 8,age,0.16219875,0.035577132,True
+fenêtre 1 à 8,note_bac,-0.34873325,-0.028114109,True
+fenêtre 1 à 8,log2_distance,0.13931785,0.052401133,True
+fenêtre 1 à 8,nb_connexions_lms_moy,-0.59829386,-0.22088294,False
+fenêtre 1 à 8,devoirs_rendus_moy,-0.49531073,-0.15161824,False
+fenêtre 1 à 8,note_moyenne_moy,-0.7568442,-0.33340618,False
+fenêtre 1 à 8,absences_moy,0.66467222,0.26635489,False
+fenêtre 1 à 8,cohorte=2024,-0.038692595,-0.024881856,True
+fenêtre 1 à 8,cohorte=2025,0.038692595,0.024881856,True
+fenêtre 1 à 8,genre=F,-0.091903362,-0.011372288,True
+fenêtre 1 à 8,genre=M,0.091903362,0.011372288,True
+fenêtre 1 à 8,boursier=Oui,0.16135527,0.021910336,True
+fenêtre 1 à 8,boursier=Non,-0.16135527,-0.021910336,True
+fenêtre 1 à 8,filiere=Informatique,0.14506641,-0.01916567,True
+fenêtre 1 à 8,filiere=Gestion,-0.083164511,-0.018302837,True
+fenêtre 1 à 8,filiere=Droit,0.028460213,0.047137305,True
+fenêtre 1 à 8,filiere=Génie civil,-0.096688012,-0.014031539,True
+fenêtre 1 à 8,filiere=Communication,-0.022953817,0.010863989,True
+fenêtre 1 à 8,region_dakar=Dakar,-0.060113636,0.0084301391,True
+fenêtre 1 à 8,region_dakar=Hors Dakar,0.056152151,-0.011950927,True
+fenêtre 1 à 8,region_dakar=(manquant),0.013369544,0.01352695,True
+fenêtre 1 à 8,emploi_parallele=Oui,0.1318772,-0.0024789144,True
+fenêtre 1 à 8,emploi_parallele=Non,-0.12868438,-0.0014884801,True
+fenêtre 1 à 8,emploi_parallele=(manquant),0.013107781,0.0079660519,True

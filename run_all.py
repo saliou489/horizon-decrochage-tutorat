@@ -6,7 +6,7 @@ prédictifs de survie entraînés sur 2024 et testés sur 2025, puis effet du tu
 (résultats dans data/processed/resultats/). L'étape LLM sera ajoutée plus tard.
 Lancement depuis la racine du dépôt : python run_all.py
 
-Tâches couvertes : DA-02 à DA-07, SV-03, SV-04, CA-04.
+Tâches couvertes : DA-02 à DA-07, SV-03, SV-04, CA-04, CA-05.
 """
 
 from src import base_survie, causal, ml_survie
