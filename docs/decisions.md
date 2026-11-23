@@ -526,4 +526,4 @@ Gabarit :
   7. **Fins de ligne (RV03-08)** : index de `data/processed` renormalisé, pour que `git status` reste propre après `run_all.py` sous Windows.
   8. **Durée de `run_all.py`** : le repli prévu par D-61 (point 6) est appliqué, car sa condition est remplie : 16 min 41 s au premier lancement après une installation neuve (RV03, 23/11). Les variantes (et le bonus) passent à 100 tirages ; l'analyse principale garde ses 500 tirages, et les estimations ponctuelles ne changent pas.
   9. **Tableau de bord** : une fiche « à revoir » est affichée avec un bandeau « à revoir » et ses motifs, jamais comme une fiche validée (question de RV03, pour DB-01).
-- Statut : proposée par le pilotage le 23/11 (22 h 30), à valider par Saliou.
+- Statut : validée (Saliou, 23/11, 22 h 57).
