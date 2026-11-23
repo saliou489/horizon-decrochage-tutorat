@@ -38,3 +38,5 @@ Dans les messages de commit, ajouter le numéro d'issue : `DA-02 : nettoyage de 
 | GP-06 | #31 | Compiler le dossier de gestion de projet ; revue et rétrospective finales | 1,5 | Must | S2 | Ven. 27/11 |
 
 Total : 63,5 h, 31 tâches.
+
+Statuts et jours cibles du sprint 2 mis à jour le 23/11 : voir `sprint2_planification.md` (GP-05) et le planning v3 (`docs/planning.md`).

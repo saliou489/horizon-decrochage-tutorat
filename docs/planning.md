@@ -1,4 +1,48 @@
-# Planning du projet — version 2 (19/11/2026)
+# Planning du projet — version 3 (23/11/2026)
+
+**Référence du projet.** Le planning du cahier des charges sert d'inspiration, pas de fil conducteur (décision D-40) ; ses **exigences notées** restent obligatoires : captures du Kanban (24/11 et 27/11), revue et rétrospective de chaque sprint, livrables L1 à L7 déposés dans `docs/`, rendu le **vendredi 27/11 à 18 h** (visé : 15 h). Soutenance le **lundi 30/11** (15 min de présentation, 10 min de questions), date donnée par l'enseignant au point d'étape M2.
+
+**Pourquoi une version 3.** Le sprint 1 a été clos le 23/11 par sa revue (GP-04), et le sprint 2 est planifié en GP-05 (`docs/gestion_projet/sprint2_planification.md`). Depuis la version 2, l'effet causal (M3) a été obtenu un jour en avance, le point d'étape M2 a eu lieu et la date de soutenance est connue.
+
+## Organisation du travail
+
+Inchangée (voir la version 2 ci-dessous) : Saliou décide et valide ; la session de pilotage rédige et teste les consignes, vérifie les résultats et rédige les brouillons de documents ; la session d'exécution code ; la session de relecture relit aux points de contrôle R03 (sécurité du LLM) et R04 (relecture finale).
+
+## Planning journalier
+
+Heures de Saliou : celles du lundi 23/11 sont celles qu'il a annoncées ; celles du mardi au vendredi reprennent la version 2, **à confirmer**.
+
+| Jour | Heures | Tâches | Jalon / contrôle |
+|---|---|---|---|
+| Lun. 23/11 | 8 (10 h-16 h, 22 h-0 h) | Matin (fait) : point d'étape M2 ; C13 (LL-01 : entrées, prompt v1 et contrôles des fiches) ; brouillon de GP-04. Après-midi : relecture R03 (sécurité du LLM) ; GP-05 (ce planning). Soir : premier appel réel (`--tester`), génération des 54 fiches et corrections de R03 (C14) ; mesure de la durée de `run_all.py` ; journal de bord du 19 au 23/11. | M2 fait ; M3 effet causal fait (nuit du 22 au 23/11, un jour d'avance) |
+| Mar. 24/11 | 5 | Capture du Kanban (date imposée). LL-02 : Saliou note 20 fiches, prompt v2 si besoin. DB-01 : consigne et exécution du tableau de bord. DO-02 : plan du rapport, sections contexte, données et nettoyage. | |
+| Mer. 25/11 | 4,5 | Fin et vérification de DB-01 ; notebook 06 complété (fiches et évaluation) ; SV-05 (Could) seulement si DB-01 est vérifié. DO-02 : survie, ML, causal. | **Gel des fonctionnalités** (soir) |
+| Jeu. 26/11 | 4 | Relecture finale R04 et corrections ; DO-02 : LLM, tableau de bord, limites, éthique, export PDF ; DO-03 (note de synthèse) ; DO-04 (support de soutenance, vidéo de 3 min). | Rapport, note et support finalisés |
+| Ven. 27/11 | 2,5 (jusqu'à 15 h) | DO-01 (README final, test sur un clone neuf) ; GP-06 (dossier de gestion de projet, export du Kanban, revue et rétrospective finales) ; capture du Kanban (date imposée) ; vérification finale. | **M4 rendu visé 15 h** (limite 18 h) |
+| Sam. 28 et dim. 29/11 | à fixer | Répétition chronométrée de la soutenance, questions probables, relecture du code clé. Plus aucun commit après le rendu. | |
+| Lun. 30/11 | | Soutenance (15 min + 10 min de questions). | |
+
+Charge restante réestimée au 23/11 (15 h) : 19,5 h, dont 1,5 h pour SV-05 (Could), pour environ 19 h disponibles jusqu'au rendu. Pas de marge : SV-05 n'est faite que si le tableau de bord est vérifié mercredi, et les brouillons de la session de pilotage sont indispensables pour tenir le rapport, la note et le support.
+
+## Règles
+
+- Au moins un commit par jour, avec l'identifiant de la tâche dans le message.
+- Une entrée du journal de bord chaque soir, avec les heures réelles.
+- Au plus 2 cartes « En cours » sur le Kanban ; une carte change de colonne dès que la tâche change d'état.
+- En cas de retard : on abandonne d'abord SV-05 (Could), puis le prompt v2 (LL-02) et les options du tableau de bord (Should), jamais les Must (DO-01 à DO-04, GP-06).
+
+## Écarts assumés par rapport au cahier des charges
+
+- Démarrage effectif le 16/11 (J2) au lieu du 13/11 ; Kanban créé le 18/11 (pas de captures au 13/11 ni au 17/11).
+- Point d'étape avec l'enseignant déplacé au lundi 23/11 (à la demande de l'enseignant).
+- Sprint 1 clos le 23/11, deux jours après la fin prévue au planning v2 ; tâches du sprint 2 tirées en avance le 22/11 (SV-03, SV-04, CA-02 à CA-05).
+- Soutenance le 30/11, après le rendu : le support (L7) est déposé avec le dossier le 27/11.
+
+---
+
+## Historique — version 2 (19/11/2026)
+
+Version 2, remplacée le 23/11 par la version 3 ci-dessus.
 
 **Référence du projet.** Le planning du cahier des charges sert d'inspiration, pas de fil conducteur (décision D-40) ; ses **exigences notées** restent obligatoires : captures du Kanban (19/11, 24/11, 27/11), revue et rétrospective de chaque sprint, livrables, rendu le **vendredi 27/11 à 18 h** (visé : 15 h).
 
