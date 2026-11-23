@@ -150,7 +150,10 @@ activemq-data/
 *.sage.py
 
 # Environments
-.env
+# Toutes les variantes de .env sont ignorées (le Bloc-notes de Windows peut créer
+# .env.txt, l'Explorateur « .env - Copie »), sauf le modèle sans valeur (RV03-01).
+.env*
+!.env.example
 .envrc
 .venv
 env/

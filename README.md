@@ -43,7 +43,7 @@ Les fichiers de `data/raw/` sont un jeu **synthétique** fourni par l'enseignant
 **Ce qui est envoyé à Gemini** : une liste fermée de champs : semaine, horizon, risque arrondi et risque moyen de la promotion, au plus 3 facteurs (libellé, valeur arrondie, référence de la promotion, multiplicateur), activité moyenne des semaines 7 et 8 et celle de la promotion, statut de tutorat.
 **Ce qui n'est jamais envoyé** : identifiant, nom, contact, texte de message, genre, région. Chaque entrée est contrôlée avant l'envoi (clés autorisées, vocabulaire fermé, motifs d'identifiant, d'e-mail et de téléphone) ; si le contrôle échoue, rien n'est envoyé. Chaque fiche reçue est contrôlée à son tour (chaque nombre doit figurer dans l'entrée, mots interdits, actions de la liste) et redemandée si besoin (3 essais au plus, sinon statut « à revoir »).
 
-**Obtenir une clé** : se connecter à Google AI Studio, page « API keys », créer une clé ; copier `.env.example` en `.env` (à la racine du dépôt) et coller la clé après `GEMINI_API_KEY=`. `.env` est ignoré par git : la clé n'est jamais commitée ni affichée.
+**Obtenir une clé** : se connecter à Google AI Studio, page « API keys », créer une clé ; copier `.env.example` en `.env` à la racine du dépôt (PowerShell : `Copy-Item .env.example .env` ; Linux / macOS : `cp .env.example .env`) et coller la clé après `GEMINI_API_KEY=`. `.env` et toutes ses variantes (`.env.txt`, `.env.local`…) sont ignorés par git, sauf `.env.example` : la clé n'est jamais commitée ni affichée. Vérification : après avoir collé la clé, `git status` ne doit lister aucun fichier `.env`.
 
 **Commandes** (depuis la racine du dépôt) :
 - `python -m src.llm --tester` : un seul appel neutre, sans aucune donnée d'étudiant, pour vérifier la clé et le modèle ;
