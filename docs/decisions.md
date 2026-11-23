@@ -495,7 +495,7 @@ Gabarit :
   5. **Reproductibilité** : `run_all.py` n'appelle jamais l'API ; la génération est une commande séparée ; les fiches sont enregistrées (cache) avec le modèle, la version du prompt et la date, puis relues par le notebook 06 et le tableau de bord. Gabarit versionné dans `src/prompts/` (v1, puis v2 si l'évaluation LL-02 le demande). Les tests utilisent une fausse fonction d'appel, sans réseau.
   6. **Relecture de sécurité R03** avant le premier appel réel.
   7. **Cadre** : loi sénégalaise n° 2008-12 du 25 janvier 2008 sur la protection des données à caractère personnel ; RGPD pour comparaison. Au niveau gratuit de l'API, Google peut utiliser les requêtes pour améliorer ses produits : raison de plus pour n'envoyer aucune donnée personnelle. Chaque fiche porte un avertissement fixe et reste à vérifier par le conseiller.
-- Statut : validée (Saliou, 23/11), sauf le point 2, révisé le 23/11 : à confirmer. Le pilotage avait d'abord proposé `gemini-3.8-flash`, mais son niveau gratuit est limité à 20 requêtes par jour, contre 500 pour les Flash-Lite (quotas à vérifier sur la page « Rate limit » d'AI Studio) ; les 54 fiches, avec jusqu'à 3 essais chacune, demandent jusqu'à 162 appels.
+- Statut : validée (Saliou, 23/11). Le point 2 a été révisé puis validé par Saliou le même jour : le pilotage avait d'abord proposé `gemini-3.8-flash`, mais son niveau gratuit est limité à 20 requêtes par jour, contre 500 pour les Flash-Lite (quotas à vérifier sur la page « Rate limit » d'AI Studio) ; les 54 fiches, avec jusqu'à 3 essais chacune, demandent jusqu'à 162 appels.
 
 ## D-66 — Fiches d'alerte : population, score, facteurs et contenu (LL-01, étape 2 ; LL-02)
 - Date / tâche : 23/11/2026 — LL-01, LL-02
@@ -511,4 +511,4 @@ Gabarit :
      - activité des semaines 7 et 8 (moyenne par semaine : connexions, devoirs rendus, séances manquées, note) et statut de tutorat à la semaine 8, comparés à la promotion : des observations, pas des facteurs du score ;
      - références : moyenne de la promotion pour l'âge et la note du bac ; pour la distance, la distance « typique » 2^(moyenne de log2 de la distance), qui correspond au centrage du Cox ; pour une modalité, la part de la promotion dans le même cas ;
      - contrôle automatique de cohérence : un tutorat en cours exclut l'action « proposer un tutorat » ; l'absence de tutorat exclut « faire le point sur le tutorat en cours ».
-- Statut : points 1 à 5 validés (Saliou, 23/11) ; point 6 proposé, à confirmer.
+- Statut : validée (Saliou, 23/11) ; le point 6, proposé par le pilotage, a été validé le même jour, après l'exécution de C13.
