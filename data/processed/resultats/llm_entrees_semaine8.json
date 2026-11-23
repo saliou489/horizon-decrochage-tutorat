@@ -1,0 +1,2665 @@
+[
+  {
+    "id_etudiant": "HZ26904",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 71,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "28 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 2.1
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "131 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 4.5,
+        "note_moyenne": 9.0
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ57110",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 62,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "26 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.7
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,8 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 1.0,
+        "note_moyenne": 8.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ81577",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 58,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "26 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.7
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,3 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.5,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 4.0,
+        "note_moyenne": 9.8
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 8
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ42162",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 57,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "116 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "23 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 8.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 5.5,
+        "note_moyenne": 9.4
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ16114",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 54,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "24 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.0,
+        "devoirs_rendus": 2.0,
+        "seances_manquees": 3.5,
+        "note_moyenne": 10.3
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ23213",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 51,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,4 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "23 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 2.0,
+        "note_moyenne": 9.7
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ53255",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 51,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,8 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "23 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 3.0,
+        "note_moyenne": 12.8
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ68015",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 50,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,0 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "193 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 2.5,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 4.0,
+        "note_moyenne": 9.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ87386",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 50,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,9 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "23 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 6.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 3.0,
+        "note_moyenne": 6.0
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 6
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ55110",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 50,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "25 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 1.5,
+        "note_moyenne": 11.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ37633",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 49,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 4.0,
+        "note_moyenne": 6.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ45251",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 49,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "115 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 15.1
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ73699",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 49,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 1.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 3.0,
+        "note_moyenne": 6.1
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 5
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ95676",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 48,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "159 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,7 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.5,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 3.5,
+        "note_moyenne": 8.1
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ63413",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 48,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.5,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 1.5,
+        "note_moyenne": 10.1
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ64213",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 48,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,3 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "23 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 8.0,
+        "note_moyenne": 8.8
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ63546",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 47,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,5 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "90 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 12.1
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 5
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ18278",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 47,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,3 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "41 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 1.5,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 6.0,
+        "note_moyenne": 10.2
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ75960",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 46,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,6 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 6.7
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 6
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ81157",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 46,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "24 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "36 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 1.5,
+        "note_moyenne": 10.1
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 3
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ74072",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 46,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,6 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 2.0,
+        "devoirs_rendus": 2.0,
+        "seances_manquees": 3.0,
+        "note_moyenne": 5.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ36651",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 46,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 2.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 6.5,
+        "note_moyenne": 5.5
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ34968",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 45,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "86 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 4.0,
+        "note_moyenne": 4.2
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 6
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ15409",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 45,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 8.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 0.5,
+        "note_moyenne": 11.7
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ72971",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 45,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "130 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "24 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 6.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 4.0,
+        "note_moyenne": 9.0
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ83054",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 45,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "26 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.7
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,3 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 2.0,
+        "seances_manquees": 1.0,
+        "note_moyenne": 9.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ13627",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 45,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "104 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 1.5,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 3.5,
+        "note_moyenne": 8.4
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ35224",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 44,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "62 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.3
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,3 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.5,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 6.0,
+        "note_moyenne": 6.8
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 6
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ81874",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 44,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,5 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "24 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.5,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 7.0
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ34332",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 44,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "61 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.3
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 3.0,
+        "note_moyenne": 8.5
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 6
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ59769",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 44,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 0.5,
+        "note_moyenne": 8.8
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ52205",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 43,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "25 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,7 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.5,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 0.5,
+        "note_moyenne": 12.2
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ45683",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 43,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "24 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 2.5,
+        "note_moyenne": 9.3
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ99810",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,8 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 0.5,
+        "note_moyenne": 6.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 6
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ39784",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 2.5,
+        "note_moyenne": 14.3
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ21956",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,3 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.5,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.9
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 7
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ81574",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "70 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.2
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ70304",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,3 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "28 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 6.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 3.5,
+        "note_moyenne": 11.0
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ20443",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "25 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "34 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 3.0,
+        "note_moyenne": 11.0
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ90568",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,4 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 7.0,
+        "note_moyenne": 5.7
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 8
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ54884",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "98 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "23 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.3
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 10.5,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 1.5,
+        "note_moyenne": 13.5
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ42192",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,8 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.5,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 3.0,
+        "note_moyenne": 10.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ35258",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,9 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 7.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 3.0,
+        "note_moyenne": 7.1
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ67041",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 42,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "130 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 6.5,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 2.0,
+        "note_moyenne": 9.5
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ28787",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 41,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "152 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 2.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 2.0,
+        "note_moyenne": 9.7
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 7
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ91056",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 41,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,9 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.0,
+        "note_moyenne": 8.2
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 4
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ63544",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 41,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.0,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 5.8
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ49682",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 41,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "326 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.8
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 2.5,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 10.0,
+        "note_moyenne": 6.0
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 4
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ40111",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 41,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "143 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 3.5,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.7
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ80214",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 41,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,1 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.4
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 8.0,
+        "devoirs_rendus": 2.0,
+        "seances_manquees": 1.5,
+        "note_moyenne": 13.9
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ25779",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 40,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "112 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.5
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 1.0,
+        "devoirs_rendus": 0.0,
+        "seances_manquees": 12.0,
+        "note_moyenne": 5.8
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 3
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ26967",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 40,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "distance domicile-campus",
+          "valeur_etudiant": "64 km",
+          "reference_promotion": "11 km pour un étudiant typique de la promotion",
+          "multiplicateur": 1.3
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "11,8 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 5.5,
+        "devoirs_rendus": 1.5,
+        "seances_manquees": 3.0,
+        "note_moyenne": 6.9
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ47686",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 40,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,2 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "âge",
+          "valeur_etudiant": "22 ans",
+          "reference_promotion": "20,1 ans en moyenne dans la promotion",
+          "multiplicateur": 1.2
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 2.0,
+        "devoirs_rendus": 0.5,
+        "seances_manquees": 2.5,
+        "note_moyenne": 8.3
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "en cours",
+        "semaine_debut": 3
+      }
+    }
+  },
+  {
+    "id_etudiant": "HZ65741",
+    "entree": {
+      "semaine_observation": 8,
+      "horizon_semaines": 30,
+      "risque_decrochage_pct": 40,
+      "risque_moyen_promotion_pct": 18,
+      "facteurs": [
+        {
+          "facteur": "emploi en parallèle des études",
+          "valeur_etudiant": "oui",
+          "reference_promotion": "18 % de la promotion dans ce cas",
+          "multiplicateur": 1.6
+        },
+        {
+          "facteur": "note du bac",
+          "valeur_etudiant": "10,6 / 20",
+          "reference_promotion": "12,8 / 20 en moyenne dans la promotion",
+          "multiplicateur": 1.5
+        },
+        {
+          "facteur": "bourse",
+          "valeur_etudiant": "non boursier",
+          "reference_promotion": "57 % de la promotion dans ce cas",
+          "multiplicateur": 1.1
+        }
+      ],
+      "activite": {
+        "semaines": [
+          7,
+          8
+        ],
+        "note_maximum": 20,
+        "connexions_plateforme": 4.0,
+        "devoirs_rendus": 1.0,
+        "seances_manquees": 4.5,
+        "note_moyenne": 8.6
+      },
+      "activite_promotion": {
+        "connexions_plateforme": 6.1,
+        "devoirs_rendus": 1.4,
+        "seances_manquees": 2.5,
+        "note_moyenne": 10.4
+      },
+      "tutorat": {
+        "statut": "aucun"
+      }
+    }
+  }
+]
