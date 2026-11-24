@@ -712,11 +712,14 @@ MOTS_INTERDITS_FICHE = [
     "décrochera", "abandonnera", "sûrement", "surement", "certain", "certaine",
 ]
 
-# Appels à l'API : 3 essais par fiche ; 7 s entre deux appels (niveau gratuit : 10 requêtes
-# par minute) ; après une erreur de quota (429) ou de surcharge (503), attendre 30 s puis 60 s.
+# Appels à l'API : 3 essais par fiche. Le 24/11, les refus sont venus par vagues (2 ou 3 appels
+# réussis, puis 3 refus en 90 s, puis de nouveau des réussites quelques minutes plus tard) :
+# C16b espace les appels (20 s, soit 3 par minute, loin de la limite de 15) et, après une
+# erreur de quota (429) ou de surcharge (503), attend 30 s, 60 s, 120 s, 300 s puis 600 s
+# (environ 18 minutes de patience par appel) avant d'abandonner.
 NB_ESSAIS_FICHE = 3
-PAUSE_ENTRE_APPELS_LLM = 7
-ATTENTES_QUOTA_LLM = (30, 60)
+PAUSE_ENTRE_APPELS_LLM = 20
+ATTENTES_QUOTA_LLM = (30, 60, 120, 300, 600)
 DELAI_MAX_APPEL_LLM_MS = 60000
 # Adresse de l'API Gemini fixée dans le code (D-67, point 4) : elle l'emporte sur la variable
 # d'environnement GOOGLE_GEMINI_BASE_URL, pour que la clé ne parte jamais ailleurs.

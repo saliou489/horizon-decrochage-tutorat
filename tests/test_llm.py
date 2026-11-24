@@ -477,6 +477,54 @@ def test_client_gemini_quota(faux_genai, code):
         llm.creer_appel_gemini("cle-inventee", "modele-test")("", "message")
 
 
+def test_refus_429_avec_details_complets(faux_genai):
+    erreur = FausseErreurApi(429, "texte libre qui cite la requête")
+    erreur.status = "RESOURCE_EXHAUSTED"
+    erreur.details = {"error": {"code": 429, "status": "RESOURCE_EXHAUSTED", "message": "texte libre", "details": [
+        {"@type": "type.googleapis.com/google.rpc.QuotaFailure",
+         "violations": [{"quotaMetric": "metrique", "quotaId": "GenerateRequestsPerDayPerProjectPerModel-FreeTier",
+                         "quotaValue": "20"}]},
+        {"@type": "type.googleapis.com/google.rpc.RetryInfo", "retryDelay": "52s"}]}}
+    faux_genai["erreur"] = erreur
+    with pytest.raises(llm.ErreurQuotaLLM) as refus:
+        llm.creer_appel_gemini("cle-inventee", "modele-test")("", "message")
+    assert str(refus.value) == ("429 RESOURCE_EXHAUSTED, GenerateRequestsPerDayPerProjectPerModel-FreeTier, "
+                                "limite 20, réessayer après 52s")
+    assert "texte libre" not in str(refus.value)
+
+
+@pytest.mark.parametrize("details", [None, "pas un objet", {"error": {"details": "pas une liste"}},
+                                     {"error": {"details": [{"@type": "QuotaFailure", "violations": None}]}}])
+def test_refus_sans_details_lisibles(faux_genai, details):
+    erreur = FausseErreurApi(503, "texte libre")
+    erreur.status = "UNAVAILABLE"
+    erreur.details = details
+    faux_genai["erreur"] = erreur
+    with pytest.raises(llm.ErreurQuotaLLM) as refus:
+        llm.creer_appel_gemini("cle-inventee", "modele-test")("", "message")
+    assert str(refus.value) == "503 UNAVAILABLE"
+    erreur.code = 429
+    with pytest.raises(llm.ErreurQuotaLLM) as refus:
+        llm.creer_appel_gemini("cle-inventee", "modele-test")("", "message")
+    assert str(refus.value) == "429 UNAVAILABLE"
+
+
+def test_refus_sans_statut_ni_details():
+    assert llm.description_refus(FausseErreurApi(503, "texte libre")) == "503"
+
+
+def test_attentes_et_erreur_finale_avec_le_dernier_refus(capsys):
+    refus = [llm.ErreurQuotaLLM(f"503 UNAVAILABLE, essai {i}") for i in range(len(config.ATTENTES_QUOTA_LLM) + 1)]
+    attentes = []
+    with pytest.raises(llm.ErreurQuotaLLM) as erreur:
+        llm.appeler_avec_quota(FausseApi(refus), "", "message", attentes.append)
+    assert attentes == list(config.ATTENTES_QUOTA_LLM)
+    assert f"essai {len(config.ATTENTES_QUOTA_LLM)}" in str(erreur.value) and "quota atteint" in str(erreur.value)
+    lignes = capsys.readouterr().out.strip().splitlines()
+    assert len(lignes) == len(config.ATTENTES_QUOTA_LLM)
+    assert lignes[0] == f"Refus de l'API (503 UNAVAILABLE, essai 0) : nouvel essai dans {config.ATTENTES_QUOTA_LLM[0]} s."
+
+
 def test_client_gemini_erreur_reduite_au_code(faux_genai):
     faux_genai["erreur"] = FausseErreurApi(400, "texte secret de l'API cle-inventee")
     with pytest.raises(llm.ErreurLLM) as erreur:
@@ -545,6 +593,46 @@ def test_option_limite_garde_le_cache_et_laisse_le_reste_absent():
     assert [f["id_etudiant"] for f in fiches] == ["A", "D"]  # B et C absentes, D gardée
     assert fiches[1] == cache[0]
     assert llm.nombre_non_traitees(entrees, cache, "modele-test") == 0
+
+
+def test_option_ids_grille_n_envoie_que_les_fiches_permises():
+    entrees = [{"id_etudiant": i, "entree": entree_conforme()} for i in ["A", "B", "C", "D"]]
+    cache = llm.generer_fiches(entrees[3:], FausseApi([reponse()]), [], "modele-test", attendre=lambda s: None)
+    permis = {"A", "C"}
+    assert llm.nombre_non_traitees(entrees, cache, "modele-test", ids_permis=permis) == 1  # B
+    api = FausseApi([reponse(), reponse()])
+    fiches = llm.generer_fiches(entrees, api, cache, "modele-test", attendre=lambda s: None, ids_permis=permis)
+    assert len(api.messages) == 2  # seules A et C sont envoyées
+    assert [f["id_etudiant"] for f in fiches] == ["A", "C", "D"]  # B absente, D gardée
+    assert fiches[2] == cache[0]
+    api = FausseApi([reponse()])
+    fiches = llm.generer_fiches(entrees, api, cache, "modele-test", attendre=lambda s: None, ids_permis=permis,
+                                limite=1)
+    assert len(api.messages) == 1 and [f["id_etudiant"] for f in fiches] == ["A", "D"]
+
+
+def test_ids_evaluation_et_grille_d_une_autre_version(tmp_path, monkeypatch):
+    grilles = {v: tmp_path / f"grille_{v}.csv" for v in config.VERSIONS_PROMPT}
+    monkeypatch.setattr(config, "FICHIERS_GRILLE_EVALUATION", grilles)
+    with pytest.raises(llm.ErreurLLM, match="Grille v1 absente"):
+        llm.ids_evaluation()
+    ecrire_texte_grille(grilles["v1"], [ENTETE_GRILLE, "HZ90003;validée;;;;;;", "HZ90001;validée;;;;;;"])
+    assert llm.ids_evaluation() == ["HZ90003", "HZ90001"]
+    fiches = [{"id_etudiant": f"HZ9000{i}", "statut": config.STATUT_FICHE_VALIDEE, "motifs_rejet": []}
+              for i in range(5)]
+    chemin = llm.ecrire_grille_evaluation(fiches, grilles["v2"], llm.ids_evaluation())
+    assert llm.lire_grille_evaluation(chemin)["id_etudiant"].tolist() == ["HZ90003", "HZ90001"]
+    with pytest.raises(llm.ErreurLLM, match="absente"):
+        llm.ecrire_grille_evaluation(fiches[:2], tmp_path / "autre.csv", llm.ids_evaluation())
+    with pytest.raises(llm.ErreurLLM, match="existe déjà"):
+        llm.ecrire_grille_evaluation(fiches, grilles["v2"], llm.ids_evaluation())
+
+
+def test_option_ids_grille_seulement_avec_generer(monkeypatch):
+    monkeypatch.setattr("sys.argv", ["src.llm", "--grille", "--ids-grille"])
+    with pytest.raises(SystemExit) as sortie:
+        llm.main()
+    assert sortie.value.code == 2
 
 
 def test_option_limite_seulement_avec_generer(monkeypatch):
@@ -719,8 +807,16 @@ def test_invariant_grilles_par_version():
         grille = llm.lire_grille_evaluation(chemin)
         fiches = config.FICHIERS_FICHES_LLM[version]
         assert fiches.exists(), version
-        attendus = [f["id_etudiant"] for f in llm.echantillon_evaluation(llm.lire_json(fiches))]
-        assert sorted(grille["id_etudiant"]) == sorted(attendus), version
+        cache = llm.lire_json(fiches)
+        if version == "v1":
+            # La grille v1 vient du tirage au hasard sur le cache v1 complet.
+            attendus = [f["id_etudiant"] for f in llm.echantillon_evaluation(cache)]
+            assert sorted(grille["id_etudiant"]) == sorted(attendus), version
+        else:
+            # Les autres grilles reprennent les identifiants de la grille v1 (un cache partiel
+            # donnerait un autre tirage), et chacun a sa fiche dans le cache de sa version (C16b).
+            assert grille["id_etudiant"].tolist() == llm.ids_evaluation(), version
+            assert set(grille["id_etudiant"]) <= {f["id_etudiant"] for f in cache}, version
 
 
 def test_verifier_chaque_version_presente(tmp_path, monkeypatch, capsys):

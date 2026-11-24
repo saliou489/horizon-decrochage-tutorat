@@ -13,7 +13,7 @@ vérifier par le conseiller.
 
 Tâches couvertes : LL-01, LL-02.
 
-Commandes : python -m src.llm --entrees | --tester | --generer [--forcer | --revoir] [--limite N] | --verifier | --grille
+Commandes : python -m src.llm --entrees | --tester | --generer [--forcer | --revoir] [--limite N] [--ids-grille] | --verifier | --grille
 """
 
 import argparse
@@ -537,6 +537,41 @@ def lire_cle_api(chemin=config.FICHIER_ENV):
     return cle
 
 
+def details_du_refus(details):
+    """Liste des détails structurés d'une réponse d'erreur de l'API ({"error": {"details": [...]}}).
+
+    Lecture prudente : une forme inattendue donne une liste vide, sans erreur.
+    """
+    if not isinstance(details, dict):
+        return []
+    erreur = details.get("error", details)
+    liste = erreur.get("details") if isinstance(erreur, dict) else None
+    return [d for d in liste if isinstance(d, dict)] if isinstance(liste, list) else []
+
+
+def description_refus(erreur):
+    """Description courte d'un refus de l'API (C16b) : code, statut et, pour un 429, quota
+    dépassé (quotaId, quotaValue) et délai conseillé (retryDelay).
+
+    Seuls ces champs structurés sont repris : jamais le texte libre du message, qui pourrait
+    citer la requête (D-67).
+    """
+    morceaux = [" ".join(str(x) for x in (erreur.code, getattr(erreur, "status", None)) if x)]
+    if erreur.code == 429:
+        for detail in details_du_refus(getattr(erreur, "details", None)):
+            type_detail = str(detail.get("@type", ""))
+            if type_detail.endswith("QuotaFailure"):
+                violations = detail.get("violations")
+                for violation in violations if isinstance(violations, list) else []:
+                    if isinstance(violation, dict) and violation.get("quotaId"):
+                        morceaux.append(str(violation["quotaId"]))
+                    if isinstance(violation, dict) and violation.get("quotaValue"):
+                        morceaux.append(f"limite {violation['quotaValue']}")
+            elif type_detail.endswith("RetryInfo") and detail.get("retryDelay"):
+                morceaux.append(f"réessayer après {detail['retryDelay']}")
+    return ", ".join(morceaux)
+
+
 def creer_appel_gemini(cle, modele, schema=None):
     """Fonction appeler(instructions, message) -> texte de la réponse de Gemini.
 
@@ -564,7 +599,7 @@ def creer_appel_gemini(cle, modele, schema=None):
             reponse = client.models.generate_content(model=modele, contents=message, config=reglages)
         except errors.APIError as erreur:
             if erreur.code in CODES_QUOTA:
-                raise ErreurQuotaLLM(f"Quota ou surcharge de l'API Gemini (code {erreur.code})") from None
+                raise ErreurQuotaLLM(description_refus(erreur)) from None
             raise ErreurLLM(f"Erreur de l'API Gemini (code {erreur.code})") from None
         except Exception as erreur:
             # Réseau, délai dépassé… : seul le type est cité, car le texte pourrait contenir
@@ -690,15 +725,22 @@ def verifier_fiche(texte, entree):
 
 def appeler_avec_quota(appeler, instructions, message, attendre):
     """Un appel ; après une erreur de quota, attendre chaque durée de ATTENTES_QUOTA_LLM et
-    réessayer ; si le quota n'est toujours pas rétabli, arrêter toute la génération."""
-    for attente in (None,) + tuple(config.ATTENTES_QUOTA_LLM):
-        if attente is not None:
-            attendre(attente)
+    réessayer ; si le quota n'est toujours pas rétabli, arrêter toute la génération.
+
+    Chaque refus est affiché avec sa cause (C16b) ; l'erreur finale reprend le dernier refus.
+    """
+    dernier_refus = None
+    for attente in tuple(config.ATTENTES_QUOTA_LLM) + (None,):
         try:
             return appeler(instructions, message)
-        except ErreurQuotaLLM:
-            continue
-    raise ErreurQuotaLLM("quota atteint : relancer plus tard ; les fiches déjà faites sont gardées")
+        except ErreurQuotaLLM as refus:
+            dernier_refus = str(refus)
+        if attente is None:
+            break
+        print(f"Refus de l'API ({dernier_refus}) : nouvel essai dans {attente} s.", flush=True)
+        attendre(attente)
+    raise ErreurQuotaLLM(f"quota atteint (dernier refus : {dernier_refus}) : relancer plus tard ; les fiches déjà "
+                         "faites sont gardées")
 
 
 def fiche_reutilisable(existante, element, modele):
@@ -763,23 +805,25 @@ def a_generer(existante, element, modele, forcer, revoir):
     return forcer or a_revoir or not fiche_reutilisable(existante, element, modele)
 
 
-def nombre_non_traitees(entrees, fiches_existantes, modele, forcer=False, revoir=False, limite=None):
-    """Nombre d'entrées laissées de côté par la limite (aucune sans limite)."""
-    if limite is None:
-        return 0
+def nombre_non_traitees(entrees, fiches_existantes, modele, forcer=False, revoir=False, limite=None, ids_permis=None):
+    """Nombre d'entrées à générer laissées de côté par la limite ou par ids_permis (aucune sinon)."""
     courantes = {fiche["id_etudiant"]: fiche for fiche in (fiches_existantes or [])}
-    demandees = sum(a_generer(courantes.get(e["id_etudiant"]), e, modele, forcer, revoir) for e in entrees)
-    return max(0, demandees - limite)
+    demandees = [e for e in entrees if a_generer(courantes.get(e["id_etudiant"]), e, modele, forcer, revoir)]
+    permises = [e for e in demandees if ids_permis is None or e["id_etudiant"] in ids_permis]
+    envoyees = len(permises) if limite is None else min(limite, len(permises))
+    return len(demandees) - envoyees
 
 
 def generer_fiches(entrees, appeler, fiches_existantes, modele, forcer=False, attendre=time.sleep, enregistrer=None,
-                   revoir=False, limite=None):
+                   revoir=False, limite=None, ids_permis=None):
     """Génère les fiches manquantes ; réutilise le cache ; enregistre après chaque fiche.
 
     forcer : tout régénérer ; revoir : régénérer aussi les fiches « à revoir » du cache,
     en gardant les fiches validées ; limite : au plus `limite` fiches nouvelles (essai sur
     quelques fiches) ; au-delà, une entrée n'est plus envoyée : sa fiche du cache est gardée
-    telle quelle si elle existe, sinon elle reste absente (aucune fiche du cache n'est perdue).
+    telle quelle si elle existe, sinon elle reste absente (aucune fiche du cache n'est perdue) ;
+    ids_permis : seules ces entrées sont envoyées (par exemple les 20 fiches de la grille,
+    C16b) ; les autres suivent la même règle que celles au-delà de la limite.
 
     Pour chaque entrée : contrôle sans donnée personnelle, prompt, jusqu'à NB_ESSAIS_FICHE
     essais (appel puis verifier_fiche), PAUSE_ENTRE_APPELS_LLM secondes entre deux appels.
@@ -796,7 +840,8 @@ def generer_fiches(entrees, appeler, fiches_existantes, modele, forcer=False, at
         if not a_generer(existante, element, modele, forcer, revoir):
             resultat.append(existante)
             continue
-        if limite is not None and nouvelles >= limite:
+        hors_liste = ids_permis is not None and element["id_etudiant"] not in ids_permis
+        if hors_liste or (limite is not None and nouvelles >= limite):
             if existante is not None:
                 resultat.append(existante)
             continue
@@ -831,16 +876,38 @@ def echantillon_evaluation(fiches, n=config.NB_FICHES_EVALUATION, graine=config.
     return [f for f in fiches if f["id_etudiant"] in tires]
 
 
-def ecrire_grille_evaluation(fiches, chemin=config.FICHIER_GRILLE_EVALUATION):
+def ids_evaluation():
+    """Identifiants de la grille v1, dans l'ordre du fichier : les mêmes 20 fiches sont notées
+    dans chaque version du prompt (D-69, point 3)."""
+    chemin = config.FICHIERS_GRILLE_EVALUATION["v1"]
+    if not chemin.exists():
+        raise ErreurLLM(f"Grille v1 absente ({chemin.name}) : elle donne les fiches à noter dans chaque version")
+    return lire_grille_evaluation(chemin)["id_etudiant"].tolist()
+
+
+def fiches_de_la_grille(fiches, ids):
+    """Fiches des identifiants `ids`, dans l'ordre de `ids` ; ErreurLLM si l'une manque."""
+    par_id = {fiche["id_etudiant"]: fiche for fiche in fiches}
+    manquantes = [i for i in ids if i not in par_id]
+    if manquantes:
+        raise ErreurLLM(f"{len(manquantes)} fiche(s) de la grille absente(s) du cache : lancer d'abord "
+                        "python -m src.llm --generer --ids-grille")
+    return [par_id[i] for i in ids]
+
+
+def ecrire_grille_evaluation(fiches, chemin=config.FICHIER_GRILLE_EVALUATION, ids=None):
     """Grille d'évaluation à remplir par Saliou ; refuse d'écraser une grille existante.
 
+    Sans `ids`, les fiches sont tirées au hasard (echantillon_evaluation, grille v1) ; avec
+    `ids`, ce sont ces fiches-là, dans cet ordre (grilles des autres versions, C16b).
     Séparateur « ; » et encodage utf-8-sig : Excel en français ouvre alors le fichier en
     colonnes, avec les accents.
     """
     if chemin.exists():
         raise ErreurLLM(f"La grille {chemin.name} existe déjà : elle n'est pas écrasée")
+    choisies = echantillon_evaluation(fiches) if ids is None else fiches_de_la_grille(fiches, ids)
     lignes = []
-    for fiche in echantillon_evaluation(fiches):
+    for fiche in choisies:
         ligne = {colonne: "" for colonne in COLONNES_GRILLE}
         ligne["id_etudiant"] = fiche["id_etudiant"]
         ligne["statut_automatique"] = fiche["statut"]
@@ -1046,7 +1113,7 @@ def commande_tester(modele):
     print(f"Modèle {modele} : {appeler('', MESSAGE_TEST)}")
 
 
-def commande_generer(modele, forcer, revoir, limite=None):
+def commande_generer(modele, forcer, revoir, limite=None, ids_grille=False):
     """Génère les fiches à partir des entrées enregistrées ; cache revérifié d'abord, puis
     écrit après chaque fiche."""
     entrees = lire_json(config.FICHIER_ENTREES_LLM)
@@ -1054,15 +1121,16 @@ def commande_generer(modele, forcer, revoir, limite=None):
     existantes, retrogradees = reverifier_fiches(existantes)
     if retrogradees:
         print(f"{retrogradees} fiche(s) du cache rétrogradée(s) « à revoir » par les contrôles actuels.")
-    non_traitees = nombre_non_traitees(entrees, existantes, modele, forcer, revoir, limite)
+    ids_permis = set(ids_evaluation()) if ids_grille else None
+    non_traitees = nombre_non_traitees(entrees, existantes, modele, forcer, revoir, limite, ids_permis)
     appeler = creer_appel_gemini(lire_cle_api(), modele, schema_fiche())
     fiches = generer_fiches(entrees, appeler, existantes, modele, forcer=forcer, revoir=revoir, limite=limite,
-                            enregistrer=lambda f: ecrire_json(f, config.FICHIER_FICHES_LLM))
+                            ids_permis=ids_permis, enregistrer=lambda f: ecrire_json(f, config.FICHIER_FICHES_LLM))
     ecrire_json(fiches, config.FICHIER_FICHES_LLM)
     validees = sum(f["statut"] == config.STATUT_FICHE_VALIDEE for f in fiches)
     print(f"Prompt {config.VERSION_PROMPT} : {validees} fiches validées, {len(fiches) - validees} à revoir.")
-    if limite is not None:
-        print(f"Limite de {limite} fiche(s) nouvelle(s) : {non_traitees} entrée(s) non traitée(s).")
+    if limite is not None or ids_grille:
+        print(f"{non_traitees} entrée(s) non traitée(s) (limite ou fiches de la grille seulement).")
 
 
 def commande_verifier():
@@ -1078,10 +1146,12 @@ def commande_verifier():
 
 
 def commande_grille():
-    """Écrit la grille d'évaluation à partir du cache des fiches."""
+    """Écrit la grille d'évaluation de la version courante à partir de son cache : tirage au
+    hasard pour la v1, mêmes identifiants que la grille v1 pour les autres versions (C16b)."""
     if not config.FICHIER_FICHES_LLM.exists():
         raise ErreurLLM("Aucune fiche en cache : lancer d'abord python -m src.llm --generer")
-    chemin = ecrire_grille_evaluation(lire_json(config.FICHIER_FICHES_LLM))
+    ids = None if config.VERSION_PROMPT == "v1" else ids_evaluation()
+    chemin = ecrire_grille_evaluation(lire_json(config.FICHIER_FICHES_LLM), config.FICHIER_GRILLE_EVALUATION, ids)
     print(f"Grille écrite : {chemin.relative_to(config.RACINE)}")
 
 
@@ -1097,10 +1167,13 @@ def main():
     parseur.add_argument("--forcer", action="store_true", help="régénérer même les fiches en cache")
     parseur.add_argument("--revoir", action="store_true", help="avec --generer : régénérer les fiches « à revoir »")
     parseur.add_argument("--limite", type=int, help="avec --generer : au plus N fiches nouvelles (essai)")
+    parseur.add_argument("--ids-grille", action="store_true",
+                         help="avec --generer : seulement les fiches de la grille d'évaluation v1")
     parseur.add_argument("--modele", default=config.MODELE_LLM, help="modèle Gemini (--tester, --generer)")
     arguments = parseur.parse_args()
-    if (arguments.forcer or arguments.revoir or arguments.limite is not None) and not arguments.generer:
-        parseur.error("--forcer, --revoir et --limite s'utilisent seulement avec --generer")
+    options_generer = arguments.forcer or arguments.revoir or arguments.limite is not None or arguments.ids_grille
+    if options_generer and not arguments.generer:
+        parseur.error("--forcer, --revoir, --limite et --ids-grille s'utilisent seulement avec --generer")
     if arguments.limite is not None and arguments.limite < 1:
         parseur.error("--limite attend un nombre entier d'au moins 1")
     try:
@@ -1109,7 +1182,8 @@ def main():
         elif arguments.tester:
             commande_tester(arguments.modele)
         elif arguments.generer:
-            commande_generer(arguments.modele, arguments.forcer, arguments.revoir, arguments.limite)
+            commande_generer(arguments.modele, arguments.forcer, arguments.revoir, arguments.limite,
+                             arguments.ids_grille)
         elif arguments.verifier:
             commande_verifier()
         else:
