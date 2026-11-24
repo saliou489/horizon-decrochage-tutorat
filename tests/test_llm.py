@@ -520,6 +520,40 @@ def test_gabarit_v1():
     assert "{actions}" not in instructions and "{entree}" not in message
 
 
+def test_gabarit_v2():
+    instructions, message = llm.lire_gabarit("v2")
+    assert instructions and message
+    entree = entree_conforme()
+    instructions, message = llm.construire_prompt(entree, "v2")
+    for action in config.ACTIONS_FICHE:
+        assert f"- {action}" in instructions
+    assert json.dumps(entree, ensure_ascii=False, indent=2) in message
+    assert "{actions}" not in instructions and "{entree}" not in message
+    for phrase in ["« L'étudiant n'a pas commencé de tutorat. »",
+                   "« L'étudiant suit un tutorat depuis la semaine <semaine_debut>. »",
+                   "« Un tutorat est signalé pour l'étudiant, sans semaine de début connue. »"]:
+        assert phrase in instructions
+
+
+def test_option_limite_garde_le_cache_et_laisse_le_reste_absent():
+    entrees = [{"id_etudiant": i, "entree": entree_conforme()} for i in ["A", "B", "C", "D"]]
+    cache = llm.generer_fiches(entrees[3:], FausseApi([reponse()]), [], "modele-test", attendre=lambda s: None)
+    assert llm.nombre_non_traitees(entrees, cache, "modele-test", limite=1) == 2
+    api = FausseApi([reponse()])
+    fiches = llm.generer_fiches(entrees, api, cache, "modele-test", attendre=lambda s: None, limite=1)
+    assert len(api.messages) == 1  # seule A est demandée
+    assert [f["id_etudiant"] for f in fiches] == ["A", "D"]  # B et C absentes, D gardée
+    assert fiches[1] == cache[0]
+    assert llm.nombre_non_traitees(entrees, cache, "modele-test") == 0
+
+
+def test_option_limite_seulement_avec_generer(monkeypatch):
+    monkeypatch.setattr("sys.argv", ["src.llm", "--verifier", "--limite", "5"])
+    with pytest.raises(SystemExit) as sortie:
+        llm.main()
+    assert sortie.value.code == 2  # erreur du parseur
+
+
 def test_grille_evaluation(tmp_path):
     fiches = [{"id_etudiant": f"HZ{90000 + i}", "statut": config.STATUT_FICHE_VALIDEE, "motifs_rejet": []}
               for i in range(54)]

@@ -757,12 +757,29 @@ def enregistrement_fiche(element, fiche, motifs, nb_essais, texte, modele):
     return resultat
 
 
+def a_generer(existante, element, modele, forcer, revoir):
+    """Vrai si l'entrée doit être envoyée au LLM (pas de fiche réutilisable dans le cache)."""
+    a_revoir = revoir and existante is not None and existante["statut"] == config.STATUT_FICHE_A_REVOIR
+    return forcer or a_revoir or not fiche_reutilisable(existante, element, modele)
+
+
+def nombre_non_traitees(entrees, fiches_existantes, modele, forcer=False, revoir=False, limite=None):
+    """Nombre d'entrées laissées de côté par la limite (aucune sans limite)."""
+    if limite is None:
+        return 0
+    courantes = {fiche["id_etudiant"]: fiche for fiche in (fiches_existantes or [])}
+    demandees = sum(a_generer(courantes.get(e["id_etudiant"]), e, modele, forcer, revoir) for e in entrees)
+    return max(0, demandees - limite)
+
+
 def generer_fiches(entrees, appeler, fiches_existantes, modele, forcer=False, attendre=time.sleep, enregistrer=None,
-                   revoir=False):
+                   revoir=False, limite=None):
     """Génère les fiches manquantes ; réutilise le cache ; enregistre après chaque fiche.
 
     forcer : tout régénérer ; revoir : régénérer aussi les fiches « à revoir » du cache,
-    en gardant les fiches validées.
+    en gardant les fiches validées ; limite : au plus `limite` fiches nouvelles (essai sur
+    quelques fiches) ; au-delà, une entrée n'est plus envoyée : sa fiche du cache est gardée
+    telle quelle si elle existe, sinon elle reste absente (aucune fiche du cache n'est perdue).
 
     Pour chaque entrée : contrôle sans donnée personnelle, prompt, jusqu'à NB_ESSAIS_FICHE
     essais (appel puis verifier_fiche), PAUSE_ENTRE_APPELS_LLM secondes entre deux appels.
@@ -773,12 +790,17 @@ def generer_fiches(entrees, appeler, fiches_existantes, modele, forcer=False, at
     courantes = {fiche["id_etudiant"]: fiche for fiche in (fiches_existantes or [])}
     resultat = []
     premier_appel = True
+    nouvelles = 0
     for element in entrees:
         existante = courantes.get(element["id_etudiant"])
-        a_revoir = revoir and existante is not None and existante["statut"] == config.STATUT_FICHE_A_REVOIR
-        if not forcer and not a_revoir and fiche_reutilisable(existante, element, modele):
+        if not a_generer(existante, element, modele, forcer, revoir):
             resultat.append(existante)
             continue
+        if limite is not None and nouvelles >= limite:
+            if existante is not None:
+                resultat.append(existante)
+            continue
+        nouvelles += 1
         verifier_entree_sans_donnee_personnelle(element["entree"])
         instructions, message = construire_prompt(element["entree"])
         for essai in range(1, config.NB_ESSAIS_FICHE + 1):
@@ -1024,7 +1046,7 @@ def commande_tester(modele):
     print(f"Modèle {modele} : {appeler('', MESSAGE_TEST)}")
 
 
-def commande_generer(modele, forcer, revoir):
+def commande_generer(modele, forcer, revoir, limite=None):
     """Génère les fiches à partir des entrées enregistrées ; cache revérifié d'abord, puis
     écrit après chaque fiche."""
     entrees = lire_json(config.FICHIER_ENTREES_LLM)
@@ -1032,12 +1054,15 @@ def commande_generer(modele, forcer, revoir):
     existantes, retrogradees = reverifier_fiches(existantes)
     if retrogradees:
         print(f"{retrogradees} fiche(s) du cache rétrogradée(s) « à revoir » par les contrôles actuels.")
+    non_traitees = nombre_non_traitees(entrees, existantes, modele, forcer, revoir, limite)
     appeler = creer_appel_gemini(lire_cle_api(), modele, schema_fiche())
-    fiches = generer_fiches(entrees, appeler, existantes, modele, forcer=forcer, revoir=revoir,
+    fiches = generer_fiches(entrees, appeler, existantes, modele, forcer=forcer, revoir=revoir, limite=limite,
                             enregistrer=lambda f: ecrire_json(f, config.FICHIER_FICHES_LLM))
     ecrire_json(fiches, config.FICHIER_FICHES_LLM)
     validees = sum(f["statut"] == config.STATUT_FICHE_VALIDEE for f in fiches)
-    print(f"{validees} fiches validées, {len(fiches) - validees} à revoir.")
+    print(f"Prompt {config.VERSION_PROMPT} : {validees} fiches validées, {len(fiches) - validees} à revoir.")
+    if limite is not None:
+        print(f"Limite de {limite} fiche(s) nouvelle(s) : {non_traitees} entrée(s) non traitée(s).")
 
 
 def commande_verifier():
@@ -1071,17 +1096,20 @@ def main():
     groupe.add_argument("--grille", action="store_true", help="écrire la grille d'évaluation LL-02")
     parseur.add_argument("--forcer", action="store_true", help="régénérer même les fiches en cache")
     parseur.add_argument("--revoir", action="store_true", help="avec --generer : régénérer les fiches « à revoir »")
+    parseur.add_argument("--limite", type=int, help="avec --generer : au plus N fiches nouvelles (essai)")
     parseur.add_argument("--modele", default=config.MODELE_LLM, help="modèle Gemini (--tester, --generer)")
     arguments = parseur.parse_args()
-    if (arguments.forcer or arguments.revoir) and not arguments.generer:
-        parseur.error("--forcer et --revoir s'utilisent seulement avec --generer")
+    if (arguments.forcer or arguments.revoir or arguments.limite is not None) and not arguments.generer:
+        parseur.error("--forcer, --revoir et --limite s'utilisent seulement avec --generer")
+    if arguments.limite is not None and arguments.limite < 1:
+        parseur.error("--limite attend un nombre entier d'au moins 1")
     try:
         if arguments.entrees:
             lancer_entrees()
         elif arguments.tester:
             commande_tester(arguments.modele)
         elif arguments.generer:
-            commande_generer(arguments.modele, arguments.forcer, arguments.revoir)
+            commande_generer(arguments.modele, arguments.forcer, arguments.revoir, arguments.limite)
         elif arguments.verifier:
             commande_verifier()
         else:
