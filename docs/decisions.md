@@ -527,3 +527,14 @@ Gabarit :
   8. **Durée de `run_all.py`** : le repli prévu par D-61 (point 6) est appliqué, car sa condition est remplie : 16 min 41 s au premier lancement après une installation neuve (RV03, 23/11). Les variantes (et le bonus) passent à 100 tirages ; l'analyse principale garde ses 500 tirages, et les estimations ponctuelles ne changent pas.
   9. **Tableau de bord** : une fiche « à revoir » est affichée avec un bandeau « à revoir » et ses motifs, jamais comme une fiche validée (question de RV03, pour DB-01).
 - Statut : validée (Saliou, 23/11, 22 h 57).
+
+## D-68 — Tableau de bord : contenu et sources (DB-01)
+- Date / tâche : 24/11/2026 — DB-01
+- Décision :
+  1. **Données** : cohorte 2025 (cohorte de test) ; semaine L choisie de 1 à 29 (8 par défaut) ; étudiants encore suivis après la semaine L (T > L). Le tableau de bord ne recalcule aucun modèle et n'appelle jamais l'API : il relit les résultats de `run_all.py` et le cache des fiches.
+  2. **Classement** : risque de décrocher d'ici la semaine 30 selon le Cox 2024, 1 − S(30) / S(L), comme les fiches (D-66) ; seuil réglable, 40 % par défaut. Colonne secondaire : risque de décrocher la semaine suivante selon le gradient boosting hebdomadaire (activité jusqu'à la semaine L), présenté comme un signal à court terme (D-66, point 2).
+  3. **Facteurs** : même méthode et mêmes exclusions que les fiches (D-66), recalculés pour la semaine choisie ; genre et région jamais affichés, ni comme facteurs ni dans le profil.
+  4. **Fiche LLM** : affichée pour la semaine 8 seulement (cache), toujours avec l'avertissement fixe ; une fiche « à revoir » porte un bandeau et ses motifs (D-67, point 9).
+  5. **Page « Effet du tutorat »** : estimations de CA-04 et CA-05 (risques, différence, rapport, RMST, HR, E-value, variantes). C'est la seule page qui parle d'« effet », avec les hypothèses rappelées ; partout ailleurs, « associé à ».
+  6. **Outil** : Streamlit 1.67.0 (roues Windows pour Python 3.14 vérifiées avec les versions figées), graphiques matplotlib, aucune autre bibliothèque.
+- Statut : proposée par le pilotage le 24/11, à valider par Saliou.
