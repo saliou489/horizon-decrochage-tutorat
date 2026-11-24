@@ -95,6 +95,14 @@ VALEURS_GRILLE = {
     "stigmatisation": ("oui", "non"),
     "actions_pertinentes": ("1", "2", "3"),
 }
+# Indicateurs de qualité LL-02 (D-69), jamais bloquants : motifs relevés dans les fiches v1.
+MOTIF_DECIMALE_POINT = r"\d\.\d"
+MOTIF_TUTORAT_AUCUN = r"\b(?:est|statut|étant)\s+(?:actuellement\s+)?aucun\b"
+NOM_DE_CHAMP_FICHE = "semaine d'observation"
+COMPARAISON_MULTIPLICATEUR = "étudiant moyen"
+ACTION_ENTRETIEN = "entretien individuel"
+ACTIONS_SUIVIES_INDICATEURS = ["aménager l'emploi du temps", "informer sur les aides", "relancer sur les devoirs",
+                               "suivre l'assiduité"]
 
 
 # ===========================================================================
@@ -866,7 +874,148 @@ def resume_grille(grille):
 
 
 # ===========================================================================
-# 7. Ligne de commande
+# 7. Indicateurs de qualité (LL-02, D-69)
+# ===========================================================================
+# Ces indicateurs servent à évaluer et comparer les versions du prompt : ils ne changent
+# jamais le statut d'une fiche (les contrôles bloquants restent ceux de la section 4).
+
+def facteur_vaut(entree, variable, valeur):
+    """Vrai si l'entrée contient le facteur de `variable` avec cette valeur pour l'étudiant."""
+    libelle = config.LIBELLES_FACTEURS_FICHE[variable]
+    return any(f["facteur"] == libelle and f["valeur_etudiant"] == valeur for f in entree["facteurs"])
+
+
+def compare_activite(entree, champ):
+    """(valeur de l'étudiant, valeur de la promotion) du champ d'activité, ou None si l'une
+    des deux n'est pas renseignée (on ne compare pas une valeur inconnue)."""
+    etudiant = entree["activite"][champ]
+    promotion = entree["activite_promotion"][champ]
+    if etudiant is None or promotion is None:
+        return None
+    return etudiant, promotion
+
+
+def actions_appuyees(entree):
+    """Actions qu'un fait de l'entrée appuie (règles du gabarit v2, D-69).
+
+    « entretien individuel » n'en fait jamais partie : la fiche prépare déjà un entretien.
+    """
+    appuyees = set()
+    if entree["tutorat"]["statut"] == "aucun":
+        appuyees.add("proposer un tutorat")
+    else:
+        appuyees.add("faire le point sur le tutorat en cours")
+    if facteur_vaut(entree, "emploi_parallele", "oui"):
+        appuyees.add("aménager l'emploi du temps")
+    if facteur_vaut(entree, "boursier", "non boursier"):
+        appuyees.add("informer sur les aides")
+    devoirs = compare_activite(entree, "devoirs_rendus")
+    if devoirs is not None and devoirs[0] < devoirs[1]:
+        appuyees.add("relancer sur les devoirs")
+    seances = compare_activite(entree, "seances_manquees")
+    if seances is not None and seances[0] > seances[1]:
+        appuyees.add("suivre l'assiduité")
+    return appuyees
+
+
+def texte_redige(fiche):
+    """Situation et points d'attention d'une fiche, en une liste de textes (vide si absents)."""
+    return [t for cle in ("situation", "points_attention") for t in textes_de(fiche.get(cle))]
+
+
+def nombres_cites(textes_entree, nombres_fiche):
+    """(nombre de textes qui contiennent un nombre, nombre de ceux dont tous les nombres
+    figurent dans la fiche)."""
+    chiffres = [t for t in textes_entree if nombres_de(t)]
+    cites = [t for t in chiffres if nombres_de(t) <= nombres_fiche]
+    return len(chiffres), len(cites)
+
+
+def indicateurs_fiche(fiche):
+    """Indicateurs automatiques d'une fiche, calculés sur sa situation et ses points d'attention.
+
+    Sortie : dictionnaire (motifs de forme, facteurs cités, actions appuyées ou non) ; voir
+    resume_indicateurs pour leur lecture.
+    """
+    textes = texte_redige(fiche)
+    texte = " ".join(textes)
+    nombres_fiche = nombres_de(textes)
+    facteurs = fiche["entree"]["facteurs"]
+    facteurs_chiffres, valeurs_citees = nombres_cites([f["valeur_etudiant"] for f in facteurs], nombres_fiche)
+    _, references_citees = nombres_cites([f["reference_promotion"] for f in facteurs], nombres_fiche)
+    actions = fiche.get("actions") or []
+    appuyees = actions_appuyees(fiche["entree"])
+    # Une place restait si la fiche a moins de 3 actions ou en garde une pour l'entretien.
+    place_restante = len(actions) < 3 or ACTION_ENTRETIEN in actions
+    return {
+        "decimale_avec_point": bool(re.search(MOTIF_DECIMALE_POINT, texte)),
+        "tutorat_est_aucun": bool(re.search(MOTIF_TUTORAT_AUCUN, texte.lower())),
+        "nom_de_champ": NOM_DE_CHAMP_FICHE in texte.lower(),
+        "multiplicateur_compare": COMPARAISON_MULTIPLICATEUR in texte.lower(),
+        "facteurs_chiffres": facteurs_chiffres,
+        "valeurs_citees": valeurs_citees,
+        "facteurs": len(facteurs),
+        "references_citees": references_citees,
+        "actions": list(actions),
+        "appuyees": sorted(appuyees),
+        "action_sans_appui": any(a not in appuyees and a != ACTION_ENTRETIEN for a in actions),
+        "oubli_evitable": bool(appuyees - set(actions)) and place_restante,
+        "entretien_individuel": ACTION_ENTRETIEN in actions,
+        "combinaison": " | ".join(sorted(actions)),
+    }
+
+
+def ligne_indicateur(groupe, indicateur, nombre, sur):
+    """Une ligne du tableau de resume_indicateurs."""
+    return {"groupe": groupe, "indicateur": indicateur, "nombre": int(nombre), "sur": sur}
+
+
+def resume_indicateurs(fiches):
+    """Tableau des indicateurs sur un ensemble de fiches (colonnes groupe, indicateur, nombre, sur).
+
+    Les groupes « forme », « facteurs » et « actions » portent sur les fiches rédigées (avec
+    une situation). Avec 3 actions au plus, une fiche à 4 ou 5 actions appuyées ne peut pas
+    toutes les proposer : les lignes « quand un fait l'appuie » n'ont pas à atteindre 100 %.
+    """
+    redigees = [f for f in fiches if f.get("situation")]
+    indicateurs = [indicateurs_fiche(f) for f in redigees]
+    n = len(redigees)
+
+    def compter(cle):
+        return sum(i[cle] for i in indicateurs)
+
+    validees = [f for f in fiches if f["statut"] == config.STATUT_FICHE_VALIDEE]
+    lignes = [
+        ligne_indicateur("contrôles", "Fiches validées", len(validees), len(fiches)),
+        ligne_indicateur("contrôles", "Validées dès le premier essai", sum(f["nb_essais"] == 1 for f in validees),
+                         len(fiches)),
+        ligne_indicateur("forme", "Nombre décimal écrit avec un point", compter("decimale_avec_point"), n),
+        ligne_indicateur("forme", "Tutorat formulé « est aucun » ou « statut aucun »", compter("tutorat_est_aucun"), n),
+        ligne_indicateur("forme", "Nom de champ « semaine d'observation »", compter("nom_de_champ"), n),
+        ligne_indicateur("facteurs", "Multiplicateur comparé à « un étudiant moyen »", compter("multiplicateur_compare"),
+                         n),
+        ligne_indicateur("facteurs", "Valeur de l'étudiant citée (facteurs chiffrés)", compter("valeurs_citees"),
+                         compter("facteurs_chiffres")),
+        ligne_indicateur("facteurs", "Référence de la promotion citée", compter("references_citees"),
+                         compter("facteurs")),
+        ligne_indicateur("actions", "Au moins une action qu'aucun fait n'appuie", compter("action_sans_appui"), n),
+        ligne_indicateur("actions", "Action appuyée oubliée alors qu'une place restait", compter("oubli_evitable"), n),
+        ligne_indicateur("actions", f"« {ACTION_ENTRETIEN} » proposé", compter("entretien_individuel"), n),
+    ]
+    for action in ACTIONS_SUIVIES_INDICATEURS:
+        appuyee = [i for i in indicateurs if action in i["appuyees"]]
+        choisie = [i for i in appuyee if action in i["actions"]]
+        lignes.append(ligne_indicateur("actions", f"« {action} » quand un fait l'appuie", len(choisie), len(appuyee)))
+    combinaisons = {i["combinaison"] for i in indicateurs}
+    lignes.append(ligne_indicateur("actions", "Combinaisons d'actions différentes", len(combinaisons), None))
+    tableau = pd.DataFrame(lignes, columns=["groupe", "indicateur", "nombre", "sur"])
+    # Entiers, avec une case vide pour la ligne des combinaisons (sans dénominateur).
+    tableau["sur"] = tableau["sur"].astype("Int64")
+    return tableau
+
+
+# ===========================================================================
+# 8. Ligne de commande
 # ===========================================================================
 
 def commande_tester(modele):

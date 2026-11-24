@@ -534,6 +534,98 @@ def test_grille_evaluation(tmp_path):
         llm.ecrire_grille_evaluation(fiches, chemin)
 
 
+# ---------------------------------------------------------------------------
+# Indicateurs de qualité (LL-02, D-69), jamais bloquants
+# ---------------------------------------------------------------------------
+
+def entree_pour_actions(statut="aucun", facteurs=(), devoirs=(1.0, 1.4), seances=(1.0, 2.5)):
+    entree = entree_conforme(statut)
+    entree["facteurs"] = [{"facteur": libelle, "valeur_etudiant": valeur, "reference_promotion": "40 % de la "
+                           "promotion dans ce cas", "multiplicateur": 1.5} for libelle, valeur in facteurs]
+    entree["activite"]["devoirs_rendus"], entree["activite_promotion"]["devoirs_rendus"] = devoirs
+    entree["activite"]["seances_manquees"], entree["activite_promotion"]["seances_manquees"] = seances
+    return entree
+
+
+def test_actions_appuyees_chaque_regle():
+    assert llm.actions_appuyees(entree_pour_actions()) == {"proposer un tutorat", "relancer sur les devoirs"}
+    assert llm.actions_appuyees(entree_pour_actions("en cours", devoirs=(2.0, 1.4))) == {
+        "faire le point sur le tutorat en cours"}
+    assert "faire le point sur le tutorat en cours" in llm.actions_appuyees(
+        entree_pour_actions("signalé, semaine de début inconnue"))
+    facteurs = [("emploi en parallèle des études", "oui"), ("bourse", "non boursier")]
+    appuyees = llm.actions_appuyees(entree_pour_actions(facteurs=facteurs, seances=(3.0, 2.5)))
+    assert {"aménager l'emploi du temps", "informer sur les aides", "suivre l'assiduité"} <= appuyees
+    autres = [("emploi en parallèle des études", "non"), ("bourse", "boursier")]
+    assert not {"aménager l'emploi du temps", "informer sur les aides"} & llm.actions_appuyees(
+        entree_pour_actions(facteurs=autres))
+    # Valeur non renseignée : pas de comparaison, donc pas d'appui.
+    inconnues = llm.actions_appuyees(entree_pour_actions(devoirs=(None, 1.4), seances=(3.0, None)))
+    assert inconnues == {"proposer un tutorat"}
+    assert "entretien individuel" not in llm.actions_appuyees(entree_pour_actions())
+
+
+def fiche_pour_indicateurs(situation="Le risque est de 71 %.", points=("Âge : 28 ans.", "Rien."), actions=(),
+                           entree=None, statut=config.STATUT_FICHE_VALIDEE, nb_essais=1):
+    return {"situation": situation, "points_attention": list(points), "actions": list(actions), "statut": statut,
+            "nb_essais": nb_essais, "entree": entree or entree_pour_actions()}
+
+
+def test_oubli_evitable():
+    # Appuyées : proposer un tutorat, relancer sur les devoirs.
+    avec_entretien = fiche_pour_indicateurs(actions=("entretien individuel", "proposer un tutorat"))
+    assert llm.indicateurs_fiche(avec_entretien)["oubli_evitable"]
+    facteurs = [("emploi en parallèle des études", "oui")]
+    trois = fiche_pour_indicateurs(entree=entree_pour_actions(facteurs=facteurs, seances=(3.0, 2.5)),
+                                   actions=("proposer un tutorat", "relancer sur les devoirs",
+                                            "aménager l'emploi du temps"))
+    indicateurs = llm.indicateurs_fiche(trois)
+    assert not indicateurs["oubli_evitable"] and not indicateurs["action_sans_appui"]
+    sans_appui = fiche_pour_indicateurs(actions=("proposer un tutorat", "suivre l'assiduité"))
+    assert llm.indicateurs_fiche(sans_appui)["action_sans_appui"]
+
+
+@pytest.mark.parametrize("texte, cle, attendu", [
+    ("Un multiplicateur de 1.7.", "decimale_avec_point", True),
+    ("Un multiplicateur de 1,7.", "decimale_avec_point", False),
+    ("Le statut du tutorat est aucun.", "tutorat_est_aucun", True),
+    ("Le statut est aucun.", "tutorat_est_aucun", True),
+    ("L'étudiant n'a pas commencé de tutorat.", "tutorat_est_aucun", False),
+    ("À la semaine d'observation 8.", "nom_de_champ", True),
+    ("Par rapport à un étudiant moyen.", "multiplicateur_compare", True),
+])
+def test_motifs_des_indicateurs(texte, cle, attendu):
+    assert llm.indicateurs_fiche(fiche_pour_indicateurs(situation=texte))[cle] is attendu
+
+
+def test_facteurs_cites():
+    entree = entree_conforme()  # un facteur : âge 28 ans, référence 20,1 ans
+    fiche = fiche_pour_indicateurs(entree=entree, points=("Âge : 28 ans.", "Rien."))
+    indicateurs = llm.indicateurs_fiche(fiche)
+    assert (indicateurs["facteurs_chiffres"], indicateurs["valeurs_citees"]) == (1, 1)
+    assert (indicateurs["facteurs"], indicateurs["references_citees"]) == (1, 0)
+    fiche = fiche_pour_indicateurs(entree=entree, points=("Âge : 28 ans (20,1 ans en moyenne).", "Rien."))
+    assert llm.indicateurs_fiche(fiche)["references_citees"] == 1
+
+
+def test_resume_indicateurs_deux_fiches():
+    premiere = fiche_pour_indicateurs(situation="Risque de 1.5 ; le statut est aucun.",
+                                      actions=("entretien individuel", "proposer un tutorat"), nb_essais=2)
+    seconde = fiche_pour_indicateurs(actions=("proposer un tutorat", "relancer sur les devoirs"))
+    tableau = llm.resume_indicateurs([premiere, seconde]).set_index("indicateur")
+    assert list(tableau.columns) == ["groupe", "nombre", "sur"]
+    assert tableau.loc["Fiches validées", ["nombre", "sur"]].tolist() == [2, 2]
+    assert tableau.loc["Validées dès le premier essai", "nombre"] == 1
+    assert tableau.loc["Nombre décimal écrit avec un point", "nombre"] == 1
+    assert tableau.loc["Tutorat formulé « est aucun » ou « statut aucun »", "nombre"] == 1
+    assert tableau.loc["Action appuyée oubliée alors qu'une place restait", "nombre"] == 1
+    assert tableau.loc["« entretien individuel » proposé", "nombre"] == 1
+    assert tableau.loc["« relancer sur les devoirs » quand un fait l'appuie", ["nombre", "sur"]].tolist() == [1, 2]
+    assert tableau.loc["Combinaisons d'actions différentes", "nombre"] == 2
+    assert pd.isna(tableau.loc["Combinaisons d'actions différentes", "sur"])
+    assert tableau["groupe"].unique().tolist() == ["contrôles", "forme", "facteurs", "actions"]
+
+
 def ecrire_texte_grille(chemin, lignes):
     """Grille écrite comme Excel la rendrait : BOM utf-8, séparateur « ; », une ligne par texte."""
     chemin.write_bytes(b"\xef\xbb\xbf" + ("\n".join(lignes) + "\n").encode("utf-8"))
