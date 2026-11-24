@@ -585,6 +585,33 @@ def test_resume_grille_ignore_les_fiches_non_notees(tmp_path):
 # Invariants sur les entrées produites par run_all.py
 # ---------------------------------------------------------------------------
 
+def test_invariant_grilles_par_version():
+    presentes = {v: chemin for v, chemin in config.FICHIERS_GRILLE_EVALUATION.items() if chemin.exists()}
+    if not presentes:
+        pytest.skip("aucune grille d'évaluation : lancer python -m src.llm --grille")
+    for version, chemin in presentes.items():
+        grille = llm.lire_grille_evaluation(chemin)
+        fiches = config.FICHIERS_FICHES_LLM[version]
+        assert fiches.exists(), version
+        attendus = [f["id_etudiant"] for f in llm.echantillon_evaluation(llm.lire_json(fiches))]
+        assert sorted(grille["id_etudiant"]) == sorted(attendus), version
+
+
+def test_verifier_chaque_version_presente(tmp_path, monkeypatch, capsys):
+    fiches = llm.generer_fiches(entrees_inventees(), FausseApi([reponse()]), [], "modele-test",
+                                attendre=lambda s: None)
+    chemins = {v: tmp_path / f"fiches_{v}.json" for v in config.VERSIONS_PROMPT}
+    for chemin in chemins.values():
+        llm.ecrire_json(fiches, chemin)
+    monkeypatch.setattr(config, "FICHIERS_FICHES_LLM", chemins)
+    llm.commande_verifier()
+    sortie = capsys.readouterr().out
+    assert all(f"Prompt {v} : 0 fiche(s)" in sortie for v in config.VERSIONS_PROMPT)
+    monkeypatch.setattr(config, "FICHIERS_FICHES_LLM", {v: tmp_path / f"absent_{v}.json" for v in chemins})
+    with pytest.raises(llm.ErreurLLM):
+        llm.commande_verifier()
+
+
 def test_invariants_entrees_produites():
     if not config.FICHIER_ENTREES_LLM.exists():
         pytest.skip("entrées absentes : lancer python run_all.py")

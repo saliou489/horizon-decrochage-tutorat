@@ -50,11 +50,11 @@ Les fichiers de `data/raw/` sont un jeu **synthétique** fourni par l'enseignant
 - `python -m src.llm --tester` : un seul appel neutre, sans aucune donnée d'étudiant, pour vérifier la clé et le modèle ;
 - `python -m src.llm --generer` : génère les fiches manquantes (cache réutilisé et revérifié ; `--revoir` pour régénérer seulement les fiches « à revoir » ; `--forcer` pour tout régénérer ; `--modele` pour changer de modèle) ;
 - `python -m src.llm --verifier` : repasse les contrôles actuels sur les fiches du cache, sans appel ; une fiche qui ne les passe plus devient « à revoir » ;
-- `python -m src.llm --grille` : écrit la grille d'évaluation de 20 fiches tirées au hasard (`docs/evaluation_fiches_llm.csv`).
+- `python -m src.llm --grille` : écrit la grille d'évaluation de 20 fiches tirées au hasard (`docs/evaluation_fiches_llm_<version>.csv`, une grille par version du prompt).
 
 **Quotas** : le niveau gratuit limite le nombre de requêtes par minute et par jour (page « Rate limit » d'AI Studio) ; le code attend 7 s entre deux appels et, si le quota est atteint, s'arrête avec un simple message (sans trace Python, code de sortie 1), sans perdre les fiches déjà faites : le cache est écrit après chaque fiche, de façon atomique.
 
-**Reproductibilité** : les fiches générées sont enregistrées dans le dépôt (`data/processed/resultats/llm_fiches_semaine8.json`, avec le modèle, la version du prompt et la date). Ni l'enseignant ni `run_all.py` n'ont donc besoin d'une clé : `run_all.py` reconstruit seulement les entrées, sans appeler l'API.
+**Reproductibilité** : les fiches générées sont enregistrées dans le dépôt (`data/processed/resultats/llm_fiches_semaine8_<version>.json`, un fichier par version du prompt, avec le modèle, la version du prompt et la date). Ni l'enseignant ni `run_all.py` n'ont donc besoin d'une clé : `run_all.py` reconstruit seulement les entrées, sans appeler l'API.
 
 **Cadre** : loi sénégalaise n° 2008-12 du 25 janvier 2008 sur la protection des données à caractère personnel ; RGPD pour comparaison (finalité, minimisation, sécurité). Au niveau gratuit, Google peut utiliser les requêtes pour améliorer ses produits : c'est acceptable ici seulement parce que le jeu est synthétique.
 

@@ -639,8 +639,10 @@ QUANTILES_IC = (2.5, 97.5)
 # de requêtes par jour pour les fiches (jusqu'à 3 essais par fiche) ; secours si indisponible.
 MODELE_LLM = "gemini-3.5-flash-lite"
 MODELE_LLM_SECOURS = "gemini-3.1-flash-lite"
-# Version du gabarit de prompt (src/prompts/fiche_<version>.md) : une fiche n'est réutilisée
-# que si elle a été produite avec la même version (D-65, point 5).
+# Versions du gabarit de prompt (src/prompts/fiche_<version>.md) : une fiche n'est réutilisée
+# que si elle a été produite avec la même version (D-65, point 5). La v1 est gardée à côté de la
+# v2 pour la comparaison de LL-02 (D-69, point 3) : un fichier de fiches et une grille par version.
+VERSIONS_PROMPT = ("v1", "v2")
 VERSION_PROMPT = "v1"
 DOSSIER_PROMPTS = RACINE / "src" / "prompts"
 # La clé est lue dans .env (ignoré par git), jamais dans le code ni dans les variables
@@ -737,10 +739,14 @@ AVERTISSEMENT_FICHE = ("Fiche générée automatiquement à partir d'un modèle 
 
 # Fichiers : entrées (produites par run_all.py, sans API) et fiches (cache de la génération).
 FICHIER_ENTREES_LLM = DOSSIER_RESULTATS / f"llm_entrees_semaine{SEMAINE_FICHES}.json"
-FICHIER_FICHES_LLM = DOSSIER_RESULTATS / f"llm_fiches_semaine{SEMAINE_FICHES}.json"
-# Évaluation LL-02 : 20 fiches tirées au hasard, notées par Saliou dans une grille.
+# Un fichier de fiches par version du prompt : générer la v2 n'efface pas la v1 (D-69, point 3).
+FICHIERS_FICHES_LLM = {v: DOSSIER_RESULTATS / f"llm_fiches_semaine{SEMAINE_FICHES}_{v}.json" for v in VERSIONS_PROMPT}
+FICHIER_FICHES_LLM = FICHIERS_FICHES_LLM[VERSION_PROMPT]
+# Évaluation LL-02 : 20 fiches tirées au hasard, notées par Saliou dans une grille ; une grille
+# par version, pour noter les mêmes 20 fiches dans chaque version (D-69, point 3).
 NB_FICHES_EVALUATION = 20
-FICHIER_GRILLE_EVALUATION = RACINE / "docs" / "evaluation_fiches_llm.csv"
+FICHIERS_GRILLE_EVALUATION = {v: RACINE / "docs" / f"evaluation_fiches_llm_{v}.csv" for v in VERSIONS_PROMPT}
+FICHIER_GRILLE_EVALUATION = FICHIERS_GRILLE_EVALUATION[VERSION_PROMPT]
 
 # ---------------------------------------------------------------------------
 # Tableau de bord (DB-01, D-68)

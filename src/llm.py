@@ -13,7 +13,7 @@ vérifier par le conseiller.
 
 Tâches couvertes : LL-01, LL-02.
 
-Commandes : python -m src.llm --entrees | --tester | --generer [--forcer | --revoir] | --verifier | --grille
+Commandes : python -m src.llm --entrees | --tester | --generer [--forcer | --revoir] [--limite N] | --verifier | --grille
 """
 
 import argparse
@@ -892,13 +892,15 @@ def commande_generer(modele, forcer, revoir):
 
 
 def commande_verifier():
-    """Repasse les contrôles actuels sur les fiches validées du cache (aucun appel), puis
-    réécrit le cache."""
-    if not config.FICHIER_FICHES_LLM.exists():
+    """Repasse les contrôles actuels sur les fiches validées de chaque cache présent (une
+    version du prompt par fichier, aucun appel), puis réécrit chaque cache."""
+    presents = {version: chemin for version, chemin in config.FICHIERS_FICHES_LLM.items() if chemin.exists()}
+    if not presents:
         raise ErreurLLM("Aucune fiche en cache : lancer d'abord python -m src.llm --generer")
-    fiches, retrogradees = reverifier_fiches(lire_json(config.FICHIER_FICHES_LLM))
-    ecrire_json(fiches, config.FICHIER_FICHES_LLM)
-    print(f"{retrogradees} fiche(s) rétrogradée(s) « à revoir » sur {len(fiches)}.")
+    for version, chemin in presents.items():
+        fiches, retrogradees = reverifier_fiches(lire_json(chemin))
+        ecrire_json(fiches, chemin)
+        print(f"Prompt {version} : {retrogradees} fiche(s) rétrogradée(s) « à revoir » sur {len(fiches)}.")
 
 
 def commande_grille():
