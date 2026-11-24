@@ -58,6 +58,18 @@ Les fichiers de `data/raw/` sont un jeu **synthétique** fourni par l'enseignant
 
 **Cadre** : loi sénégalaise n° 2008-12 du 25 janvier 2008 sur la protection des données à caractère personnel ; RGPD pour comparaison (finalité, minimisation, sécurité). Au niveau gratuit, Google peut utiliser les requêtes pour améliorer ses produits : c'est acceptable ici seulement parce que le jeu est synthétique.
 
+## Tableau de bord
+
+Commande (depuis la racine du dépôt, après `python run_all.py`) : `streamlit run app/app.py`, puis ouvrir l'adresse affichée (par défaut http://localhost:8501). Aucune clé d'API n'est nécessaire : le tableau de bord relit les fichiers de `data/processed/` et le cache des fiches, sans recalculer de modèle ni appeler le LLM (décision D-68). Données synthétiques ; identifiants pseudonymisés.
+
+Dans la barre latérale : la semaine L (1 à 29, 8 par défaut) et le seuil de risque (5 à 80 %, 40 % par défaut), communs aux 4 pages :
+1. **Étudiants à risque** : étudiants de la cohorte 2025 encore suivis après la semaine L, classés par risque de décrocher d'ici la semaine 30 (Cox), avec le risque de la semaine suivante (gradient boosting), les facteurs associés, le tutorat et le statut de la fiche LLM ;
+2. **Fiche étudiant** : risques, profil de rentrée (ni genre ni région), facteurs, activité des deux dernières semaines, courbe de survie individuelle et fiche LLM (semaine 8), avec son avertissement ;
+3. **Effet du tutorat** : estimation de CA-04 (risques, différence, rapport, RMST, HR, E-value), courbes pondérées, variantes de CA-05 et hypothèses ;
+4. **À propos** : données, validation des modèles 2024 → 2025, fiches LLM, limites.
+
+Captures : `docs/figures/db_page1_risque.png` à `db_page4_apropos.png`.
+
 ## Limites connues
 
 - Seules les dépendances directes sont figées dans `requirements.txt` ; leurs dépendances indirectes ne le sont pas (décision D-44 : un verrouillage complet fait sous Windows ne s'installerait pas sous Linux).

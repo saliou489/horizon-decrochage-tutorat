@@ -1,7 +1,8 @@
 """Tests du tableau de bord (DB-01), sans réseau ni clé d'API.
 
-Rôle du module : tester src/tableau_de_bord.py sur de petites tables inventées et vérifier
-des invariants sur les fichiers produits par run_all.py.
+Rôle du module : tester src/tableau_de_bord.py sur de petites tables inventées, vérifier
+des invariants sur les fichiers produits par run_all.py, et démarrer app/app.py avec
+l'outil de test de Streamlit (chaque page, semaines 8 et 4).
 
 Tâches couvertes : DB-01.
 """
@@ -165,3 +166,22 @@ def test_tables_de_chaque_semaine(donnees_reelles):
         assert "genre" not in textes and "région" not in textes, semaine
 
 
+# ---------------------------------------------------------------------------
+# Démarrage de l'application (outil de test de Streamlit, sans navigateur)
+# ---------------------------------------------------------------------------
+
+PAGES = ["Étudiants à risque", "Fiche étudiant", "Effet du tutorat", "À propos"]
+
+
+@pytest.mark.parametrize("semaine", [config.SEMAINE_FICHES, 4])
+def test_application_chaque_page(donnees_reelles, semaine):
+    from streamlit.testing.v1 import AppTest
+
+    application = AppTest.from_file(str(config.RACINE / "app" / "app.py"), default_timeout=120)
+    application.run()
+    assert not application.exception
+    application.sidebar.slider(key="semaine").set_value(semaine).run()
+    for page in PAGES:
+        application.sidebar.radio(key="page").set_value(page).run()
+        assert not application.exception, (page, semaine, application.exception)
+        assert application.title[0].value == page
