@@ -48,11 +48,13 @@ Les fichiers de `data/raw/` sont un jeu **synthétique** fourni par l'enseignant
 
 **Commandes** (depuis la racine du dépôt) :
 - `python -m src.llm --tester` : un seul appel neutre, sans aucune donnée d'étudiant, pour vérifier la clé et le modèle ;
-- `python -m src.llm --generer` : génère les fiches manquantes (cache réutilisé et revérifié ; `--revoir` pour régénérer seulement les fiches « à revoir » ; `--forcer` pour tout régénérer ; `--modele` pour changer de modèle) ;
-- `python -m src.llm --verifier` : repasse les contrôles actuels sur les fiches du cache, sans appel ; une fiche qui ne les passe plus devient « à revoir » ;
+- `python -m src.llm --generer` : génère les fiches manquantes de la version courante du prompt (`VERSION_PROMPT` de `src/config.py` ; cache réutilisé et revérifié ; `--revoir` pour régénérer seulement les fiches « à revoir » ; `--forcer` pour tout régénérer ; `--limite N` pour au plus N fiches nouvelles, par exemple un essai sur 5 fiches ; `--ids-grille` pour seulement les 20 fiches de la grille d'évaluation ; `--modele` pour changer de modèle ; un refus de l'API est affiché avec son code et sa cause, et l'appel est réessayé après 30 s, 60 s, 120 s, 300 s puis 600 s) ;
+- `python -m src.llm --verifier` : repasse les contrôles actuels sur les fiches de chaque version présente du prompt, sans appel ; une fiche qui ne les passe plus devient « à revoir » ;
 - `python -m src.llm --grille` : écrit la grille d'évaluation de 20 fiches tirées au hasard (`docs/evaluation_fiches_llm_<version>.csv`, une grille par version du prompt).
 
-**Quotas** : le niveau gratuit limite le nombre de requêtes par minute et par jour (page « Rate limit » d'AI Studio) ; le code attend 7 s entre deux appels et, si le quota est atteint, s'arrête avec un simple message (sans trace Python, code de sortie 1), sans perdre les fiches déjà faites : le cache est écrit après chaque fiche, de façon atomique.
+**Évaluation (LL-02, D-69)** : les fiches de la version 1 du prompt (`src/prompts/fiche_v1.md`) sont gardées ; celles de la version 2 (`fiche_v2.md`), écrites à partir des mêmes entrées avec les mêmes contrôles, sont celles qu'affiche le tableau de bord. Les mêmes 20 fiches sont notées par Saliou dans une grille par version, et le notebook 06 compare les deux versions (indicateurs automatiques et notes humaines).
+
+**Quotas** : le niveau gratuit limite le nombre de requêtes par minute et par jour (page « Rate limit » d'AI Studio) ; le code attend 20 s entre deux appels et, si le quota est atteint, s'arrête avec un simple message (sans trace Python, code de sortie 1), sans perdre les fiches déjà faites : le cache est écrit après chaque fiche, de façon atomique.
 
 **Reproductibilité** : les fiches générées sont enregistrées dans le dépôt (`data/processed/resultats/llm_fiches_semaine8_<version>.json`, un fichier par version du prompt, avec le modèle, la version du prompt et la date). Ni l'enseignant ni `run_all.py` n'ont donc besoin d'une clé : `run_all.py` reconstruit seulement les entrées, sans appeler l'API.
 

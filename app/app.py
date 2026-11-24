@@ -447,9 +447,10 @@ def page_a_propos():
         f"À la semaine {config.SEMAINE_FICHES}, pour chaque étudiant dont le risque atteint "
         f"{config.SEUIL_DEFAUT_TABLEAU_PCT} %, un LLM (Gemini) a rédigé une fiche courte, enregistrée dans le "
         "dépôt : le tableau de bord ne l'appelle jamais. Le LLM reçoit une liste fermée de champs, sans identifiant "
-        "ni texte libre ; ces entrées restent des données **pseudonymisées** (D-65 à D-67). Chaque fiche est "
-        "contrôlée automatiquement (nombres présents dans l'entrée, mots interdits, actions d'une liste fermée) et "
-        "porte un avertissement fixe :")
+        "ni texte libre ; ces entrées restent des données **pseudonymisées** (D-65 à D-67). Les fiches affichées "
+        f"sont celles du prompt {config.VERSION_PROMPT} (LL-02, D-69) ; celles de la version 1 sont gardées dans le "
+        "dépôt pour la comparaison. Chaque fiche est contrôlée automatiquement (nombres présents dans l'entrée, mots "
+        "interdits, actions d'une liste fermée) et porte un avertissement fixe :")
     st.caption(config.AVERTISSEMENT_FICHE)
     st.subheader("Limites principales")
     st.markdown(
