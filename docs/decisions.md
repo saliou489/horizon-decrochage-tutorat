@@ -537,4 +537,13 @@ Gabarit :
   4. **Fiche LLM** : affichée pour la semaine 8 seulement (cache), toujours avec l'avertissement fixe ; une fiche « à revoir » porte un bandeau et ses motifs (D-67, point 9).
   5. **Page « Effet du tutorat »** : estimations de CA-04 et CA-05 (risques, différence, rapport, RMST, HR, E-value, variantes). C'est la seule page qui parle d'« effet », avec les hypothèses rappelées ; partout ailleurs, « associé à ».
   6. **Outil** : Streamlit 1.67.0 (roues Windows pour Python 3.14 vérifiées avec les versions figées), graphiques matplotlib, aucune autre bibliothèque.
-- Statut : proposée par le pilotage le 24/11, à valider par Saliou.
+- Statut : validée (Saliou, 24/11).
+
+## D-69 — Fiches d'alerte : version 2 du prompt (LL-02)
+- Date / tâche : 24/11/2026 — LL-02
+- Contexte : les 54 fiches de la version 1 passent tous les contrôles (C14), mais la lecture de l'exécuteur et du pilotage relève des défauts de forme et de pertinence : décimales avec un point dans 48 fiches ; multiplicateur cité sans dire à quoi il compare ; « le statut du tutorat est aucun » (19 fiches) ; actions peu variées (4 combinaisons, « aménager l'emploi du temps » jamais proposé alors que l'emploi est un facteur dans 52 fiches, « informer sur les aides » jamais proposé).
+- Décision :
+  1. Le mot « cent » reste interdit ; le prompt demandera le symbole « % ».
+  2. Une version 2 du prompt est faite **après** la notation par Saliou des 20 fiches de la version 1 (mesure « avant ») : virgule décimale, multiplicateur expliqué par rapport à un étudiant moyen de la promotion, formulation du tutorat, actions reliées aux faits de l'entrée, symbole « % ». Le texte exact sera soumis à Saliou dans la consigne.
+  3. Les fiches de la version 1 sont conservées pour la comparaison ; les mêmes 20 fiches (même tirage, `SEED`) sont notées en version 2 avec la même grille.
+- Statut : validée (Saliou, 24/11).
