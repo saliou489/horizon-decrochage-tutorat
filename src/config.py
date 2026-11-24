@@ -643,7 +643,7 @@ MODELE_LLM_SECOURS = "gemini-3.1-flash-lite"
 # que si elle a été produite avec la même version (D-65, point 5). La v1 est gardée à côté de la
 # v2 pour la comparaison de LL-02 (D-69, point 3) : un fichier de fiches et une grille par version.
 VERSIONS_PROMPT = ("v1", "v2")
-VERSION_PROMPT = "v1"
+VERSION_PROMPT = "v2"  # D-69 : fiches de LL-02 ; la v1 reste dans son propre fichier
 DOSSIER_PROMPTS = RACINE / "src" / "prompts"
 # La clé est lue dans .env (ignoré par git), jamais dans le code ni dans les variables
 # d'environnement de la machine (D-65, point 1).
