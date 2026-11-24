@@ -8,3 +8,7 @@ data/raw/** -text
 data/processed/** text eol=lf
 docs/*.md text eol=lf
 notebooks/*.ipynb text eol=lf
+
+# Grilles d'évaluation LL-02 (docs/*.csv) : écrites en LF par le code ; sans cette règle, un
+# fichier enregistré sous Windows (Excel) pourrait revenir en CRLF et changer toutes les lignes.
+docs/*.csv text eol=lf

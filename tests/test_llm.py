@@ -534,6 +534,53 @@ def test_grille_evaluation(tmp_path):
         llm.ecrire_grille_evaluation(fiches, chemin)
 
 
+def ecrire_texte_grille(chemin, lignes):
+    """Grille écrite comme Excel la rendrait : BOM utf-8, séparateur « ; », une ligne par texte."""
+    chemin.write_bytes(b"\xef\xbb\xbf" + ("\n".join(lignes) + "\n").encode("utf-8"))
+    return chemin
+
+
+ENTETE_GRILLE = ";".join(llm.COLONNES_GRILLE)
+
+
+def test_lire_grille_conforme_avec_cases_vides(tmp_path):
+    chemin = ecrire_texte_grille(tmp_path / "grille.csv", [ENTETE_GRILLE, "HZ90001;validée;;oui;3;non;2;bien",
+                                                           "HZ90002;validée;;;;;;"])
+    grille = llm.lire_grille_evaluation(chemin)
+    assert list(grille.columns) == llm.COLONNES_GRILLE
+    assert grille["ton"].tolist() == ["3", ""] and grille["commentaire"].tolist() == ["bien", ""]
+
+
+@pytest.mark.parametrize("lignes", [
+    ['"' + ENTETE_GRILLE + '"', '"HZ90001;validée;;oui;3;non;2;"'],  # cas réel : lignes entre guillemets
+    [ENTETE_GRILLE.rsplit(";", 1)[0], "HZ90001;validée;;oui;3;non;2"],  # colonne en moins
+    [ENTETE_GRILLE, "HZ90001;validée;;oui;4;non;2;"],  # ton hors liste
+    [ENTETE_GRILLE, "HZ90001;validée;;oui;3;non;2;", "HZ90001;validée;;non;1;non;1;"],  # doublon
+])
+def test_lire_grille_non_conforme_refusee(tmp_path, lignes):
+    with pytest.raises(llm.ErreurLLM):
+        llm.lire_grille_evaluation(ecrire_texte_grille(tmp_path / "grille.csv", lignes))
+
+
+def test_message_valeur_hors_liste_cite_colonne_et_valeur(tmp_path):
+    chemin = ecrire_texte_grille(tmp_path / "grille.csv", [ENTETE_GRILLE, "HZ90001;validée;;oui;4;non;2;"])
+    with pytest.raises(llm.ErreurLLM, match=r"ton.*'4'"):
+        llm.lire_grille_evaluation(chemin)
+
+
+def test_resume_grille_ignore_les_fiches_non_notees(tmp_path):
+    chemin = ecrire_texte_grille(tmp_path / "grille.csv", [
+        ENTETE_GRILLE, "HZ90001;validée;;oui;3;non;3;", "HZ90002;validée;;non;2;oui;1;trop long",
+        "HZ90003;validée;;oui;;non;2;"])  # ton vide : fiche pas entièrement notée
+    resume = llm.resume_grille(llm.lire_grille_evaluation(chemin))
+    assert resume == {"fiches_notees": 2, "exactitude_oui": 1, "ton_moyen": 2.5, "stigmatisation_oui": 1,
+                      "actions_pertinentes_moyennes": 2.0, "commentaires": 1}
+    vide = ecrire_texte_grille(tmp_path / "vide.csv", [ENTETE_GRILLE, "HZ90001;validée;;;;;;"])
+    resume = llm.resume_grille(llm.lire_grille_evaluation(vide))
+    assert resume["fiches_notees"] == 0 and resume["ton_moyen"] is None
+    assert resume["actions_pertinentes_moyennes"] is None
+
+
 # ---------------------------------------------------------------------------
 # Invariants sur les entrées produites par run_all.py
 # ---------------------------------------------------------------------------

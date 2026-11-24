@@ -85,6 +85,16 @@ TABLE_ACTIVITE = "activite_hebdo"
 MULTIPLICATEUR_MAX = 100
 MOTIF_NOMBRE = r"\d+(?:[.,]\d+)?"
 DECIMALES_COMPARAISON = 6
+# Grille d'évaluation LL-02 (D-66, point 5) : colonnes dans l'ordre, et valeurs permises de
+# chaque critère noté par Saliou (une case vide veut dire « pas encore notée »).
+COLONNES_GRILLE = ["id_etudiant", "statut_automatique", "motifs_rejet", "exactitude_humaine", "ton",
+                   "stigmatisation", "actions_pertinentes", "commentaire"]
+VALEURS_GRILLE = {
+    "exactitude_humaine": ("oui", "non"),
+    "ton": ("1", "2", "3"),
+    "stigmatisation": ("oui", "non"),
+    "actions_pertinentes": ("1", "2", "3"),
+}
 
 
 # ===========================================================================
@@ -799,13 +809,60 @@ def ecrire_grille_evaluation(fiches, chemin=config.FICHIER_GRILLE_EVALUATION):
     """
     if chemin.exists():
         raise ErreurLLM(f"La grille {chemin.name} existe déjà : elle n'est pas écrasée")
-    lignes = [{"id_etudiant": f["id_etudiant"], "statut_automatique": f["statut"],
-               "motifs_rejet": " ; ".join(f["motifs_rejet"]), "exactitude_humaine": "", "ton": "",
-               "stigmatisation": "", "actions_pertinentes": "", "commentaire": ""}
-              for f in echantillon_evaluation(fiches)]
+    lignes = []
+    for fiche in echantillon_evaluation(fiches):
+        ligne = {colonne: "" for colonne in COLONNES_GRILLE}
+        ligne["id_etudiant"] = fiche["id_etudiant"]
+        ligne["statut_automatique"] = fiche["statut"]
+        ligne["motifs_rejet"] = " ; ".join(fiche["motifs_rejet"])
+        lignes.append(ligne)
     chemin.parent.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame(lignes).to_csv(chemin, sep=";", index=False, encoding="utf-8-sig", lineterminator="\n")
+    pd.DataFrame(lignes, columns=COLONNES_GRILLE).to_csv(chemin, sep=";", index=False, encoding="utf-8-sig",
+                                                         lineterminator="\n")
     return chemin
+
+
+def lire_grille_evaluation(chemin):
+    """Grille remplie par Saliou, lue en texte et contrôlée.
+
+    Tout est lu comme du texte (une case vide reste "") : on contrôle ce que Saliou a écrit,
+    sans conversion. ErreurLLM si les colonnes ne sont pas exactement COLONNES_GRILLE (par
+    exemple une ligne entière entre guillemets, lue comme une seule colonne), si un
+    identifiant est en double, ou si une valeur sort de VALEURS_GRILLE.
+    Sortie : DataFrame de texte, colonnes COLONNES_GRILLE.
+    """
+    grille = pd.read_csv(chemin, sep=";", encoding="utf-8-sig", dtype=str, keep_default_na=False)
+    if list(grille.columns) != COLONNES_GRILLE:
+        raise ErreurLLM(f"Grille {chemin.name} : colonnes attendues {COLONNES_GRILLE}, lues {list(grille.columns)}")
+    doublons = grille.loc[grille["id_etudiant"].duplicated(), "id_etudiant"].tolist()
+    if doublons:
+        raise ErreurLLM(f"Grille {chemin.name} : identifiant(s) en double {doublons}")
+    for colonne, valeurs in VALEURS_GRILLE.items():
+        # Une case vide veut dire « pas encore notée » : elle est permise.
+        hors_liste = sorted(set(grille[colonne]) - set(valeurs) - {""})
+        if hors_liste:
+            raise ErreurLLM(f"Grille {chemin.name} : colonne {colonne}, valeur(s) hors liste {hors_liste} "
+                            f"(attendu : {', '.join(valeurs)} ou vide)")
+    return grille
+
+
+def resume_grille(grille):
+    """Résumé des notes humaines, sur les fiches entièrement notées (les 4 critères remplis).
+
+    Sortie : dictionnaire (fiches_notees, exactitude_oui, ton_moyen, stigmatisation_oui,
+    actions_pertinentes_moyennes, commentaires) ; les moyennes valent None si aucune fiche
+    n'est notée.
+    """
+    notees = grille[(grille[list(VALEURS_GRILLE)] != "").all(axis=1)]
+    aucune = len(notees) == 0
+    return {
+        "fiches_notees": len(notees),
+        "exactitude_oui": int((notees["exactitude_humaine"] == "oui").sum()),
+        "ton_moyen": None if aucune else float(notees["ton"].astype(int).mean()),
+        "stigmatisation_oui": int((notees["stigmatisation"] == "oui").sum()),
+        "actions_pertinentes_moyennes": None if aucune else float(notees["actions_pertinentes"].astype(int).mean()),
+        "commentaires": int((notees["commentaire"].str.strip() != "").sum()),
+    }
 
 
 # ===========================================================================
