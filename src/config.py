@@ -741,3 +741,28 @@ FICHIER_FICHES_LLM = DOSSIER_RESULTATS / f"llm_fiches_semaine{SEMAINE_FICHES}.js
 # Évaluation LL-02 : 20 fiches tirées au hasard, notées par Saliou dans une grille.
 NB_FICHES_EVALUATION = 20
 FICHIER_GRILLE_EVALUATION = RACINE / "docs" / "evaluation_fiches_llm.csv"
+
+# ---------------------------------------------------------------------------
+# Tableau de bord (DB-01, D-68)
+# ---------------------------------------------------------------------------
+
+# Semaine L choisie dans le tableau de bord : 1 à 29 (il faut au moins une semaine après L
+# pour parler de risque restant) ; 8 par défaut, comme les fiches.
+SEMAINE_MIN_TABLEAU = 1
+SEMAINE_MAX_TABLEAU = N_SEMAINES - 1
+SEMAINE_DEFAUT_TABLEAU = SEMAINE_FICHES
+# Seuil de risque réglable, en % : 40 % par défaut, comme les fiches (D-66).
+SEUIL_MIN_TABLEAU_PCT = 5
+SEUIL_MAX_TABLEAU_PCT = 80
+SEUIL_DEFAUT_TABLEAU_PCT = round(100 * SEUIL_RISQUE_FICHE)
+# Libellés courts des facteurs dans la table des étudiants (« âge ×2,1 ; emploi ×1,6 »).
+LIBELLES_COURTS_FACTEURS = {
+    "age": "âge",
+    "note_bac": "note du bac",
+    COLONNE_DISTANCE_COX: "distance",
+    "boursier": "bourse",
+    "emploi_parallele": "emploi",
+    "filiere": "filière",
+}
+# Profil affiché d'un étudiant (D-68, point 3) : jamais le genre ni la région.
+COLONNES_PROFIL_TABLEAU = ["age", "note_bac", "distance_campus_km", "boursier", "emploi_parallele", "filiere"]
