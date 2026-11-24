@@ -1,6 +1,6 @@
 # Sprint 1 — revue, burndown et rétrospective (GP-04)
 
-> **Brouillon** rédigé par la session de pilotage le 23/11/2026, à relire et compléter par Saliou : la rétrospective est la sienne, et les heures réelles ne sont connues que de lui (cases « … »).
+> Rédigé par la session de pilotage le 23/11/2026, relu par Saliou (GP-04 terminé le 24/11). Heures : créneaux prévus, faute de relevé quotidien (section 3).
 
 ## 1. Le sprint en bref
 
@@ -25,24 +25,26 @@
 
 Fin réelle = jour du dernier commit de la tâche pendant le sprint, corrections de relecture comprises (les retouches du 22/11 liées à d'autres tâches ne comptent pas).
 
+Temps réel : non relevé par tâche pendant le sprint 1 (action de la rétrospective). Créneaux prévus du 18 au 23/11 : 6 + 6 + 6 + 5 + 4 + 8 = 35 h, pour 30,5 h estimées ; ces créneaux ne mesurent pas le temps réellement passé (aucun commit le 21/11 après 0 h 12, journée du 22/11 bien plus chargée que ses 4 h prévues).
+
 | ID | Tâche | Estimation (h) | Prévu (planning v2) | Fin réelle | Écart | Temps réel (h) |
 |---|---|---:|---|---|---|---:|
-| GP-01 | Dépôt, structure, environnement | 1,5 | mer. 18/11 | mer. 18/11 | 0 | … |
-| GP-02 | Kanban et backlog | 1 | mer. 18/11 | mer. 18/11 | 0 | … |
-| GP-03 | Planification du sprint 1, risques, journal | 1 | mer. 18/11 | jeu. 19/11 | +1 j | … |
-| DA-01 | Audit des 5 fichiers | 3 | mer. 18/11 | mer. 18/11 | 0 | … |
-| DA-02 | Nettoyage `etudiants` | 3 | mer. 18/11 | mer. 18/11 | 0 | … |
-| DA-03 | Nettoyage `inscriptions` | 2,5 | mer. 18/11 | mer. 18/11 | 0 | … |
-| DA-04 | Nettoyage `activite_hebdo` et `tutorat` | 2,5 | jeu. 19/11 | jeu. 19/11 | 0 | … |
-| DA-05 | Nettoyage et pseudonymisation `messages` | 1 | jeu. 19/11 | jeu. 19/11 | 0 | … |
-| DA-06 | Journal de nettoyage et tests | 2 | jeu. 19/11 | ven. 20/11 | +1 j (RV01) | … |
-| DA-07 | T, E, base de survie | 3 | jeu. 19/11 | ven. 20/11 | +1 j (RV01) | … |
-| DA-08 | Analyse exploratoire | 2 | ven. 20/11 | sam. 21/11 (0 h 12) | +1 j | … |
-| SV-01 | Kaplan-Meier, log-rank, semaines critiques | 2 | ven. 20/11 | dim. 22/11 | +2 j | … |
-| CA-01 | DAG, entrée en tutorat, photo de la semaine 8 | 2 | ven. 20/11 | dim. 22/11 | +2 j | … |
-| SV-02 | Modèle de Cox | 3 | sam. 21/11 | dim. 22/11 | +1 j | … |
-| GP-04 | Revue, rétrospective, burndown, point d'étape | 1 | sam. 21/11 | lun. 23/11 | +2 j | … |
-| **Total** | | **30,5** | | | | **…** |
+| GP-01 | Dépôt, structure, environnement | 1,5 | mer. 18/11 | mer. 18/11 | 0 | — |
+| GP-02 | Kanban et backlog | 1 | mer. 18/11 | mer. 18/11 | 0 | — |
+| GP-03 | Planification du sprint 1, risques, journal | 1 | mer. 18/11 | jeu. 19/11 | +1 j | — |
+| DA-01 | Audit des 5 fichiers | 3 | mer. 18/11 | mer. 18/11 | 0 | — |
+| DA-02 | Nettoyage `etudiants` | 3 | mer. 18/11 | mer. 18/11 | 0 | — |
+| DA-03 | Nettoyage `inscriptions` | 2,5 | mer. 18/11 | mer. 18/11 | 0 | — |
+| DA-04 | Nettoyage `activite_hebdo` et `tutorat` | 2,5 | jeu. 19/11 | jeu. 19/11 | 0 | — |
+| DA-05 | Nettoyage et pseudonymisation `messages` | 1 | jeu. 19/11 | jeu. 19/11 | 0 | — |
+| DA-06 | Journal de nettoyage et tests | 2 | jeu. 19/11 | ven. 20/11 | +1 j (RV01) | — |
+| DA-07 | T, E, base de survie | 3 | jeu. 19/11 | ven. 20/11 | +1 j (RV01) | — |
+| DA-08 | Analyse exploratoire | 2 | ven. 20/11 | sam. 21/11 (0 h 12) | +1 j | — |
+| SV-01 | Kaplan-Meier, log-rank, semaines critiques | 2 | ven. 20/11 | dim. 22/11 | +2 j | — |
+| CA-01 | DAG, entrée en tutorat, photo de la semaine 8 | 2 | ven. 20/11 | dim. 22/11 | +2 j | — |
+| SV-02 | Modèle de Cox | 3 | sam. 21/11 | dim. 22/11 | +1 j | — |
+| GP-04 | Revue, rétrospective, burndown, point d'étape | 1 | sam. 21/11 | lun. 23/11 | +2 j | — |
+| **Total** | | **30,5** | | | | **—** |
 
 ## 4. Burndown du sprint 1
 
