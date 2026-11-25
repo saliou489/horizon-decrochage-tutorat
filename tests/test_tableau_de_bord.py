@@ -118,6 +118,14 @@ def test_texte_facteurs_et_tutorat():
     assert tb.texte_tutorat({"statut": "aucun"}) == "aucun"
 
 
+def test_texte_tutorat_court():
+    assert tb.texte_tutorat_court({"statut": "en cours", "semaine_debut": 5}) == "en cours"
+    assert tb.texte_tutorat_court({"statut": "aucun"}) == "aucun"
+    assert tb.texte_tutorat_court({"statut": "signalé, semaine de début inconnue"}) == "signalé"
+    assert tb.statut_tutorat_etudiant(donnees_inventees(), "C", 8) == {"statut": "en cours", "semaine_debut": 3}
+    assert tb.statut_tutorat_etudiant(donnees_inventees(), "D", 8) == {"statut": "aucun"}
+
+
 def test_resume_effet_meme_sens():
     effet = pd.DataFrame({"mesure": ["difference_risque", "hr"], "estimation": [-0.07, 0.6],
                           "ic_bas": [-0.1, 0.5], "ic_haut": [-0.04, 0.76]})
@@ -185,3 +193,22 @@ def test_application_chaque_page(donnees_reelles, semaine):
         application.sidebar.radio(key="page").set_value(page).run()
         assert not application.exception, (page, semaine, application.exception)
         assert application.title[0].value == page
+
+
+def test_fiche_etudiant_legende_tutorat_complete(donnees_reelles):
+    from streamlit.testing.v1 import AppTest
+
+    semaine, seuil = config.SEMAINE_FICHES, config.SEUIL_DEFAUT_TABLEAU_PCT
+    table = tb.table_a_risque(donnees_reelles, semaine)
+    signales = table[table["risque_cox_pct"] >= seuil]
+    application = AppTest.from_file(str(config.RACINE / "app" / "app.py"), default_timeout=120)
+    application.run()
+    application.sidebar.radio(key="page").set_value("Fiche étudiant").run()
+    # Un étudiant en tutorat et un sans tutorat : texte court dans la métrique, complet dans la légende.
+    for prefixe in ("en cours", "aucun"):
+        ligne = signales[signales["tutorat"].str.startswith(prefixe)].iloc[0]
+        application.selectbox(key=f"etudiant_{semaine}_{seuil}").set_value(ligne["id_etudiant"]).run()
+        assert not application.exception
+        legendes = [c.value for c in application.caption]
+        assert f"Tutorat : {ligne['tutorat']}." in legendes
+        assert application.metric[2].value == prefixe

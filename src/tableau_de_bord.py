@@ -71,6 +71,20 @@ def texte_tutorat(statut):
     return statut["statut"]
 
 
+def texte_tutorat_court(statut):
+    """Statut de tutorat en un ou deux mots (« en cours », « aucun », « signalé ») : une
+    métrique Streamlit coupe une valeur longue ; le texte complet va dans une légende."""
+    if statut["statut"] == "signalé, semaine de début inconnue":
+        return "signalé"
+    return statut["statut"]
+
+
+def statut_tutorat_etudiant(donnees, id_etudiant, semaine):
+    """Statut de tutorat de l'étudiant connu à la semaine `semaine` (llm.statut_tutorat)."""
+    base = donnees["base"]
+    return llm.statut_tutorat(base[base[config.COLONNE_ID] == id_etudiant].iloc[0], semaine)
+
+
 def facteurs_de_la_semaine(base, population, hr):
     """Facteurs de chaque étudiant de `population`, calculés comme les fiches (contributions
     du Cox, références de cette population, D-66), dans l'ordre des lignes.

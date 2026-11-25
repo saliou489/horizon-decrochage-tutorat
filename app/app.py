@@ -280,7 +280,10 @@ def page_fiche(semaine, seuil):
     colonnes = st.columns(3)
     colonnes[0].metric("Risque Cox (d'ici la semaine 30)", pct(ligne["risque_cox_pct"]))
     colonnes[1].metric(f"Risque la semaine {semaine + 1}", pct(ligne["risque_semaine_suivante_pct"], 2))
-    colonnes[2].metric(f"Tutorat (semaine {semaine})", ligne["tutorat"])
+    # Une métrique coupe une valeur longue : texte court dans la métrique, texte complet dessous.
+    statut = tb.statut_tutorat_etudiant(donnees(), identifiant, semaine)
+    colonnes[2].metric(f"Tutorat (semaine {semaine})", tb.texte_tutorat_court(statut))
+    st.caption(f"Tutorat : {tb.texte_tutorat(statut)}.")
     # À gauche, les données de l'étudiant ; à droite, la courbe et la fiche : tout tient sur un écran.
     gauche, droite = st.columns([5, 6], gap="large")
     with gauche:
