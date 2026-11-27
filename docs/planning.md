@@ -1,4 +1,30 @@
-# Planning du projet — version 3 (23/11/2026)
+# Planning du projet — version 4 (27/11/2026)
+
+**Pourquoi une version 4.** Des imprévus ont arrêté le travail du mercredi 25/11 après-midi au vendredi 27/11. Le dernier commit date du 25/11 à 11 h 49 : le code était fini, gel des fonctionnalités tenu, mais les documents L3 à L7 n'étaient pas déposés le 27/11 à 18 h. Le rendu est désormais fixé au **dimanche 29/11 à 18 h** (nouvelle échéance annoncée par Saliou le 27/11). L'objectif est que tout soit poussé à **15 h**, pour garder 3 h de marge. La soutenance reste prévue le **lundi 30/11**.
+
+**État au 27/11.**
+- **Terminé :** le code, les notebooks, les tests (291) et le tableau de bord (F1 à F7), ainsi que LL-02 (prompt v2 évalué) et DB-01.
+- **Abandonné au gel du 25/11 :** SV-05 (F8, priorité Could), selon la règle « les Could d'abord ».
+
+## Ce qui reste à faire
+
+| # | Tâche | Livrable | Qui | Quand |
+|---|---|---|---|---|
+| 1 | DO-02 : rapport technique (sections 5 à 9, résumé, annexes, figures, lien du dépôt), relecture, export PDF de 15 à 20 pages | L3 | pilotage rédige ; Saliou relit et exporte | samedi 28/11 |
+| 2 | DO-03 : note de synthèse de 2 pages, lien du dépôt en page 1, export PDF | L4 | pilotage rédige ; Saliou relit et exporte | samedi 28/11 au soir |
+| 3 | DO-01 : README final (liens vers le rapport et la note, déclaration d'usage de l'IA), test sur un clone neuf | L1 | exécution (consigne C18) | samedi 28/11 au soir |
+| 4 | DO-04 : vidéo de 3 minutes du tableau de bord (fichier de 50 Mo au plus, sinon lien dans le README) | L5 | Saliou | samedi 28/11 après-midi |
+| 5 | DO-04 : support de soutenance, en PDF ou PPTX | L7 | pilotage rédige ; Saliou relit | dimanche 29/11 au matin |
+| 6 | GP-06 : dossier de gestion de projet (temps réel de chaque tâche, journal de bord du 24 au 29/11, burndown et revue / rétrospective du sprint 2, registre des risques, tableau estimation / temps réel, bilan personnel), en PDF avec l'export du Kanban | L6 | Saliou, sur des brouillons du pilotage | samedi et dimanche au matin |
+| 7 | R04 : relecture finale avant le dépôt | — | session de relecture | dimanche 29/11 au matin |
+| 8 | Dépôt final : tout dans `docs/`, push, capture du Kanban | — | Saliou | dimanche 29/11, 15 h |
+| 9 | Préparation de la soutenance : explication de l'application (étapes 3 à 7), puis une répétition | — | Saliou, avec le pilotage | dimanche 29/11 au soir |
+
+## Écarts assumés
+- La capture du Kanban du 27/11 sera faite le 27 au soir ou le 28 ; les captures du 13 et du 17/11 manquent (projet démarré le 16, premier Kanban le 18). Le dossier L6 le dira tel quel.
+- Le temps réel de chaque tâche sera reconstitué par Saliou à partir du journal de bord ; le dossier le signalera.
+
+## Historique — version 3 (23/11/2026)
 
 **Référence du projet.** Le planning du cahier des charges sert d'inspiration, pas de fil conducteur (décision D-40) ; ses **exigences notées** restent obligatoires : captures du Kanban (24/11 et 27/11), revue et rétrospective de chaque sprint, livrables L1 à L7 déposés dans `docs/`, rendu le **vendredi 27/11 à 18 h** (visé : 15 h). Soutenance le **lundi 30/11** (15 min de présentation, 10 min de questions), date donnée par l'enseignant au point d'étape M2.
 
