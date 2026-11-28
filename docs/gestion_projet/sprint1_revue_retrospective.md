@@ -25,26 +25,26 @@
 
 Fin réelle = jour du dernier commit de la tâche pendant le sprint, corrections de relecture comprises (les retouches du 22/11 liées à d'autres tâches ne comptent pas).
 
-Temps réel : non relevé par tâche pendant le sprint 1 (action de la rétrospective). Créneaux prévus du 18 au 23/11 : 6 + 6 + 6 + 5 + 4 + 8 = 35 h, pour 30,5 h estimées ; ces créneaux ne mesurent pas le temps réellement passé (aucun commit le 21/11 après 0 h 12, journée du 22/11 bien plus chargée que ses 4 h prévues).
+Temps réel : non relevé par tâche pendant le sprint 1 (action de la rétrospective). Créneaux prévus du 18 au 23/11 : 6 + 6 + 6 + 5 + 4 + 8 = 35 h, pour 30,5 h estimées ; ces créneaux ne mesurent pas le temps réellement passé (aucun commit le 21/11 après 0 h 12, journée du 22/11 bien plus chargée que ses 4 h prévues). **Correction du 28/11** : heures reconstituées avec Saliou, 6 + 6 + 6 + 0 + 10 + 8 = 36 h du 18 au 23/11 (21/11 sans travail, d'après D-45 ; 22/11 journée complète, environ 10 h), dont une partie est allée aux tâches du sprint 2 tirées en avance. Le temps réel de chaque tâche ci-dessous est reconstitué : heures du jour partagées entre les tâches du jour au prorata de leurs commits (méthode et limites dans `temps_par_tache_brouillon.md`).
 
-| ID | Tâche | Estimation (h) | Prévu (planning v2) | Fin réelle | Écart | Temps réel (h) |
+| ID | Tâche | Estimation (h) | Prévu (planning v2) | Fin réelle | Écart | Temps réel reconstitué (h) |
 |---|---|---:|---|---|---|---:|
-| GP-01 | Dépôt, structure, environnement | 1,5 | mer. 18/11 | mer. 18/11 | 0 | — |
-| GP-02 | Kanban et backlog | 1 | mer. 18/11 | mer. 18/11 | 0 | — |
-| GP-03 | Planification du sprint 1, risques, journal | 1 | mer. 18/11 | jeu. 19/11 | +1 j | — |
-| DA-01 | Audit des 5 fichiers | 3 | mer. 18/11 | mer. 18/11 | 0 | — |
-| DA-02 | Nettoyage `etudiants` | 3 | mer. 18/11 | mer. 18/11 | 0 | — |
-| DA-03 | Nettoyage `inscriptions` | 2,5 | mer. 18/11 | mer. 18/11 | 0 | — |
-| DA-04 | Nettoyage `activite_hebdo` et `tutorat` | 2,5 | jeu. 19/11 | jeu. 19/11 | 0 | — |
-| DA-05 | Nettoyage et pseudonymisation `messages` | 1 | jeu. 19/11 | jeu. 19/11 | 0 | — |
-| DA-06 | Journal de nettoyage et tests | 2 | jeu. 19/11 | ven. 20/11 | +1 j (RV01) | — |
-| DA-07 | T, E, base de survie | 3 | jeu. 19/11 | ven. 20/11 | +1 j (RV01) | — |
-| DA-08 | Analyse exploratoire | 2 | ven. 20/11 | sam. 21/11 (0 h 12) | +1 j | — |
-| SV-01 | Kaplan-Meier, log-rank, semaines critiques | 2 | ven. 20/11 | dim. 22/11 | +2 j | — |
-| CA-01 | DAG, entrée en tutorat, photo de la semaine 8 | 2 | ven. 20/11 | dim. 22/11 | +2 j | — |
-| SV-02 | Modèle de Cox | 3 | sam. 21/11 | dim. 22/11 | +1 j | — |
-| GP-04 | Revue, rétrospective, burndown, point d'étape | 1 | sam. 21/11 | lun. 23/11 | +2 j | — |
-| **Total** | | **30,5** | | | | **—** |
+| GP-01 | Dépôt, structure, environnement | 1,5 | mer. 18/11 | mer. 18/11 | 0 | 1,3 |
+| GP-02 | Kanban et backlog | 1 | mer. 18/11 | mer. 18/11 | 0 | 0,6 |
+| GP-03 | Planification du sprint 1, risques, journal | 1 | mer. 18/11 | jeu. 19/11 | +1 j | 2,7 |
+| DA-01 | Audit des 5 fichiers | 3 | mer. 18/11 | mer. 18/11 | 0 | 0,5 |
+| DA-02 | Nettoyage `etudiants` | 3 | mer. 18/11 | mer. 18/11 | 0 | 1,3 |
+| DA-03 | Nettoyage `inscriptions` | 2,5 | mer. 18/11 | mer. 18/11 | 0 | 1,7 |
+| DA-04 | Nettoyage `activite_hebdo` et `tutorat` | 2,5 | jeu. 19/11 | jeu. 19/11 | 0 | 1,6 |
+| DA-05 | Nettoyage et pseudonymisation `messages` | 1 | jeu. 19/11 | jeu. 19/11 | 0 | 0,6 |
+| DA-06 | Journal de nettoyage et tests | 2 | jeu. 19/11 | ven. 20/11 | +1 j (RV01) | 1,6 |
+| DA-07 | T, E, base de survie | 3 | jeu. 19/11 | ven. 20/11 | +1 j (RV01) | 4,1 |
+| DA-08 | Analyse exploratoire | 2 | ven. 20/11 | sam. 21/11 (0 h 12) | +1 j | 2,0 |
+| SV-01 | Kaplan-Meier, log-rank, semaines critiques | 2 | ven. 20/11 | dim. 22/11 | +2 j | 1,2 |
+| CA-01 | DAG, entrée en tutorat, photo de la semaine 8 | 2 | ven. 20/11 | dim. 22/11 | +2 j | 1,0 |
+| SV-02 | Modèle de Cox | 3 | sam. 21/11 | dim. 22/11 | +1 j | 0,7 |
+| GP-04 | Revue, rétrospective, burndown, point d'étape | 1 | sam. 21/11 | lun. 23/11 | +2 j | 0,9 |
+| **Total** | | **30,5** | | | | **21,8** |
 
 ## 4. Burndown du sprint 1
 
